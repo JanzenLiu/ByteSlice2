@@ -84,7 +84,7 @@ private:
             AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal) const;
     //Scan Kernel for Bytewise Scan
     template <Comparator>
-    inline voild ScanByteKernel2(const AvxUnit &byteslice1, const AvxUnit &byteslice2,
+    inline void ScanByteKernel2(const AvxUnit &byteslice1, const AvxUnit &byteslice2,
             AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal, 
             const size_t BYTE_ID) const;
 

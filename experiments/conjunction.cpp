@@ -7,7 +7,6 @@
 #include    <ctime>
 #include    <vector>
 
-#include    "util/system_perf_monitor.h"
 #include    "include/hybrid_timer.h"
 
 #include    "include/types.h"
@@ -89,10 +88,6 @@ int main(int argc, char* argv[]){
     }
 
     of.open(filename, std::ofstream::out);
-
-    //Init PCM
-    SystemPerfMonitor pm;
-    pm.Init();
     
     HybridTimer t1;
 
@@ -108,8 +103,7 @@ int main(int argc, char* argv[]){
         << " repeat= " << repeat << std::endl;
 
     of << "# selectivity  BS-pipeline  BS-columnar  "
-       << "BS(1)  BS(2)  "
-       << "L2Miss(pipeline) L3Miss(pipeline) L2Miss(columnar) L3Miss(columnar)" << std::endl;
+       << "BS(1)  BS(2)  " << std::endl;
 
 
     std::srand(std::time(0));
@@ -120,8 +114,6 @@ int main(int argc, char* argv[]){
     for(double selectivity : selectivity_vec){
 
         uint64_t cycles_pipeline = 0, cycles_columnar1 = 0, cycles_columnar2 = 0;
-        uint64_t l2miss_pipeline = 0, l3miss_pipeline = 0;
-        uint64_t l2miss_columnar = 0, l3miss_columnar = 0;
         uint64_t cycles_bwv1 = 0, cycles_bwv2 = 0;
 
         const WordUnit mask1 = (1ULL << code_length1) - 1;
@@ -156,41 +148,29 @@ int main(int argc, char* argv[]){
             scan.AddPredicate(AtomPredicate(column1, comparator, literal1));
             scan.AddPredicate(AtomPredicate(column2, comparator, literal2));
 
-            pm.Start();
             t1.Start();
             scan.ExecuteBlockwise(bitvector);
-            pm.Stop();
             t1.Stop();
 
             cycles_pipeline += t1.GetNumCycles();
-            l2miss_pipeline += pm.GetL2CacheMisses();
-            l3miss_pipeline += pm.GetL3CacheMisses();
             //std::cout << bitvector->CountOnes() << "\t";
             /*------------------------------------*/
 
             /*--Columnar--------------------------*/
             bitvector->SetOnes();
             
-            pm.Start();
             t1.Start();
             column1->Scan(comparator, literal1, bitvector, Bitwise::kSet);
-            pm.Stop();
             t1.Stop();
 
             cycles_columnar1 += t1.GetNumCycles();
-            l2miss_columnar += pm.GetL2CacheMisses();
-            l3miss_columnar += pm.GetL3CacheMisses();
             //std::cout << bitvector->CountOnes() << "\t";
 
-            pm.Start();
             t1.Start();
             column2->Scan(comparator, literal2, bitvector, Bitwise::kAnd);
-            pm.Stop();
             t1.Stop();
 
             cycles_columnar2 += t1.GetNumCycles();
-            l2miss_columnar += pm.GetL2CacheMisses();
-            l3miss_columnar += pm.GetL3CacheMisses();
             //std::cout << bitvector->CountOnes() << std::endl;
             /*--------------------------------*/
 
@@ -233,10 +213,6 @@ int main(int argc, char* argv[]){
             << double((cycles_columnar1 + cycles_columnar2) / repeat) / num_rows << "\t"
             << double(cycles_columnar1 / repeat) / num_rows << "\t"
             << double(cycles_columnar2 / repeat) / num_rows << "\t"
-            << double(l2miss_pipeline / repeat) / num_rows << "\t"
-            << double(l3miss_pipeline / repeat) / num_rows << "\t"
-            << double(l2miss_columnar / repeat) / num_rows << "\t"
-            << double(l3miss_columnar / repeat) / num_rows << "\t"
             //<< double((cycles_bwv1 + cycles_bwv2) / repeat) / num_rows << "\t"
             //<< double(cycles_bwv1 / repeat) / num_rows << "\t"
             //<< double(cycles_bwv2 / repeat) / num_rows << "\t"
@@ -245,7 +221,6 @@ int main(int argc, char* argv[]){
     }
     /*-------------------------------------------------------------*/
 
-    pm.Destroy();
     of.close();
 }
 

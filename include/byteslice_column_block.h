@@ -35,6 +35,10 @@ public:
     void Scan(Comparator comparator, WordUnit literal, ByteMaskBlock* bmblk, 
             Bitwise opt = Bitwise::kSet) const override;
 
+    //Scan performed on single byte of the code
+    void ScanByte(Comparator comparator, ByteUnit literal, size_t byte_id, 
+        BitVectorBlock* bv_block, Bitwise bit_opt=Bitwise::kSet) const override;
+
     void BulkLoadArray(const WordUnit* codes, size_t num, size_t start_pos = 0) override;
 
     void SerToFile(SequentialWriteBinaryFile &file) const override;
@@ -63,6 +67,13 @@ private:
     void ScanHelper1(WordUnit literal, ByteMaskBlock* bmblk, Bitwise opt) const;
     template <Comparator CMP, Bitwise OPT>
     void ScanHelper2(WordUnit literal, ByteMaskBlock* bmblk) const;
+
+    //Scan Helper: single byte
+    template <Comparator CMP>
+    void ScanByteHelper1(ByteUnit literal, size_t byte_id, BitVectorBlock* bv_block, 
+        Bitwise bit_opt) const;
+    template <Comparator CMP, Bitwise OPT>
+    void ScanByteHelper2(ByteUnit literal, size_t byte_id, BitVectorBlock* bv_block) const;
 
     //Scan Kernel
     template <Comparator CMP>

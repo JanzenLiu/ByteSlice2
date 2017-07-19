@@ -114,7 +114,7 @@ void PipelineScan::ExecuteBytewiseNaive(BitVector* bitvector){
                                 conjunctions_[pid].literal,
                                 bid,
                                 bvblk,
-                                (0 == pid && 0 == bid)? Bitwise:kSet : Bitwise: kAnd);
+                                (0 == pid && 0 == bid)? Bitwise::kSet : Bitwise::kAnd);
             }
         }
     }

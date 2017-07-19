@@ -33,7 +33,7 @@ int main(int argc, char* argv[]){
     //f - selectivity; r - repeat; p - predicate
     //o - output file
     int c;
-    while((c = getopt(argc, argv, "s:f:r:o:p:")) != -1){
+    while((c = getopt(argc, argv, "t:s:b:f:r:o:p:")) != -1){
         switch(c){
             case 't':
                 if(0 == strcmp(optarg, "n"))

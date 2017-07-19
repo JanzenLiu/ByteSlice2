@@ -9,4 +9,4 @@
 !*.awk
 !CMakeLists.txt
 !.gitignore
-!.md
+!*.md

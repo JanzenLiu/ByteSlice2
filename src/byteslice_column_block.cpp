@@ -552,7 +552,7 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanHelper2(
 //Scan against literal
 template <size_t BIT_WIDTH, Direction PDIRECTION>
 void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByte(Comparator comparator,
-        ByteUnit literal, size_t byte_id, BitVectorBlock* bvblock, Bitwise bit_opt) const{
+        ByteUnit literal, const size_t byte_id, BitVectorBlock* bvblock, Bitwise bit_opt) const{
     assert(bvblock->num() == num_tuples_);
     assert(byte_id >= 0 && byte_id < kNumBytesPerCode);
     switch(comparator){
@@ -574,7 +574,7 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByte(Comparator comparator
 template <size_t BIT_WIDTH, Direction PDIRECTION>
 template <Comparator CMP>
 void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByteHelper1(ByteUnit literal,
-                            size_t byte_id, BitVectorBlock* bvblock, Bitwise bit_opt) const{
+                            const size_t byte_id, BitVectorBlock* bvblock, Bitwise bit_opt) const{
      switch(bit_opt){
         case Bitwise::kSet:
             return ScanByteHelper2<CMP, Bitwise::kSet>(literal, byte_id, bvblock);
@@ -588,7 +588,7 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByteHelper1(ByteUnit liter
 template <size_t BIT_WIDTH, Direction PDIRECTION>
 template <Comparator CMP, Bitwise OPT>
 void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByteHelper2(
-                            ByteUnit literal, size_t byte_id, BitVectorBlock* bvblock) const{
+                            ByteUnit literal, const size_t byte_id, BitVectorBlock* bvblock) const{
     AvxUnit mask_literal = avx_set1<ByteUnit>(FLIP(literal));
     for(size_t offset = 0, bv_word_id = 0; offset < num_tuples_; offset += kNumWordBits, bv_word_id++){
         WordUnit bitvector_word = WordUnit(0);

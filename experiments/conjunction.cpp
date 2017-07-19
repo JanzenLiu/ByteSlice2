@@ -102,7 +102,7 @@ int main(int argc, char* argv[]){
         << " selectivity= " << selectivity
         << " repeat= " << repeat << std::endl;
 
-    of << "# selectivity  BS-pipeline  BS-columnar  "
+    of << "# selectivity  BS-pipeline-bytewise  BS-columnar  " // modified
        << "BS(1)  BS(2)  " << std::endl;
 
 
@@ -149,7 +149,8 @@ int main(int argc, char* argv[]){
             scan.AddPredicate(AtomPredicate(column2, comparator, literal2));
 
             t1.Start();
-            scan.ExecuteBlockwise(bitvector);
+            // scan.ExecuteBlockwise(bitvector);
+            scan.ExecuteBytewiseNaive(bitvector);
             t1.Stop();
 
             cycles_pipeline += t1.GetNumCycles();

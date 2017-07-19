@@ -1,0 +1,11 @@
+*
+!*/
+!*.cpp
+!*.h
+!*.c
+!*.cc
+!*.gp
+!*.sh
+!*.awk
+!CMakeLists.txt
+!.gitignore

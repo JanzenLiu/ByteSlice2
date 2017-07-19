@@ -100,5 +100,24 @@ void PipelineScan::ExecuteStandard(BitVector* bitvector){
     }
 }
 
+void PipelineScan::ExecuteBytewiseNaive(BitVector* bitvector){
+    size_t num_blocks = conjunctions_[0].column->GetNumBlocks();
+
+#pragma omp parallel for schedule(dynamic)
+    for(size_t block_id = 0; block_id < num_blocks; block_id++){
+        size_t num = conjunctions_[0].column->GetBlock(block_id)->num_tuples();
+        BitVectorBlock* bvblk = bitvector->GetBVBlock(block_id);
+        for(size_t pid = 0; pid < conjunctions_.size(); pid++){
+            ColumnBlock* block = conjunctions_[pid].column->GetBlock(block_id);
+            for(size_t bid = 0; bid < CEIL(block->bit_width(), 8); bid++){
+                block->ScanByte(conjunctions_[pid].comparator,
+                                conjunctions_[pid].literal,
+                                bid,
+                                bvblk,
+                                (0 == pid && 0 == bid)? Bitwise:kSet : Bitwise: kAnd);
+            }
+        }
+    }
+}
 
 }   //namespace

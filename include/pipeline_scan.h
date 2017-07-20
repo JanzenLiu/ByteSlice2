@@ -34,6 +34,9 @@ public:
     void ExecuteNaive(BitVector* bitvector);
     void ExecuteStandard(BitVector* bitvector);
 
+    // Execute predicates bytewise
+    // For ByteSlice columns only
+    void ExecuteBytewiseNaive(BitVector* bitvector);
 
 private:
     std::vector<AtomPredicate> conjunctions_;

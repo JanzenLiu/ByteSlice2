@@ -35,6 +35,10 @@ public:
     void Scan(Comparator comparator, WordUnit literal, ByteMaskBlock* bmblk, 
             Bitwise opt = Bitwise::kSet) const override;
 
+    //Scan performed on single byte of the code
+    void ScanByte(Comparator comparator, ByteUnit literal, const size_t byte_id, 
+        BitVectorBlock* bv_block, Bitwise bit_opt=Bitwise::kSet) const override;
+
     void BulkLoadArray(const WordUnit* codes, size_t num, size_t start_pos = 0) override;
 
     void SerToFile(SequentialWriteBinaryFile &file) const override;
@@ -64,6 +68,13 @@ private:
     template <Comparator CMP, Bitwise OPT>
     void ScanHelper2(WordUnit literal, ByteMaskBlock* bmblk) const;
 
+    //Scan Helper: single byte
+    template <Comparator CMP>
+    void ScanByteHelper1(ByteUnit literal, const size_t byte_id, BitVectorBlock* bv_block, 
+        Bitwise bit_opt) const;
+    template <Comparator CMP, Bitwise OPT>
+    void ScanByteHelper2(ByteUnit literal, const size_t byte_id, BitVectorBlock* bv_block) const;
+
     //Scan Kernel
     template <Comparator CMP>
     inline void ScanKernel(const AvxUnit &byteslice1, const AvxUnit &byteslice2,
@@ -71,6 +82,11 @@ private:
     template <Comparator CMP, size_t BYTE_ID>
     inline void ScanKernel2(const AvxUnit &byteslice1, const AvxUnit &byteslice2,
             AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal) const;
+    //Scan Kernel for Bytewise Scan
+    template <Comparator>
+    inline void ScanByteKernel2(const AvxUnit &byteslice1, const AvxUnit &byteslice2,
+            AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal, 
+            const size_t BYTE_ID) const;
 
     static constexpr size_t kNumBytesPerCode = CEIL(BIT_WIDTH, 8);
     static constexpr size_t kNumPaddingBits = kNumBytesPerCode * 8 - BIT_WIDTH;

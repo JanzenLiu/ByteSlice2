@@ -26,8 +26,8 @@ int main(int argc, char* argv[]){
     const WordUnit mask2 = (1ULL << code_length2) - 1;
     WordUnit literal1 = static_cast<WordUnit>(mask1 * selectivity1);
     WordUnit literal2 = static_cast<WordUnit>(mask2 * selectivity2);
-    std::cout << "Literal#1: " << literal1 << std::endl;
-    std::cout << "Literal#2: " << literal2 << std::endl;
+    // std::cout << "Literal#1: " << literal1 << std::endl;
+    // std::cout << "Literal#2: " << literal2 << std::endl;
 
     Column* column1 = new Column(ColumnType::kByteSlicePadRight, code_length1, num_rows);
     Column* column2 = new Column(ColumnType::kByteSlicePadRight, code_length2, num_rows);
@@ -51,9 +51,9 @@ int main(int argc, char* argv[]){
     bitvector1->SetOnes();
     bitvector2->SetOnes();
     bitvector3->SetOnes();
-    std::cout << bitvector1->CountOnes() << std::endl;
-    std::cout << bitvector2->CountOnes() << std::endl;
-    std::cout << bitvector3->CountOnes() << std::endl;
+    // std::cout << bitvector1->CountOnes() << std::endl;
+    // std::cout << bitvector2->CountOnes() << std::endl;
+    // std::cout << bitvector3->CountOnes() << std::endl;
     PipelineScan scan;
     scan.AddPredicate(AtomPredicate(column1, comparator, literal1));
     scan.AddPredicate(AtomPredicate(column2, comparator, literal2));

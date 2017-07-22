@@ -13,8 +13,8 @@ int main(){
 	double selectivity = 0.3;
 	Comparator comp = Comparator::kLess;
 
-	ByteSliceColumnBlock* col_block = new ByteSliceColumnBlock<12>();
-	ByteSliceColumnBlock* byte_block = new ByteSliceColumnBlock<8>();
+	ByteSliceColumnBlock<12, Direction::kRight>* col_block = new ByteSliceColumnBlock<Direction::12, kRight>();
+	ByteSliceColumnBlock<8, Direction::kRight>* byte_block = new ByteSliceColumnBlock<Direction::8, kRight>();
 	BitVectorBlock* bv_block1 = new BitVectorBlock(num_tuples);
 	BitVectorBlock* bv_block2 = new BitVectorBlock(num_tuples);
 

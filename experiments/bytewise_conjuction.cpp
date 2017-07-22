@@ -67,7 +67,7 @@ int main(int argc, char* argv[]){
 
     size_t corr = 0;
     for(size_t i = 0; i < num_rows; i++){
-        if(bitvector1->GetBVBlock(0)->GetBit(i) == bitvector3->GetBVBlock(0)->GetBVBlock(i))
+        if(bitvector1->GetBVBlock(0)->GetBit(i) == bitvector3->GetBVBlock(0)->GetBit(i))
             corr++;
     }
     std::cout << "Number of correct tuples: " << corr << std::endl;

@@ -552,22 +552,23 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanHelper2(
 //Scan against literal
 template <size_t BIT_WIDTH, Direction PDIRECTION>
 void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByte(Comparator comparator,
-        ByteUnit literal, const size_t byte_id, BitVectorBlock* bvblock, Bitwise bit_opt) const{
+        WordUnit literal, const size_t byte_id, BitVectorBlock* bvblock, Bitwise bit_opt) const{
     assert(bvblock->num() == num_tuples_);
     assert(byte_id >= 0 && byte_id < kNumBytesPerCode);
+    ByteUnit byte = FLIP(static_cast<ByteUnit>(literal >> 8*(kNumBytesPerCode - 1 - byte_id)));
     switch(comparator){
         case Comparator::kLess:
-            return ScanByteHelper1<Comparator::kLess>(literal, byte_id, bvblock, bit_opt);
+            return ScanByteHelper1<Comparator::kLess>(byte, byte_id, bvblock, bit_opt);
         case Comparator::kGreater:
-            return ScanByteHelper1<Comparator::kGreater>(literal, byte_id, bvblock, bit_opt);
+            return ScanByteHelper1<Comparator::kGreater>(byte, byte_id, bvblock, bit_opt);
         case Comparator::kLessEqual:
-            return ScanByteHelper1<Comparator::kLessEqual>(literal, byte_id, bvblock, bit_opt);
+            return ScanByteHelper1<Comparator::kLessEqual>(byte, byte_id, bvblock, bit_opt);
         case Comparator::kGreaterEqual:
-            return ScanByteHelper1<Comparator::kGreaterEqual>(literal, byte_id, bvblock, bit_opt);
+            return ScanByteHelper1<Comparator::kGreaterEqual>(byte, byte_id, bvblock, bit_opt);
         case Comparator::kEqual:
-            return ScanByteHelper1<Comparator::kEqual>(literal, byte_id, bvblock, bit_opt);
+            return ScanByteHelper1<Comparator::kEqual>(byte, byte_id, bvblock, bit_opt);
         case Comparator::kInequal:
-            return ScanByteHelper1<Comparator::kInequal>(literal, byte_id, bvblock, bit_opt);
+            return ScanByteHelper1<Comparator::kInequal>(byte, byte_id, bvblock, bit_opt);
     }
 }
 

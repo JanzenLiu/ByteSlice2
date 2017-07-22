@@ -2,8 +2,9 @@
 
 #include    "include/common.h"
 #include    "include/types.h"
-#include    "include/column_block.h"
+#include    "include/byteslice_column_block.h"
 #include    "include/bitvector_block.h"
+#include	"include/avx-utility.h"
 
 using namespace byteslice;
 
@@ -12,10 +13,10 @@ int main(){
 	double selectivity = 0.3;
 	Comparator comp = Comparator::kLess;
 
-	ByteSliceColumnBlock col_block = new ByteSliceColumnBlock<12>();
-	ByteSliceColumnBlock byte_block = new ByteSliceColumnBlock<8>()
-	BitVectorBlock bv_block1 = new BitVectorBlock(num_tuples);
-	BitVectorBlock bv_block2 = new BitVectorBlock(num_tuples);
+	ByteSliceColumnBlock* col_block = new ByteSliceColumnBlock<12>();
+	ByteSliceColumnBlock* byte_block = new ByteSliceColumnBlock<8>();
+	BitVectorBlock* bv_block1 = new BitVectorBlock(num_tuples);
+	BitVectorBlock* bv_block2 = new BitVectorBlock(num_tuples);
 
 	const WordUnit mask = (1ULL << 12) - 1;
 	WordUnit literal = static_cast<WordUnit>(mask * selectivity);

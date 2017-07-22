@@ -3,6 +3,7 @@
 
 #include    "include/hybrid_timer.h"
 
+#include    "include/common.h"
 #include    "include/types.h"
 #include    "include/column.h"
 #include    "include/bitvector.h"
@@ -62,8 +63,15 @@ int main(int argc, char* argv[]){
 	column2->Scan(comparator, literal2, bitvector1, Bitwise::kAnd);
 
 	scan.ExecuteBlockwise(bitvector2);
-
 	scan.ExecuteBytewiseNaive(bitvector3);
+
+    size_t corr = 0;
+    for(size_t i = 0; i < num_rows; i++){
+        if(bitvector1->GetBVBlock(0)->GetBit(i) == bitvector3->GetBVBlock(0)->GetBVBlock(i))
+            corr++;
+    }
+    std::cout << "Number of correct tuples: " << corr << std::endl;
+    std::cout << "Accuracy: " << (double)corr / num_rows << std::endl;
 
 	//std::cout << "Scan Columnwise: " << *reinterpret_cast<WordUnit *>(bitvector1->GetBVBlock(0)) << std::endl;
 	//std::cout << "Scan Blockwise:  " << *reinterpret_cast<WordUnit *>(bitvector2->GetBVBlock(0)) << std::endl;

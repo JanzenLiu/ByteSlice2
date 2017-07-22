@@ -57,7 +57,7 @@ int main(int argc, char* argv[]){
 	scan.ExecuteBytewiseNaive(bitvector3);
 
 	std::cout << "Scan Columnwise: " << bitvector1->GetBVBlock(0) << std::endl;
-	std::cout << "Scan Bytewise:   " << bitvector2->GetBVBlock(0) << std::endl;
+	std::cout << "Scan Blockwise:   " << bitvector2->GetBVBlock(0) << std::endl;
 	std::cout << "Scan Bytewise:   " << bitvector3->GetBVBlock(0) << std::endl;
 
 	delete bitvector1;

@@ -36,6 +36,6 @@ int main(){
     col_block->ScanByte(comp, literal, 0, bv_block1, Bitwise::kSet);
     byte_block->Scan(comp, byte_literal, bv_block2, Bitwise::kSet);
 
-    std::cout << "ScanByte: " << bv_block1 << std::endl;
-    std::cout << "Scan    : " << bv_block2 << std::endl;
+    std::cout << "ScanByte: " << *reinterpret_cast<WordUnit *>(bv_block1->GetWordUnit(0)) << std::endl;
+    std::cout << "Scan    : " << *reinterpret_cast<WordUnit *>(bv_block2->GetWordUnit(0)) << std::endl;
 }

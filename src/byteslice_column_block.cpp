@@ -597,7 +597,7 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByteHelper2(
             AvxUnit m_greater = avx_zero();
             AvxUnit m_equal = avx_ones();
             __builtin_prefetch(data_[byte_id] + offset + i + kPrefetchDistance);
-            ScanByteKernel2<CMP>(
+            ScanByteKernel<CMP>(
                 _mm256_lddqu_si256(reinterpret_cast<__m256i*>(data_[byte_id] + offset + i)),
                 mask_literal,
                 m_less,
@@ -747,7 +747,7 @@ inline void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanKernel2
 
 template <size_t BIT_WIDTH, Direction PDIRECTION>
 template <Comparator CMP>
-inline void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByteKernel2
+inline void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByteKernel
                                                         (const AvxUnit &byteslice1,
                                                          const AvxUnit &byteslice2,
                                                          AvxUnit &mask_less,
@@ -755,62 +755,27 @@ inline void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByteKernel2
                                                          AvxUnit &mask_equal,
                                                          const size_t BYTE_ID) const {
 
-    //internal ByteSlice --- not last BS                                                        
-    if(BYTE_ID < kNumBytesPerCode - 1){ 
-        switch(CMP){
-            case Comparator::kEqual:
-            case Comparator::kInequal:
-                mask_equal = 
-                    avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2));
-                break;
-            case Comparator::kLess:
-            case Comparator::kLessEqual:
-                mask_less = 
-                    avx_or(mask_less, avx_and(mask_equal, avx_cmplt<ByteUnit>(byteslice1, byteslice2)));
-                mask_equal = 
-                    avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2));
-                break;
-            case Comparator::kGreater:
-            case Comparator::kGreaterEqual:
-                mask_greater =
-                    avx_or(mask_greater, avx_and(mask_equal, avx_cmpgt<ByteUnit>(byteslice1, byteslice2)));
-                mask_equal = 
-                    avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2));
-                break;
-        }
+    switch(CMP){
+        case Comparator::kEqual:
+        case Comparator::kInequal:
+            mask_equal = 
+                avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2));
+            break;
+        case Comparator::kLess:
+        case Comparator::kLessEqual:
+            mask_less = 
+                avx_or(mask_less, avx_and(mask_equal, avx_cmplt<ByteUnit>(byteslice1, byteslice2)));
+            mask_equal = 
+                avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2));
+            break;
+        case Comparator::kGreater:
+        case Comparator::kGreaterEqual:
+            mask_greater =
+                avx_or(mask_greater, avx_and(mask_equal, avx_cmpgt<ByteUnit>(byteslice1, byteslice2)));
+            mask_equal = 
+                avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2));
+            break;
     }
-    //last BS: no need to compute mask_equal for some comparisons
-    else if(BYTE_ID == kNumBytesPerCode - 1){   
-        switch(CMP){
-            case Comparator::kEqual:
-            case Comparator::kInequal:
-                mask_equal = 
-                    avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2));
-                break;
-            case Comparator::kLessEqual:
-                mask_less = 
-                    avx_or(mask_less, avx_and(mask_equal, avx_cmplt<ByteUnit>(byteslice1, byteslice2)));
-                mask_equal = 
-                    avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2));
-                break;
-            case Comparator::kLess:
-                mask_less = 
-                    avx_or(mask_less, avx_and(mask_equal, avx_cmplt<ByteUnit>(byteslice1, byteslice2)));
-                break;
-            case Comparator::kGreaterEqual:
-                mask_greater =
-                    avx_or(mask_greater, avx_and(mask_equal, avx_cmpgt<ByteUnit>(byteslice1, byteslice2)));
-                mask_equal = 
-                    avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2));
-                break;
-            case Comparator::kGreater:
-                mask_greater =
-                    avx_or(mask_greater, avx_and(mask_equal, avx_cmpgt<ByteUnit>(byteslice1, byteslice2)));
-                break;
-        }
-    }
-    //otherwise, do nothing
-
 }
 
 template <size_t BIT_WIDTH, Direction PDIRECTION>

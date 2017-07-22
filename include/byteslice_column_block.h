@@ -36,7 +36,7 @@ public:
             Bitwise opt = Bitwise::kSet) const override;
 
     //Scan performed on single byte of the code
-    void ScanByte(Comparator comparator, ByteUnit literal, const size_t byte_id, 
+    void ScanByte(Comparator comparator, WordUnit literal, const size_t byte_id, 
         BitVectorBlock* bv_block, Bitwise bit_opt=Bitwise::kSet) const override;
 
     void BulkLoadArray(const WordUnit* codes, size_t num, size_t start_pos = 0) override;

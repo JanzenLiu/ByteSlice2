@@ -3,8 +3,7 @@
 #include <vector>
 #include <stdlib.h>
 
-int main()
-{
+int main(int argc, char* argv[]){
     std::vector<std::string> params;
     std::string o1 = "1.1";
     std::string o2 = "1.2";

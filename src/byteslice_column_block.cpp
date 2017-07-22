@@ -598,13 +598,12 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByteHelper2(
             AvxUnit m_greater = avx_zero();
             AvxUnit m_equal = avx_ones();
             __builtin_prefetch(data_[byte_id] + offset + i + kPrefetchDistance);
-            ScanByteKernel<CMP>(
+            ScanKernel<CMP>(
                 _mm256_lddqu_si256(reinterpret_cast<__m256i*>(data_[byte_id] + offset + i)),
                 mask_literal,
                 m_less,
                 m_greater,
-                m_equal,
-                byte_id);
+                m_equal);
             AvxUnit m_result;
             switch(CMP){
                 case Comparator::kLessEqual:

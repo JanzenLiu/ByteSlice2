@@ -31,6 +31,7 @@ int main(int argc, char* argv[]){
     Column* column2 = new Column(ColumnType::kByteSlicePadRight, code_length2, num_rows);
     BitVector* bitvector1 = new BitVector(num_rows);
     BitVector* bitvector2 = new BitVector(num_rows);
+    BitVector* bitvector3 = new BitVector(num_rows);
 
     //populate the column with random data
     for(size_t i = 0; i < num_rows; i++){
@@ -51,10 +52,13 @@ int main(int argc, char* argv[]){
     column1->Scan(comparator, literal1, bitvector1, Bitwise::kSet);
 	column2->Scan(comparator, literal2, bitvector1, Bitwise::kAnd);
 
-	scan.ExecuteBytewiseNaive(bitvector2);
+	scan.ExecuteBlockwise(bitvector2);
+
+	scan.ExecuteBytewiseNaive(bitvector3);
 
 	std::cout << "Scan Columnwise: " << bitvector1->GetBVBlock(0) << std::endl;
 	std::cout << "Scan Bytewise:   " << bitvector2->GetBVBlock(0) << std::endl;
+	std::cout << "Scan Bytewise:   " << bitvector3->GetBVBlock(0) << std::endl;
 
 	delete bitvector1;
 	delete bitvector2;

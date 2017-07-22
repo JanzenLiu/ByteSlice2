@@ -13,8 +13,8 @@ int main(){
 	double selectivity = 0.3;
 	Comparator comp = Comparator::kLess;
 
-	ByteSliceColumnBlock<12, Direction::kRight>* col_block = new ByteSliceColumnBlock<Direction::12, kRight>();
-	ByteSliceColumnBlock<8, Direction::kRight>* byte_block = new ByteSliceColumnBlock<Direction::8, kRight>();
+	ByteSliceColumnBlock<12, Direction::kRight>* col_block = new ByteSliceColumnBlock<12, Direction::kRight>();
+	ByteSliceColumnBlock<8, Direction::kRight>* byte_block = new ByteSliceColumnBlock<8, Direction::kRight>();
 	BitVectorBlock* bv_block1 = new BitVectorBlock(num_tuples);
 	BitVectorBlock* bv_block2 = new BitVectorBlock(num_tuples);
 
@@ -27,7 +27,7 @@ int main(){
         WordUnit code = std::rand() & mask;
         ByteUnit byte = FLIP(static_cast<ByteUnit>(literal >> 8));
         col_block->SetTuple(i, code);
-        byte_block->setTuple(i, byte);
+        byte_block->SetTuple(i, byte);
     }
 
     bv_block1->SetOnes();

@@ -154,7 +154,7 @@ void Column::Scan(Comparator comparator, const Column* other_column,
 }
 
 void Column::ScanByte(Comparator comparator, ByteUnit literal, size_t byte_id,
-            BitVector* bitvector, Bitwise bit_opt = Bitwise::kSet) const{
+            BitVector* bitvector, Bitwise bit_opt) const{
     assert(num_tuples_ == bitvector->num());
     assert(byte_id >= 0 && byte_id < CEIL(bit_width_, 8));
 

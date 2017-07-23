@@ -51,8 +51,6 @@ public:
             BitVector* bitvector, Bitwise bit_opt = Bitwise::kSet) const;
     void Scan(Comparator comparator, const Column* other_column, 
             BitVector* bitvector, Bitwise bit_opt = Bitwise::kSet) const;
-    void ScanByte(Comparator comparator, ByteUnit literal, size_t byte_id,
-            BitVector* bitvector, Bitwise bit_opt = Bitwise::kSet) const;
 
     ColumnBlock* CreateNewBlock() const;
 

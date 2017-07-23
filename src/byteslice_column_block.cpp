@@ -275,69 +275,6 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByteHelper2(ByteUnit liter
 	}
 }
 
-template <size_t BIT_WIDTH, Direction PDIRECTION>
-void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByte(Comparator comparator, 
-		ByteUnit literal, size_t byte_id, BitVectorBlock* bvblock, Bitwise bit_opt) const{
-	assert(byte_id >= 0 && byte_id < kNumBytesPerCode);
-	assert(num_tuples_ == bvblock->num());
-
-	//intialize mask AvxUnit
-	ByteMaskBlock* bm_less = new ByteMaskBlock(num_tuples_);
-	ByteMaskBlock* bm_greater = new ByteMaskBlock(num_tuples_);
-	ByteMaskBlock* bm_equal = new ByteMaskBlock(num_tuples_);
-	BitVectorBlock* m_less = new BitVectorBlock(num_tuples_);
-	BitVectorBlock* m_greater = new BitVectorBlock(num_tuples_);
-	BitVectorBlock* m_equal = new BitVectorBlock(num_tuples_);
-
-	bm_less->SetAllFalse();
-	bm_greater->SetAllFalse();
-	bm_equal->SetAllTrue();
-
-	//transform result to bitvector_block
-	ScanByte(comparator, literal, byte_id, bm_less, bm_greater, bm_equal);
-	bm_less->Condense(m_less);
-	bm_greater->Condense(m_greater);
-	bm_equal->Condense(m_equal);
-
-	//set result
-	BitVectorBlock* m_result = new BitVectorBlock(num_tuples_);
-	switch(comparator){
-		case Comparator::kLess:
-			m_result = m_less;
-			break;
-		case Comparator::kLessEqual:
-			m_result = m_less;
-			m_result->And(m_equal);
-			break;
-		case Comparator::kGreater:
-			m_result = m_greater;
-			break;
-		case Comparator::kGreaterEqual:
-			m_result = m_greater;
-			m_result->And(m_equal);
-			break;
-		case Comparator::kEqual:
-			m_result = m_equal;
-			break;
-		case Comparator::kInequal:
-			m_result = m_equal;
-			m_result->Not();
-			break;
-	}
-
-	//operate bitwise to the bitvector_block parameter
-	switch(bit_opt){
-		case Bitwise::kSet:
-			break;
-		case Bitwise::kAnd:
-			m_result->And(bvblock);
-			break;
-		case Bitwise::kOr:
-			m_result->Or(bvblock);
-			break;
-	}
-	bvblock = m_result;
-}
 
 //Scan against literal
 template <size_t BIT_WIDTH, Direction PDIRECTION>

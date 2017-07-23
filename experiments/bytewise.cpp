@@ -47,7 +47,7 @@ int main(){
 
 	//single-byte column test
 	// column->ScanByte(comparator, literal, 0, bitvector1, Bitwise::kSet);
-    columm->GetBlock(0)->ScanByte(comparator, literal, 0, bm_less, bm_greater, bm_equal);
+    column->GetBlock(0)->ScanByte(comparator, literal, 0, bm_less, bm_greater, bm_equal);
 	column->Scan(comparator, literal, bitvector2, Bitwise::kSet);
 
 	//calculate accuracy

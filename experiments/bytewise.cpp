@@ -30,7 +30,7 @@ int main(){
     bitvector1->SetOnes();
     bitvector2->SetOnes();
     const ByteUnit mask = (1ULL << code_length) - 1;
-    ByteUnit literal = static_cast<ByteUnit>(mask1 * selectivity);
+    ByteUnit literal = static_cast<ByteUnit>(mask * selectivity);
 
     //set column randomly
     for(size_t i = 0; i < num_rows; i++){
@@ -46,7 +46,7 @@ int main(){
 	size_t corr = 0; //count correct tuples
 	double acc = 0;
     for(size_t i = 0; i < num_rows; i++){ 
-        if(bitvector1->>GetBit(i) == bitvector2->GetBit(i)) 
+        if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 
             corr++; 
     }
     acc = corr / num_rows;

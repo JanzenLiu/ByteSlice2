@@ -153,22 +153,6 @@ void Column::Scan(Comparator comparator, const Column* other_column,
 
 }
 
-void Column::ScanByte(Comparator comparator, ByteUnit literal, size_t byte_id,
-            BitVector* bitvector, Bitwise bit_opt) const{
-    assert(num_tuples_ == bitvector->num());
-    assert(byte_id >= 0 && byte_id < CEIL(bit_width_, 8));
-
-#pragma omp parallel for schedule(dynamic)
-    for(size_t block_id = 0; block_id < blocks_.size(); block_id++){
-        blocks_[block_id]->ScanByte(
-                comparator,
-                literal,
-                byte_id,
-                bitvector->GetBVBlock(block_id),
-                bit_opt);
-    }
-}
-
 ColumnBlock* Column::CreateNewBlock() const{
     assert(0 < bit_width_ && 32 >= bit_width_);
     if(!(0<bit_width_ && 32>= bit_width_)){

@@ -301,7 +301,7 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByte(Comparator comparator
 	bm_equal->Condense(m_equal);
 
 	//set result
-	BitVectorBlock* m_result;
+	BitVectorBlock* m_result = new BitVectorBlock(num_tuples_);
 	switch(comparator){
 		case Comparator::kLess:
 			m_result = m_less;

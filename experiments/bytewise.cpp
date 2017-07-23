@@ -55,7 +55,7 @@ int main(){
 	double acc = 0;
     std::cout << "Scan" << "\t" << "ScanByte" << std::endl;
     for(size_t i = 0; i < num_rows; i++){ 
-        if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 
+        if(bm_less->GetByteMask(i) == bitvector2->GetBit(i)) 
             corr++; 
         std::cout << bitvector2->GetBit(i) << "\t\t" << bm_less->GetByteMask(i) << std::endl;
     }

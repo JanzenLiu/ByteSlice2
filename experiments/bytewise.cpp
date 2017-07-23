@@ -15,7 +15,7 @@ using namespace byteslice;
 int main(){
 	//default parameters
 	ColumnType type = ColumnType::kByteSlicePadRight;
-    size_t num_rows = 1024;
+    size_t num_rows = 64;
     size_t code_length = 8;
     double selectivity = 0.3;
     Comparator comparator = Comparator::kLess;
@@ -45,11 +45,13 @@ int main(){
 	//calculate accuracy
 	size_t corr = 0; //count correct tuples
 	double acc = 0;
+    std::cout << "Scan" << "\t" << "ScanByte" << std::endl;
     for(size_t i = 0; i < num_rows; i++){ 
         if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 
             corr++; 
+        std::cout << bitvector2->GetBit(i) << "\t\t" << bitvector1->GetBit(i) << std::endl;
     }
-    acc = corr / num_rows;
+    acc = (double)corr / num_rows;
     std::cout << "Number of correct tuples: " << corr << std::endl; 
     std::cout << "Accuracy: " << acc << std::endl; 
 

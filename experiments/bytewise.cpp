@@ -9,6 +9,7 @@
 #include    "include/types.h"
 #include    "include/column.h"
 #include    "include/bitvector.h"
+#include    "include/byte_mask_block.h"
 
 using namespace byteslice;
 
@@ -27,8 +28,15 @@ int main(){
     Column* column = new Column(ColumnType::kByteSlicePadRight, code_length, num_rows);
     BitVector* bitvector1 = new BitVector(num_rows);
     BitVector* bitvector2 = new BitVector(num_rows);
-    bitvector1->SetOnes();
+    (void) bitvector1;
+    ByteMaskBlock bm_less = new ByteMaskBlock(num_rows);
+    ByteMaskBlock bm_greater = new ByteMaskBlock(num_rows);
+    ByteMaskBlock bm_equal = new ByteMaskBlock(num_rows);
+    //bitvector1->SetOnes();
     bitvector2->SetOnes();
+    bm_less->SetAllFalse();
+    bm_greater->SetAllFalse();
+    bm_equal->SetAllTrue();
     const ByteUnit mask = (1ULL << code_length) - 1;
     ByteUnit literal = static_cast<ByteUnit>(mask * selectivity);
 
@@ -39,7 +47,8 @@ int main(){
     }
 
 	//single-byte column test
-	column->ScanByte(comparator, literal, 0, bitvector1, Bitwise::kSet);
+	// column->ScanByte(comparator, literal, 0, bitvector1, Bitwise::kSet);
+    columm->GetBlock(0)->ScanByte(comparator, literal, 0, bm_less, bm_greater, bm_equal);
 	column->Scan(comparator, literal, bitvector2, Bitwise::kSet);
 
 	//calculate accuracy
@@ -49,7 +58,7 @@ int main(){
     for(size_t i = 0; i < num_rows; i++){ 
         if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 
             corr++; 
-        std::cout << bitvector2->GetBit(i) << "\t\t" << bitvector1->GetBit(i) << std::endl;
+        std::cout << bitvector2->GetBit(i) << "\t\t" << bm_less->GetByteMask(i) << std::endl;
     }
     acc = (double)corr / num_rows;
     std::cout << "Number of correct tuples: " << corr << std::endl; 

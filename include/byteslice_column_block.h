@@ -38,6 +38,8 @@ public:
     //Scan procedure that scan a particular byte
     void ScanByte(Comparator comparator, ByteUnit literal, size_t byte_id,
         ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const override;
+    void ScanByte(Comparator comparator, ByteUnit literal, size_t byte_id,
+        BitVectorBlock* bitvector, Bitwise bit_opt = Bitwise::kSet) const override;
 
     void BulkLoadArray(const WordUnit* codes, size_t num, size_t start_pos = 0) override;
 
@@ -73,7 +75,7 @@ private:
     void ScanByteHelper1(ByteUnit literal, size_t byte_id,
         ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const;
     template <Comparator CMP, size_t BYTE_ID>
-    void ScanByteHelper2(ByteUnit literal, ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) cosnt;
+    void ScanByteHelper2(ByteUnit literal, ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const;
 
     //Scan Kernel
     template <Comparator CMP>

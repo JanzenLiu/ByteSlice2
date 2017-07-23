@@ -277,8 +277,7 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByteHelper2(ByteUnit liter
 
 template <size_t BIT_WIDTH, Direction PDIRECTION>
 void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByte(Comparator comparator, 
-		ByteUnit literal, size_t byte_id,
-        BitVectorBlock* bvblock, Bitwise bit_opt = Bitwise::kSet) const{
+		ByteUnit literal, size_t byte_id, BitVectorBlock* bvblock, Bitwise bit_opt) const{
 	assert(byte_id >= 0 && byte_id < kNumBytesPerCode);
 	assert(num_tuples_ == bvblock->num());
 

@@ -30,6 +30,16 @@ public:
             Bitwise opt = Bitwise::kSet) const{
     }
 
+    //Scan procedure that scan a particular byte
+    //These methods is only used by ByteSlice
+    //Ohterwise it does nothing!
+    virtual void ScanByte(Comparator comparator, ByteUnit literal, size_t byte_id,
+        ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const{
+    }
+    virtual void ScanByte(Comparator comparator, ByteUnit literal, size_t byte_id,
+        BitVectorBlock* bitvector, Bitwise bit_opt = Bitwise::kSet) const override{
+    }
+
     //accessor
     ColumnType type() const;
     size_t bit_width() const;

@@ -7,6 +7,7 @@
 #include    "common.h"
 #include    "types.h"
 #include    "bitvector.h"
+#include    "byte_mask_block.h"
 #include    "column_block.h"
 #include    "naive_column_block.h"
 #include    "naive_avx_column_block.h"
@@ -49,6 +50,8 @@ public:
     void Scan(Comparator comparator, WordUnit literal,
             BitVector* bitvector, Bitwise bit_opt = Bitwise::kSet) const;
     void Scan(Comparator comparator, const Column* other_column, 
+            BitVector* bitvector, Bitwise bit_opt = Bitwise::kSet) const;
+    void ScanByte(Comparator comparator, ByteUnit literal, size_t byte_id,
             BitVector* bitvector, Bitwise bit_opt = Bitwise::kSet) const;
 
     ColumnBlock* CreateNewBlock() const;

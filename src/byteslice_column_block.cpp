@@ -209,7 +209,128 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanHelper2(WordUnit literal,
 
 }
 
+//Scan byte against literal
+template <size_t BIT_WIDTH, Direction PDIRECTION>
+void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByte(Comparator comparator, 
+		ByteUnit literal, size_t byte_id,
+    	ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const{
+	assert(byte_id >= 0 && byte_id < kNumBytesPerCode);
+	assert(bm_less->num() == num_tuples_);
+	assert(bm_greater->num() == num_tuples_);
+	assert(bm_equal->num() == num_tuples_);
+	switch(comparator){
+		case Comparator::kLess:
+			return ScanByteHelper1<Comparator::kLess>(literal, byte_id, bm_less, bm_greater, bm_equal);
+		case Comparator::kGreater:
+			return ScanByteHelper1<Comparator::kGreater>(literal, byte_id, bm_less, bm_greater, bm_equal);
+		case Comparator::kLessEqual:
+			return ScanByteHelper1<Comparator::kLessEqual>(literal, byte_id, bm_less, bm_greater, bm_equal);
+		case Comparator::kGreaterEqual:
+			return ScanByteHelper1<Comparator::kGreaterEqual>(literal, byte_id, bm_less, bm_greater, bm_equal);
+		case Comparator::kEqual:
+			return ScanByteHelper1<Comparator::kEqual>(literal, byte_id, bm_less, bm_greater, bm_equal);
+		case Comparator::kInequal:
+			return ScanByteHelper1<Comparator::kInequal>(literal, byte_id, bm_less, bm_greater, bm_equal);
+	}
+}
 
+template <size_t BIT_WIDTH, Direction PDIRECTION>
+template <Comparator CMP>
+void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByteHelper1(ByteUnit literal, size_t byte_id,
+		ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const{
+	switch(byte_id){
+		case 0:
+			return ScanByteHelper2<CMP, 0>(literal, bm_less, bm_greater, bm_equal)
+		case 1:
+			return ScanByteHelper2<CMP, 1>(literal, bm_less, bm_greater, bm_equal);
+		case 2:
+			return ScanByteHelper2<CMP, 2>(literal, bm_less, bm_greater, bm_equal);
+		case 3:
+			return ScanByteHelper2<CMP, 3>(literal, bm_less, bm_greater, bm_equal);
+	}
+}
+
+template <size_t BIT_WIDTH, Direction PDIRECTION>
+template <Comparator CMP, size_t BYTE_ID>
+void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByteHelper2(ByteUnit literal,
+		ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const{
+	ByteUnit byte = (Direction::kRight == PDIRECTION && BYTE_ID == kNumBytesPerCode - 1)? (literal << kNumPaddingBits) : literal;
+	AvxUnit mask_literal = avx_set1<ByteUnit>(FLIP(byte));
+
+	//For every 32 tuple which relates to 256-bit mask
+	for(size_t offset = 0; offset < num_tuples_; offset += sizeof(AvxUnit)){
+		m_less = bm_less->GetAvxUnit(offset);
+		m_greater = bm_greater->GetAvxUnit(offset);
+		m_equal = bm_equal->GetAvxUnit(offset);
+		__builtin_prefetch(data_[BYTE_ID] + offset + kPrefetchDistance);
+        ScanKernel<CMP>(
+                _mm256_lddqu_si256(reinterpret_cast<__m256i*>(data_[BYTE_ID]+offset)),
+                mask_literal,
+                m_less,
+                m_greater,
+                m_equal);
+       bm_less->SetAvxUnit(offset, m_less);
+       bm_greater->SetAvxUnit(offset, m_greater);
+       bm_equal->SetAvxUnit(offset, m_equal);
+	}
+}
+
+template <size_t BIT_WIDTH, Direction PDIRECTION>
+void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByte(Comparator comparator, 
+		ByteUnit literal, size_t byte_id,
+        BitVectorBlock* bvblock, Bitwise bit_opt = Bitwise::kSet) const{
+	assert(byte_id >= 0 && byte_id < kNumBytesPerCode);
+	assert(num_tuples_ == bvblock->num());
+
+	//intialize mask AvxUnit
+	ByteMaskBlock* bm_less, bm_larger, bm_equal;
+	BitVectorBlock* m_less, m_larger, m_equal;
+	bm_less->SetAllFalse();
+	bm_larger->SetAllFalse();
+	bm_equal->SetAllTrue();
+
+	//transform result to bitvector_block
+	ScanByte(comparator, literal, size_t byte_id, bm_less, bm_greater, bm_equal);
+	bm_less->Condense(m_less);
+	bm_greater->Condense(m_greater);
+	bm_equal->Condense(m_equal);
+
+	//set result
+	BitVectorBlock* m_result;
+	switch(comparator){
+		case Comparator::kLess:
+			m_result = m_less;
+			break;
+		case Comparator::kLessEqual:
+			m_result = m_less->And(m_equal);
+			break;
+		case Comparator::kLarger:
+			m_result = m_larger;
+			break;
+		case Comparator::kLargerEqual:
+			m_result = m_larger->And(m_equal);
+			break;
+		case Comparator::kEqual:
+			m_result = m_equal;
+			break;
+		case Comparator::kInequal:
+			m_result = m_equal->Not();
+			break;
+	}
+
+	//operate bitwise to the bitvector_block parameter
+	switch(bit_opt){
+		case Bitwise::kSet:
+			break;
+		case Bitwise::kAnd:
+			m_result->And(bvblock);
+			break;
+		case Bitwise::kOr:
+			m_result->Or(bvblock);
+			break;
+	}
+	bvblock = m_result;
+}
 
 //Scan against literal
 template <size_t BIT_WIDTH, Direction PDIRECTION>

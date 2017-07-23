@@ -10,6 +10,8 @@
 #include    "include/column.h"
 #include    "include/bitvector.h"
 
+using namespace byteslice;
+
 int main(){
 	//default parameters
 	ColumnType type = ColumnType::kByteSlicePadRight;

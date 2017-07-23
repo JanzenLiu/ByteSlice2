@@ -72,7 +72,7 @@ void BitVectorBlock::Or(const BitVectorBlock* block){
 }
 
 void BitVectorBlock::Not(){
-    for(size_t i=0; i<num_word_units_, i++){
+    for(size_t i=0; i<num_word_units_; i++){
         data_[i] = ~data_[i];
     }
     ClearTail();

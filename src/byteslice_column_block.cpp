@@ -295,7 +295,7 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByte(Comparator comparator
 	bm_equal->SetAllTrue();
 
 	//transform result to bitvector_block
-	ScanByte(comparator, literal, size_t byte_id, bm_less, bm_greater, bm_equal);
+	ScanByte(comparator, literal, byte_id, bm_less, bm_greater, bm_equal);
 	bm_less->Condense(m_less);
 	bm_greater->Condense(m_greater);
 	bm_equal->Condense(m_equal);

@@ -259,9 +259,9 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByteHelper2(ByteUnit liter
 
 	//For every 32 tuple which relates to 256-bit mask
 	for(size_t offset = 0; offset < num_tuples_; offset += sizeof(AvxUnit)){
-		m_less = bm_less->GetAvxUnit(offset);
-		m_greater = bm_greater->GetAvxUnit(offset);
-		m_equal = bm_equal->GetAvxUnit(offset);
+		AvxUnit m_less = bm_less->GetAvxUnit(offset);
+		AvxUnit m_greater = bm_greater->GetAvxUnit(offset);
+		AvxUnit m_equal = bm_equal->GetAvxUnit(offset);
 		__builtin_prefetch(data_[BYTE_ID] + offset + kPrefetchDistance);
         ScanKernel<CMP>(
                 _mm256_lddqu_si256(reinterpret_cast<__m256i*>(data_[BYTE_ID]+offset)),

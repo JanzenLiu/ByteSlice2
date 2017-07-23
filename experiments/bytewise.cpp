@@ -9,7 +9,6 @@
 #include    "include/types.h"
 #include    "include/column.h"
 #include    "include/bitvector.h"
-#include    "include/byte_mask_block.h"
 
 using namespace byteslice;
 
@@ -64,4 +63,4 @@ int main(){
     std::cout << "Number of correct tuples: " << corr << std::endl; 
     std::cout << "Accuracy: " << acc << std::endl; 
 
-}
+}   

@@ -240,7 +240,7 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByteHelper1(ByteUnit liter
 		ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const{
 	switch(byte_id){
 		case 0:
-			return ScanByteHelper2<CMP, 0>(literal, bm_less, bm_greater, bm_equal)
+			return ScanByteHelper2<CMP, 0>(literal, bm_less, bm_greater, bm_equal);
 		case 1:
 			return ScanByteHelper2<CMP, 1>(literal, bm_less, bm_greater, bm_equal);
 		case 2:

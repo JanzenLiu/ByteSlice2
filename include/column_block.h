@@ -37,7 +37,7 @@ public:
         ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const{
     }
     virtual void ScanByte(Comparator comparator, ByteUnit literal, size_t byte_id,
-        BitVectorBlock* bitvector, Bitwise bit_opt = Bitwise::kSet) const override{
+        BitVectorBlock* bitvector, Bitwise bit_opt = Bitwise::kSet) const{
     }
 
     //accessor

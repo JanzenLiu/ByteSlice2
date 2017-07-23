@@ -28,9 +28,9 @@ int main(){
     BitVector* bitvector1 = new BitVector(num_rows);
     BitVector* bitvector2 = new BitVector(num_rows);
     (void) bitvector1;
-    ByteMaskBlock bm_less = new ByteMaskBlock(num_rows);
-    ByteMaskBlock bm_greater = new ByteMaskBlock(num_rows);
-    ByteMaskBlock bm_equal = new ByteMaskBlock(num_rows);
+    ByteMaskBlock* bm_less = new ByteMaskBlock(num_rows);
+    ByteMaskBlock* bm_greater = new ByteMaskBlock(num_rows);
+    ByteMaskBlock* bm_equal = new ByteMaskBlock(num_rows);
     //bitvector1->SetOnes();
     bitvector2->SetOnes();
     bm_less->SetAllFalse();

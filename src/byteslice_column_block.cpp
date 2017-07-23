@@ -307,19 +307,22 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByte(Comparator comparator
 			m_result = m_less;
 			break;
 		case Comparator::kLessEqual:
-			m_result = m_less->And(m_equal);
+			m_result = m_less;
+			m_result->And(m_equal);
 			break;
 		case Comparator::kLarger:
 			m_result = m_larger;
 			break;
 		case Comparator::kLargerEqual:
-			m_result = m_larger->And(m_equal);
+			m_result = m_larger;
+			m_result->And(m_equal);
 			break;
 		case Comparator::kEqual:
 			m_result = m_equal;
 			break;
 		case Comparator::kInequal:
-			m_result = m_equal->Not();
+			m_result = m_equal;
+			m_result->Not();
 			break;
 	}
 

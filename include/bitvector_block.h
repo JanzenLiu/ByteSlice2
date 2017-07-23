@@ -31,6 +31,7 @@ public:
     void ClearTail();
     void And(const BitVectorBlock* block);
     void Or(const BitVectorBlock* block);
+    void Not();
     void Set(const BitVectorBlock* block);
 
     //bit manipulation

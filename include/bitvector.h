@@ -31,6 +31,7 @@ public:
     //bitwise combination
     void And(const BitVector* bitvector);
     void Or(const BitVector* bitvector);
+    void Not();
 
     //bit manipulation
     bool GetBit(size_t pos);

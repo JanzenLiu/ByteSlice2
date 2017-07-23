@@ -284,14 +284,14 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByte(Comparator comparator
 
 	//intialize mask AvxUnit
 	ByteMaskBlock* bm_less = new ByteMaskBlock(num_tuples_);
-	ByteMaskBlock* bm_larger = new ByteMaskBlock(num_tuples_);
+	ByteMaskBlock* bm_greater = new ByteMaskBlock(num_tuples_);
 	ByteMaskBlock* bm_equal = new ByteMaskBlock(num_tuples_);
 	BitVectorBlock* m_less = new BitVectorBlock(num_tuples_);
-	BitVectorBlock* m_larger = new BitVectorBlock(num_tuples_);
+	BitVectorBlock* m_greater = new BitVectorBlock(num_tuples_);
 	BitVectorBlock* m_equal = new BitVectorBlock(num_tuples_);
 
 	bm_less->SetAllFalse();
-	bm_larger->SetAllFalse();
+	bm_greater->SetAllFalse();
 	bm_equal->SetAllTrue();
 
 	//transform result to bitvector_block
@@ -310,11 +310,11 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByte(Comparator comparator
 			m_result = m_less;
 			m_result->And(m_equal);
 			break;
-		case Comparator::kLarger:
-			m_result = m_larger;
+		case Comparator::kGreater:
+			m_result = m_greater;
 			break;
-		case Comparator::kLargerEqual:
-			m_result = m_larger;
+		case Comparator::kGreaterEqual:
+			m_result = m_greater;
 			m_result->And(m_equal);
 			break;
 		case Comparator::kEqual:

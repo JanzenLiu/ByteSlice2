@@ -62,7 +62,7 @@ Sequence BytewiseScan::RandomSequence() const{
 			seq.push_back(ByteInColumn(i, -1));
 		}
 	}
-	std::random_shuffle(cards_.begin(), cards_.end());
+	std::random_shuffle(seq.begin(), seq.end());
 	return seq;
 }
 

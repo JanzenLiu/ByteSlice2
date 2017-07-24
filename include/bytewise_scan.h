@@ -2,7 +2,6 @@
 #define BYTEWISE_SCAN_H
 
 #include    <vector>
-#include	<ctime>
 #include    "common.h"
 #include    "types.h"
 #include    "column.h"
@@ -48,6 +47,8 @@ public:
 	bool ValidSequence(Sequence seq) const;
 	Sequence NaturalSequence() const;
 	Sequence RandomSequence() const;
+	
+	// void Scan(BitVector* bitvector);
 	
 	// accessor
 	BytewiseAtomPredicate GetPredicate(size_t pid) const;

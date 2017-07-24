@@ -112,7 +112,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 			// mask_byte[col][byte] = avx_set1(lit_byte);
 			std::cout << "Col#" << col << ", Byte#" << byte << ": " << std::bitset<8>(lit_byte) << std::endl;
 			AvxUnit avx_mask = avx_set1(lit_byte);
-			std::cout << std::bitset<64>(static_cast<WordUnit>(avx_mask)) << std::endl;
+			std::cout << std::bitset<64>(static_cast<WordUnit>(avx_mask[0])) << std::endl;
 	        _mm256_storeu_si256(&mask_byte[col][byte], avx_mask);
 	        // col_mask_byte.push_back(_mm256_set1_epi8(static_cast<int8_t>(lit_byte)));
 		}

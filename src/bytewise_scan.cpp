@@ -106,6 +106,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 		for(size_t byte = 0; byte < num_bytes[col]; byte++){
 			ByteUnit lit_byte = FLIP(static_cast<ByteUnit>(lit >> 8*(num_bytes[col] - 1 - byte)));
 			// mask_byte[col][byte] = avx_set1(lit_byte);
+			std::out << "Col#" << col ", Byte#" << lit_byte << ": " << std::endl;
 			AvxUnit avx_mask = avx_set1(lit_byte);
 	        _mm256_storeu_si256(&mask_byte[col][byte], avx_mask);
 	        // col_mask_byte.push_back(_mm256_set1_epi8(static_cast<int8_t>(lit_byte)));
@@ -146,9 +147,9 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        		AvxUnit avx_less = _mm256_lddqu_si256(&m_less[col]);
 	        		AvxUnit avx_greater = _mm256_lddqu_si256(&m_greater[col]);
 	        		AvxUnit avx_equal = _mm256_lddqu_si256(&m_equal[col]);
-	        		std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_less) << std::endl;
-		        	std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_greater) << std::endl;
-		        	std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_equal) << std::endl;
+	        		// std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_less) << std::endl;
+		        	// std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_greater) << std::endl;
+		        	// std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_equal) << std::endl;
 
 	        		ScanKernel(conjunctions_[col].comparator,
 	        					// conjunctions_[col].column->GetBlock(block_id)->GetAvxUnit(offset + i, byte),
@@ -161,9 +162,9 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        					avx_less,
 	        					avx_greater,
 	        					avx_equal);
-	        		std::cout << "After ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_less) << std::endl;
-		        	std::cout << "After ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_greater) << std::endl;
-		        	std::cout << "After ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_equal) << std::endl;
+	        		// std::cout << "After ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_less) << std::endl;
+		        	// std::cout << "After ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_greater) << std::endl;
+		        	// std::cout << "After ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_equal) << std::endl;
 	        		_mm256_storeu_si256(&m_less[col], avx_less);
 	        		_mm256_storeu_si256(&m_greater[col], avx_greater);
 	        		_mm256_storeu_si256(&m_equal[col], avx_equal);

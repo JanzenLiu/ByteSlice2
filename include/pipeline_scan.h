@@ -20,10 +20,9 @@ struct AtomPredicate{
     const Comparator comparator;
     const WordUnit literal;
 };
-
 /**
   * @brief Evaluate complex predicates as
-  * "Conjunction of Disjunctions" in a pipeline manner.
+  * "Conjunction of Byte Disjunctions" in a pipeline manner.
   * @Warning The input columns must be ByteSlice type
   */
 class PipelineScan{

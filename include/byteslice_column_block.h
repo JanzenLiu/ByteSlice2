@@ -94,7 +94,7 @@ private:
     ByteUnit* data_[4];
 
     friend class ByteSliceJoinableBlock<BIT_WIDTH>;
-
+    friend class BytewiseScan;
 };
 
 template <size_t BIT_WIDTH, Direction PDIRECTION>

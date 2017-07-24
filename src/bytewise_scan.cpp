@@ -139,7 +139,10 @@ void BytewiseScan::Scan(BitVector* bitvector){
 				}
 
 	        	// scan each byte in the specified sequence
+	        	AvxUnit input_mask = avx_ones();
 	        	for(size_t j = 0; j < sequence_.size(); j++){
+	        		if(avx_iszero(input_mask))
+	        			break;
 					size_t col = sequence_[j].column_id;
 	        		size_t byte = sequence_[j].byte_id;
 	        		AvxUnit avx_data = conjunctions_[col].column->GetBlock(block_id)->GetAvxUnit(offset + i, byte);
@@ -148,19 +151,15 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        		AvxUnit avx_greater = _mm256_lddqu_si256(&m_greater[col]);
 	        		AvxUnit avx_equal = _mm256_lddqu_si256(&m_equal[col]);
 	        		ScanKernel(conjunctions_[col].comparator,
-	        					// conjunctions_[col].column->GetBlock(block_id)->GetAvxUnit(offset + i, byte),
-	        					// mask_byte[col][byte],
-	        					// m_less[col],
-	        					// m_greater[col],
-	        					// m_equal[col]
-			        			avx_data,
-	        					avx_lit,
-	        					avx_less,
-	        					avx_greater,
-	        					avx_equal);
+	        			avx_data,
+    					avx_lit,
+    					avx_less,
+    					avx_greater,
+    					avx_equal);
 	        		_mm256_storeu_si256(&m_less[col], avx_less);
 	        		_mm256_storeu_si256(&m_greater[col], avx_greater);
 	        		_mm256_storeu_si256(&m_equal[col], avx_equal);
+	        		input_mask = avx_and(input_mask, avx_equal);
 	        	}
 
 	        	// get columnar result, and combine to get the final result

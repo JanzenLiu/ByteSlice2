@@ -46,11 +46,12 @@ int main(){
 	//calculate accuracy
 	size_t corr = 0; //count correct tuples
 	double acc = 0;
-    std::cout << "Scan" << "\t" << "ScanByte" << std::endl;
+    std::cout << "Literal" << "\t" << "Tuple" << "\t" << "Scan" << "\t" << "ScanByte" << std::endl;
     for(size_t i = 0; i < num_rows; i++){ 
         if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 
             corr++; 
-        std::cout << bitvector2->GetBit(i) << "\t\t" << bitvector1->GetBit(i) << std::endl;
+        std::cout << literal <<  "\t" << column1->GetTuple(i) << "\t"
+        	<< bitvector2->GetBit(i) << "\t" << bitvector1->GetBit(i) << std::endl;
     }
     acc = (double)corr / num_rows;
     std::cout << "Number of correct tuples: " << corr << std::endl; 

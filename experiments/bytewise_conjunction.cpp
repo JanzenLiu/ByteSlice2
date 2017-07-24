@@ -27,9 +27,9 @@ int main(){
 	const WordUnit mask = (1ULL << 15) - 1;
 	WordUnit literal = static_cast<WordUnit>(mask * selectivity);
 	for(size_t i = 0; i < num_rows; i++){
-        ByteUnit code = std::rand() & mask;
+        WordUnit code = std::rand() & mask;
         column1->SetTuple(i, code);
-        std::cout << static_cast<uint16_t>(code) << " " << std::endl;
+        // std::cout << static_cast<uint16_t>(code) << " " << std::endl;       
     }
 
 	BytewiseScan scan;

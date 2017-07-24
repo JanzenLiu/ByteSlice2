@@ -106,15 +106,6 @@ void BytewiseScan::Scan(BitVector* bitvector){
 		}
 	}
 
-	// initialize Avx mask for less, greater and equal results
-	AvxUnit* m_less = (AvxUnit*)malloc(num_cols * sizeof(AvxUnit));
-	AvxUnit* m_greater = (AvxUnit*)malloc(num_cols * sizeof(AvxUnit));
-	AvxUnit* m_equal = (AvxUnit*)malloc(num_cols * sizeof(AvxUnit));
-	for(size_t i = 0; i < num_cols; i++){
-		m_less[i] = avx_zero();
-		m_greater[i] = avx_zero();
-		m_equal[i] = avx_ones();
-	}
 
 	// do the scanning job
 #pragma omp parallel for schedule(dynamic)
@@ -124,7 +115,17 @@ void BytewiseScan::Scan(BitVector* bitvector){
     	for(size_t offset = 0, bv_word_id = 0; offset < bvblk->num(); offset += kNumWordBits, bv_word_id++){
 	        WordUnit bitvector_word = WordUnit(0);
 	        for(size_t i = 0; i < kNumWordBits; i += kNumAvxBits/8){
+	        	// initialize Avx mask for less, greater and equal results
 	        	uint32_t m_result = -1U;
+				AvxUnit* m_less = (AvxUnit*)malloc(num_cols * sizeof(AvxUnit));
+				AvxUnit* m_greater = (AvxUnit*)malloc(num_cols * sizeof(AvxUnit));
+				AvxUnit* m_equal = (AvxUnit*)malloc(num_cols * sizeof(AvxUnit));
+				for(size_t i = 0; i < num_cols; i++){
+					m_less[i] = avx_zero();
+					m_greater[i] = avx_zero();
+					m_equal[i] = avx_ones();
+				}
+
 	        	// scan each byte in the specified sequence
 	        	for(size_t j = 0; j < sequence_.size(); j++){
 					size_t col = sequence_[j].column_id;
@@ -141,23 +142,23 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        		uint32_t m_col_result;
 	        		uint32_t m_col_less, m_col_greater, m_col_equal;
 	        		switch(conjunctions_[col].comparator){
-	        			case kEqual:
+	        			case Comparator::kEqual:
 	        				m_col_equal = _mm256_movemask_epi8(m_equal[col]);
 	        				m_col_result = m_col_equal;
-	        			case kInequal:
+	        			case Comparator::kInequal:
 	        				m_col_equal = _mm256_movemask_epi8(m_equal[col]);
 	        				m_col_result = ~m_col_equal;
-	        			case kLess:
+	        			case Comparator::kLess:
 	        				m_col_less = _mm256_movemask_epi8(m_less[col]);
 	        				m_col_result = m_col_less;
-	        			case kLessEqual:
+	        			case Comparator::kLessEqual:
 	        				m_col_less = _mm256_movemask_epi8(m_less[col]);
 	        				m_col_equal = _mm256_movemask_epi8(m_equal[col]);
 	        				m_col_result = m_col_less & m_col_equal;
-	        			case kGreater:
+	        			case Comparator::kGreater:
 	        				m_col_greater = _mm256_movemask_epi8(m_greater[col]);
 	        				m_col_result = m_col_greater;
-	        			case kLessEqual:
+	        			case Comparator::kLessEqual:
 	        				m_col_greater = _mm256_movemask_epi8(m_greater[col]);
 	        				m_col_equal = _mm256_movemask_epi8(m_equal[col]);
 	        				m_col_result = m_col_greater & m_col_equal;

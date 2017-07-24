@@ -168,15 +168,15 @@ inline void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::SetTuple(size_t pos, Wo
 
 template <size_t BIT_WIDTH, Direction PDIRECTION>
 inline AvxUnit ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::GetAvxUnit(size_t offset, size_t byte_id) const{
-    std::cout << "Get from data_:" << std::endl;
-    std::cout << std::bitset<8>(data_[byte_id][offset])
-            << std::bitset<8>(data_[byte_id][offset + 1])
-            << std::bitset<8>(data_[byte_id][offset + 2])
-            << std::bitset<8>(data_[byte_id][offset + 3])
-            << std::bitset<8>(data_[byte_id][offset + 4])
-            << std::bitset<8>(data_[byte_id][offset + 5])
-            << std::bitset<8>(data_[byte_id][offset + 6])
-            << std::bitset<8>(data_[byte_id][offset + 7]) << std::endl;
+    // std::cout << "Get from data_:" << std::endl;
+    // std::cout << std::bitset<8>(data_[byte_id][offset])
+    //         << std::bitset<8>(data_[byte_id][offset + 1])
+    //         << std::bitset<8>(data_[byte_id][offset + 2])
+    //         << std::bitset<8>(data_[byte_id][offset + 3])
+    //         << std::bitset<8>(data_[byte_id][offset + 4])
+    //         << std::bitset<8>(data_[byte_id][offset + 5])
+    //         << std::bitset<8>(data_[byte_id][offset + 6])
+    //         << std::bitset<8>(data_[byte_id][offset + 7]) << std::endl;
     return _mm256_lddqu_si256(reinterpret_cast<__m256i*>(data_[byte_id] + offset));
 }
 

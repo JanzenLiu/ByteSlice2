@@ -1,6 +1,6 @@
 #include    "include/bytewise_scan.h"
 #include    <omp.h>
-#include	<time>
+#include	<ctime>
 #include    <vector>
 #include	<random>
 #include	<algorithm>

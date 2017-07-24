@@ -15,14 +15,6 @@
 using namespace byteslice;
 
 int main(){
-	// AvxUnit avx = _mm256_set_epi8(0x0, 0x1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-	// 	16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
-	// AvxUnit avx = avx_ones();
-	// std::cout << "Manually Set Avx: \n" << std::bitset<64>(static_cast<WordUnit>(avx[0])) << std::endl
-	// 	<< std::bitset<64>(static_cast<WordUnit>(avx[1])) << std::endl
-	// 	<< std::bitset<64>(static_cast<WordUnit>(avx[2])) << std::endl
-	// 	<< std::bitset<64>(static_cast<WordUnit>(avx[3])) << std::endl;
-
 	size_t num_rows = 1024*1024;
 	Comparator comparator = Comparator::kLess;
 	double selectivity = 0.3;
@@ -37,28 +29,8 @@ int main(){
 	WordUnit literal = static_cast<WordUnit>(mask * selectivity);
 	for(size_t i = 0; i < num_rows; i++){
         WordUnit code = std::rand() & mask;
-        column1->SetTuple(i, code);
-        // std::cout << static_cast<uint16_t>(code) << " " << std::endl;
-        std::cout << "Tuple#" << i << ": " << std::bitset<16>(static_cast<uint16_t>(code) << 1) << std::endl;   
+        column1->SetTuple(i, code);   
     }
-
-    // std::cout << "Byte#0: " << std::bitset<64>(static_cast<WordUnit>(column1->GetBlock(0)->GetAvxUnit(0, 0))) << std::endl;
-    // std::cout << "Byte#1: " << std::bitset<64>(static_cast<WordUnit>(column1->GetBlock(0)->GetAvxUnit(0, 1))) << std::endl;
-    // AvxUnit avx = column1->GetBlock(0)->GetAvxUnit(0, 0);
-    // WordUnit word1 = static_cast<WordUnit>(avx[0]);
-    // WordUnit word2 = *(reinterpret_cast<WordUnit*>(&avx) + 1);
-    // WordUnit word3 = static_cast<WordUnit>(avx);
-    // std::cout << "GetAvxUnit: " << std::endl;
-    // std::cout << std::bitset<64>(word1) << std::endl;
-    // std::cout << std::bitset<8>(static_cast<ByteUnit>(word1 >> 56)) << std::endl
-    // 		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 48)) << std::endl
-    // 		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 40)) << std::endl
-    // 		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 32)) << std::endl
-    // 		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 24)) << std::endl
-    // 		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 16)) << std::endl
-    // 		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 8)) << std::endl
-    // 		<< std::bitset<8>(static_cast<ByteUnit>(word1)) << std::endl;
-    // std::cout << std::bitset<64>(word2) << std::endl;
 
 	BytewiseScan scan;
 	scan.AddPredicate(BytewiseAtomPredicate(column1, comparator, literal));

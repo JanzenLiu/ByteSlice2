@@ -103,18 +103,12 @@ void BytewiseScan::Scan(BitVector* bitvector){
 		WordUnit lit = conjunctions_[col].literal;
 		size_t num_bits_shift = 8 * num_bytes[col] - conjunctions_[col].column->bit_width();
 		lit <<= num_bits_shift;
-		// std::cout << "Bitwidth: " << conjunctions_[col].column->bit_width() << std::endl;
-		// std::cout << "Number of Bytes: " << num_bytes[col] << std::endl;
-		// std::cout << "Number of Padding Bits: " << num_bits_shift << std::endl; 
 
 		for(size_t byte = 0; byte < num_bytes[col]; byte++){
 			ByteUnit lit_byte = FLIP(static_cast<ByteUnit>(lit >> 8*(num_bytes[col] - 1 - byte)));
 			// mask_byte[col][byte] = avx_set1(lit_byte);
-			// std::cout << "Col#" << col << ", Byte#" << byte << ": " << std::bitset<8>(lit_byte) << std::endl;
 			AvxUnit avx_mask = avx_set1(lit_byte);
-			// std::cout << std::bitset<64>(static_cast<WordUnit>(avx_mask[0])) << std::endl;
 	        _mm256_storeu_si256(&mask_byte[col][byte], avx_mask);
-			// std::cout << std::bitset<64>(static_cast<WordUnit>(mask_byte[col][byte][0])) << std::endl;
 	        // col_mask_byte.push_back(_mm256_set1_epi8(static_cast<int8_t>(lit_byte)));
 		}
 		// mask_byte.push_back(col_mask_byte);
@@ -153,13 +147,9 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        		AvxUnit avx_less = _mm256_lddqu_si256(&m_less[col]);
 	        		AvxUnit avx_greater = _mm256_lddqu_si256(&m_greater[col]);
 	        		AvxUnit avx_equal = _mm256_lddqu_si256(&m_equal[col]);
-	        		// std::cout << "GetAvxUnit:\n " << std::bitset<64>(static_cast<WordUnit>(avx_data[0])) << std::endl
 		        	// 	<< std::bitset<64>(static_cast<WordUnit>(avx_data[1])) << std::endl
 		        	// 	<< std::bitset<64>(static_cast<WordUnit>(avx_data[2])) << std::endl
 		        	// 	<< std::bitset<64>(static_cast<WordUnit>(avx_data[3])) << std::endl;
-	        		// std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_less) << std::endl;
-		        	// std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_greater) << std::endl;
-		        	// std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_equal) << std::endl;
 
 	        		ScanKernel(conjunctions_[col].comparator,
 	        					// conjunctions_[col].column->GetBlock(block_id)->GetAvxUnit(offset + i, byte),
@@ -172,9 +162,6 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        					avx_less,
 	        					avx_greater,
 	        					avx_equal);
-	        		// std::cout << "After ByteInColumn#"<< j << ": " << std::bitset<32>(_mm256_movemask_epi8(avx_less)) << std::endl;
-		        	// std::cout << "After ByteInColumn#"<< j << ": " << std::bitset<32>(_mm256_movemask_epi8(avx_greater)) << std::endl;
-		        	// std::cout << "After ByteInColumn#"<< j << ": " << std::bitset<32>(_mm256_movemask_epi8(avx_equal)) << std::endl;
 	        		_mm256_storeu_si256(&m_less[col], avx_less);
 	        		_mm256_storeu_si256(&m_greater[col], avx_greater);
 	        		_mm256_storeu_si256(&m_equal[col], avx_equal);
@@ -196,7 +183,6 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        				break;
 	        			case Comparator::kLess:
 	        				m_col_less = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_less[col]));
-	        				// std::cout << std::bitset<32>(m_col_less) << std::endl;
 	        				m_col_result = m_col_less;
 	        				break;
 	        			case Comparator::kLessEqual:
@@ -215,11 +201,8 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        				break;
 
 	        		}
-	        		// std::cout << std::bitset<32>(m_col_result) << std::endl;
 	        		m_result &= m_col_result;
-	        		// std::cout << std::bitset<32>(m_result) << std::endl;
 	        		bitvector_word |= (static_cast<WordUnit>(m_result) << i);
-	        		// std::cout << std::bitset<64>(bitvector_word) << std::endl;
 	        	}
 	        }
 	        bvblk->SetWordUnit(bitvector_word, bv_word_id);
@@ -231,9 +214,6 @@ void BytewiseScan::Scan(BitVector* bitvector){
 inline void BytewiseScan::ScanKernel(Comparator comparator,
 		const AvxUnit &byteslice1, const AvxUnit &byteslice2,
         AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal) const{
-		// std::cout << "MLess(Before): " << std::bitset<32>(_mm256_movemask_epi8(mask_less)) << std::endl;
-		// std::cout << "MGreater(Before): " << std::bitset<32>(_mm256_movemask_epi8(mask_greater)) << std::endl;
-		// std::cout << "MEqual(Before): " << std::bitset<32>(_mm256_movemask_epi8(mask_equal)) << std::endl;
 	 switch(comparator){
 
         case Comparator::kEqual:
@@ -257,9 +237,6 @@ inline void BytewiseScan::ScanKernel(Comparator comparator,
             break;
     }
 
- //    std::cout << "MLess(After): " << std::bitset<32>(_mm256_movemask_epi8(mask_less)) << std::endl;
-	// std::cout << "MGreater(After): " << std::bitset<32>(_mm256_movemask_epi8(mask_greater)) << std::endl;
-	// std::cout << "MEqual(After): " << std::bitset<32>(_mm256_movemask_epi8(mask_equal)) << std::endl;
 }
 
 BytewiseAtomPredicate BytewiseScan::GetPredicate(size_t pid) const{

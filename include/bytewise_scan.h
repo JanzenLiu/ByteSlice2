@@ -47,8 +47,8 @@ public:
 	bool ValidSequence(Sequence seq) const;
 	Sequence NaturalSequence() const;
 	Sequence RandomSequence() const;
-	
-	// void Scan(BitVector* bitvector);
+
+	void Scan(BitVector* bitvector);
 	
 	// accessor
 	BytewiseAtomPredicate GetPredicate(size_t pid) const;
@@ -56,6 +56,11 @@ public:
 	size_t num_bytes_all() const;
 
 private:
+	template <Comparator CMP>
+    inline void ScanKernel(Comparator comparator, 
+    	const AvxUnit &byteslice1, const AvxUnit &byteslice2,
+        AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal) const;
+
 	std::vector<BytewiseAtomPredicate> conjunctions_;
 	Sequence sequence_;
 	size_t num_bytes_all_ = 0; //correct?

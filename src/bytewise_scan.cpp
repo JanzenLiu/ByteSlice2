@@ -82,6 +82,124 @@ Sequence BytewiseScan::RandomSequence() const{
 	return seq;
 }
 
+void BytewiseScan::Scan(BitVector* bitvector){
+	// initialize variables reference to frequently used values
+	size_t num_blocks = conjunctions_[0].column->GetNumBlocks();
+	assert(num_blocks == bitvector->GetNumBlocks());
+	size_t num_cols = conjunctions_.size();
+	size_t* num_bytes = (size_t*)malloc(num_cols * sizeof(size_t));
+	for(size_t i = 0; i < num_cols; i++){
+		num_bytes[i] = conjunctions_[i].num_bytes;
+	}
+
+	// initailize Avx mask for each byte in each column
+	AvxUnit** mask_byte = (AvxUnit**)malloc(num_cols * sizeof(AvxUnit*));
+	for(size_t col = 0; col < num_cols; col++){
+		mask_byte[col] = (AvxUnit*)malloc(num_bytes[col] * sizeof(AvxUnit));
+		WordUnit lit = conjunctions_[col].literal;
+		size_t num_bits_shift = conjunctions_[col].column->bit_width() - 8 * num_bytes[col];
+		lit <<= num_bits_shift;
+
+		for(size_t byte = 0; byte < num_bytes[col]; byte++){
+			ByteUnit lit_byte = FLIP(static_cast<ByteUnit>(lit >> 8*(num_bytes[col] - 1 - byte)));
+	        mask_byte[col][byte] = avx_set1<ByteUnit>(lit_byte);
+		}
+	}
+
+	// initialize Avx mask for less, greater and equal results
+	AvxUnit* m_less = (AvxUnit*)malloc(num_cols * sizeof(AvxUnit));
+	AvxUnit* m_greater = (AvxUnit*)malloc(num_cols * sizeof(AvxUnit));
+	AvxUnit* m_equal = (AvxUnit*)malloc(num_cols * sizeof(AvxUnit));
+	for(size_t i = 0; i < num_cols; i++){
+		m_less[i] = avx_zero();
+		m_greater[i] = avx_zero();
+		m_equal[i] = avx_ones();
+	}
+
+	// do the scanning job
+#pragma omp parallel for schedule(dynamic)
+    for(size_t block_id = 0; block_id < num_blocks; block_id++){
+    	BitVectorBlock* bvblk = bitvector->GetBVBlock(block_id);
+
+#pragma omp parallel for schedule(dynamic)
+    	for(size_t offset = 0, bv_word_id = 0; offset < bvblk->num(); offset += kNumWordBits, bv_word_id++){
+	        WordUnit bitvector_word = WordUnit(0);
+	        for(size_t i = 0; i < kNumWordBits; i += kNumAvxBits/8){
+	        	uint32_t m_result = -1U;
+	        	// scan each byte in the specified sequence
+	        	for(size_t j = 0; j < sequence_.size(); j++){
+	        		size_t col = sequence_[j].column_id；
+	        		size_t byte = sequence_[j].byte_id;
+	        		ScanKernel(conjunctions_[col].comparator,
+	        					conjunctions_[col].column->GetBlock(block_id)->GetAvxUnit(offset + i, byte),
+	        					mask_byte[col][byte],
+	        					m_less[col],
+	        					m_greater[col],
+	        					m_equal[col]);
+	        	}
+	        	// get columnar result, and combine to get the final result
+	        	for(size_t col = 0; col < num_cols; col++){
+	        		uint32_t m_col_result;
+	        		uint32_t m_col_less, m_col_greater, m_col_equal;
+	        		switch(conjunctions_[col].comparator){
+	        			case kEqual:
+	        				m_col_equal = _mm256_movemask_epi8(m_equal[col]);
+	        				m_col_result = m_col_equal;
+	        			case kInequal:
+	        				m_col_equal = _mm256_movemask_epi8(m_equal[col]);
+	        				m_col_result = ~m_col_equal;
+	        			case kLess:
+	        				m_col_less = _mm256_movemask_epi8(m_less[col]);
+	        				m_col_result = m_col_less;
+	        			case kLessEqual:
+	        				m_col_less = _mm256_movemask_epi8(m_less[col]);
+	        				m_col_equal = _mm256_movemask_epi8(m_equal[col]);
+	        				m_col_result = m_col_less & m_col_equal;
+	        			case kGreater:
+	        				m_col_greater = _mm256_movemask_epi8(m_greater[col]);
+	        				m_col_result = m_col_greater;
+	        			case kLessEqual:
+	        				m_col_greater = _mm256_movemask_epi8(m_greater[col]);
+	        				m_col_equal = _mm256_movemask_epi8(m_equal[col]);
+	        				m_col_result = m_col_greater & m_col_equal;
+
+	        		}
+	        		m_result &= m_col_result;
+	        	}
+	        }
+	        bitvector_word |= (static_cast<WordUnit>(m_result) << i);
+	        bvblock->SetWordUnit(x, bv_word_id);
+    	}
+    	bvblock->ClearTail();
+	}
+}
+
+inline void BytewiseScan::ScanKernel(Comparator comparator,
+		const AvxUnit &byteslice1, const AvxUnit &byteslice2,
+        AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal) const{
+	 switch(comparator){
+        case Comparator::kEqual:
+        case Comparator::kInequal:
+            mask_equal = 
+                avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2));
+            break;
+        case Comparator::kLess:
+        case Comparator::kLessEqual:
+            mask_less = 
+                avx_or(mask_less, avx_and(mask_equal, avx_cmplt<ByteUnit>(byteslice1, byteslice2)));
+            mask_equal = 
+                avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2));
+            break;
+        case Comparator::kGreater:
+        case Comparator::kGreaterEqual:
+            mask_greater =
+                avx_or(mask_greater, avx_and(mask_equal, avx_cmpgt<ByteUnit>(byteslice1, byteslice2)));
+            mask_equal = 
+                avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2));
+            break;
+    }
+}
+
 BytewiseAtomPredicate BytewiseScan::GetPredicate(size_t pid) const{
 	return conjunctions_[pid];
 }

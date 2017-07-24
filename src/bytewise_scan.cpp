@@ -60,11 +60,24 @@ Sequence BytewiseScan::RandomSequence() const{
 	Sequence seq;
 	for(size_t i = 0; i < conjunctions_.size(); i++){
 		for(size_t j = 0; j < conjunctions_[i].num_bytes; j++){
+			// byte_id is meaningless here
 			seq.push_back(ByteInColumn(i, -1));
 		}
 	}
+
+	// shuffle the orders in which each column appears
 	std::srand(std::time(0));
 	std::random_shuffle(seq.begin(), seq.end());
+
+	// reset valid byte_id of each ByteInColumn
+	size_t* next_bytes = (size_t*)malloc(conjunctions_.size() * sizeof(size_t));
+	for(size_t i = 0; i < conjunctions_.size(); i++){
+		next_bytes[i] = 0;
+	}
+	for(size_t i = 0; i < seq.size(); i++){
+		seq[i].byte_id = next_bytes[seq[i].column_id]++;
+	}
+
 	return seq;
 }
 

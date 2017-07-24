@@ -221,10 +221,9 @@ void BytewiseScan::Scan(BitVector* bitvector){
 inline void BytewiseScan::ScanKernel(Comparator comparator,
 		const AvxUnit &byteslice1, const AvxUnit &byteslice2,
         AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal) const{
-		std::cout << "MLess:\n " << std::bitset<64>(static_cast<WordUnit>(mask_less[0])) << std::endl
-    		<< std::bitset<64>(static_cast<WordUnit>(mask_less[1])) << std::endl
-    		<< std::bitset<64>(static_cast<WordUnit>(mask_less[2])) << std::endl
-    		<< std::bitset<64>(static_cast<WordUnit>(mask_less[3])) << std::endl;
+		std::cout << "MLess: " << std::bitset<32>(_mm256_movemask_epi8(mask_less)) << std::endl;
+		std::cout << "MGreater: " << std::bitset<32>(_mm256_movemask_epi8(mask_less)) << std::endl;
+		std::cout << "MEqual: " << std::bitset<32>(_mm256_movemask_epi8(mask_less)) << std::endl;
 	 switch(comparator){
 
         case Comparator::kEqual:

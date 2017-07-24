@@ -106,7 +106,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 			ByteUnit lit_byte = FLIP(static_cast<ByteUnit>(lit >> 8*(num_bytes[col] - 1 - byte)));
 			// mask_byte[col][byte] = avx_set1(lit_byte);
 			AvxUnit avx_mask = avx_set1(lit_byte);
-	        _mm256_storeu_si256(&mask_byte[col][byte], src);
+	        _mm256_storeu_si256(&mask_byte[col][byte], avx_mask);
 	        // col_mask_byte.push_back(_mm256_set1_epi8(static_cast<int8_t>(lit_byte)));
 		}
 		// mask_byte.push_back(col_mask_byte);

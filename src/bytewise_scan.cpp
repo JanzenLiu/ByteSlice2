@@ -16,8 +16,8 @@ void BytewiseScan::AddPredicate(BytewiseAtomPredicate predicate){
 void BytewiseScan::SetSequence(const Sequence seq){
 	assert(ValidSequence(seq));
 	sequence_.clear();
-	for(Sequence::iterator it = seq.begin(); it != seq.end(); ++it){
-		sequence_.push_back(ByteInColumn(*it.column_id, *it.byte_id));
+	for(size_t i = 0; it < seq.size(); i++){
+		sequence_.push_back(ByteInColumn(seq[i].column_id, seq[i].byte_id));
 	}
 }
 
@@ -32,9 +32,9 @@ bool BytewiseScan::ValidSequence(Sequence seq) const{
 	}
 
 	// validate the sequence
-	for(Sequence::iterator it = seq.begin(); it != seq.end(); ++it){
-		size_t col = *it.column_id;
-		size_t byte = *it.byte_id;
+	for(size_t i = 0; it < seq.size(); i++){
+		size_t col = seq[i].column_id;
+		size_t byte = seq[i].byte_id;
 		if(next_bytes[col] != -1 && next_bytes[col] == byte){
 			next_bytes[col] = (byte == conjunctions_[col].num_bytes - 1)? -1 : byte + 1;
 		}

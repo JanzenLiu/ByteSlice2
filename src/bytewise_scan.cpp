@@ -116,7 +116,6 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        WordUnit bitvector_word = WordUnit(0);
 	        for(size_t i = 0; i < kNumWordBits; i += kNumAvxBits/8){
 	        	// initialize Avx mask for less, greater and equal results
-	        	uint32_t m_result = -1U;
 				AvxUnit* m_less = (AvxUnit*)malloc(num_cols * sizeof(AvxUnit));
 				AvxUnit* m_greater = (AvxUnit*)malloc(num_cols * sizeof(AvxUnit));
 				AvxUnit* m_equal = (AvxUnit*)malloc(num_cols * sizeof(AvxUnit));
@@ -137,7 +136,9 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        					m_greater[col],
 	        					m_equal[col]);
 	        	}
+
 	        	// get columnar result, and combine to get the final result
+	        	uint32_t m_result = -1U;
 	        	for(size_t col = 0; col < num_cols; col++){
 	        		uint32_t m_col_result;
 	        		uint32_t m_col_less, m_col_greater, m_col_equal;
@@ -158,7 +159,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        			case Comparator::kGreater:
 	        				m_col_greater = _mm256_movemask_epi8(m_greater[col]);
 	        				m_col_result = m_col_greater;
-	        			case Comparator::kLessEqual:
+	        			case Comparator::kGreaterEqual:
 	        				m_col_greater = _mm256_movemask_epi8(m_greater[col]);
 	        				m_col_equal = _mm256_movemask_epi8(m_equal[col]);
 	        				m_col_result = m_col_greater & m_col_equal;

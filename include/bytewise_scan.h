@@ -2,6 +2,7 @@
 #define BYTEWISE_SCAN_H
 
 #include    <vector>
+#include	<ctime>
 #include    "common.h"
 #include    "types.h"
 #include    "column.h"

@@ -59,7 +59,7 @@ Sequence BytewiseScan::RandomSequence() const{
 	Sequence seq;
 	for(size_t i = 0; i < conjunctions_.size(); i++){
 		for(size_t j = 0; j < conjunctions_[i].num_bytes; j++){
-			seq.push_back(ByteInColumn(i, -1));
+			seq.push_back(ByteInColumn(i, 0));
 		}
 	}
 	std::random_shuffle(seq.begin(), seq.end());

@@ -53,7 +53,7 @@ int main(){
     }
 
 	BytewiseScan scan;
-	scan.AddPredicate(BytewiseAtomPredicate(column1, comparator, literal1));
+	// scan.AddPredicate(BytewiseAtomPredicate(column1, comparator, literal1));
 	scan.AddPredicate(BytewiseAtomPredicate(column2, comparator, literal2));
 	// scan.AddPredicate(BytewiseAtomPredicate(column3, comparator, literal3));
 
@@ -62,7 +62,7 @@ int main(){
 	bitvector1->SetOnes();
     bitvector2->SetOnes();
 	scan.Scan(bitvector1);
-	column1->Scan(comparator, literal1, bitvector2, Bitwise::kSet);
+	// column1->Scan(comparator, literal1, bitvector2, Bitwise::kSet);
 	column2->Scan(comparator, literal2, bitvector2, Bitwise::kAnd);
 	// column3->Scan(comparator, literal3, bitvector2, Bitwise::kAnd);
 

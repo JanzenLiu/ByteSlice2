@@ -93,17 +93,21 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	}
 
 	// initailize Avx mask for each byte in each column
-	AvxUnit** mask_byte = (AvxUnit**)malloc(num_cols * sizeof(AvxUnit*));
+	std::vector<std::vector<AvxUnit>> mask_byte;
+	// AvxUnit** mask_byte = (AvxUnit**)malloc(num_cols * sizeof(AvxUnit*));
 	for(size_t col = 0; col < num_cols; col++){
-		mask_byte[col] = (AvxUnit*)malloc(num_bytes[col] * sizeof(AvxUnit));
+		std::vector<AvxUnit> col_mask_byte;
+		// mask_byte[col] = (AvxUnit*)malloc(num_bytes[col] * sizeof(AvxUnit));
 		WordUnit lit = conjunctions_[col].literal;
 		size_t num_bits_shift = conjunctions_[col].column->bit_width() - 8 * num_bytes[col];
 		lit <<= num_bits_shift;
 
 		for(size_t byte = 0; byte < num_bytes[col]; byte++){
 			ByteUnit lit_byte = FLIP(static_cast<ByteUnit>(lit >> 8*(num_bytes[col] - 1 - byte)));
-	        mask_byte[col][byte] = avx_set1<ByteUnit>(lit_byte);
+	        // mask_byte[col][byte] = avx_set1<ByteUnit>(lit_byte);
+	        col_mask_byte.push_back(lit_byte);
 		}
+		mask_byte.push_back(col_mask_byte);
 	}
 
 

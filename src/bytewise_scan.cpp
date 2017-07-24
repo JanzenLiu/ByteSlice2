@@ -1,4 +1,4 @@
-#include    "include/pipeline_scan.h"
+#include    "include/bytewise_scan.h"
 #include    <omp.h>
 #include    <vector>
 

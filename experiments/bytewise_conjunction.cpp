@@ -14,7 +14,7 @@
 using namespace byteslice;
 
 int main(){
-	size_t num_rows = 1024;
+	size_t num_rows = 64;
 	Comparator comparator = Comparator::kLess;
 	WordUnit literal = 0ULL;
 
@@ -49,7 +49,7 @@ int main(){
     for(size_t i = 0; i < num_rows; i++){ 
         if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 
             corr++; 
-        // std::cout << bitvector2->GetBit(i) << "\t\t" << bm_less->GetByteMask(i) << std::endl;
+        std::cout << bitvector2->GetBit(i) << "\t\t" << bm_less->GetByteMask(i) << std::endl;
     }
     acc = (double)corr / num_rows;
     std::cout << "Number of correct tuples: " << corr << std::endl; 

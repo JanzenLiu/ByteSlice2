@@ -166,7 +166,7 @@ inline void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::SetTuple(size_t pos, Wo
 
 template <size_t BIT_WIDTH, Direction PDIRECTION>
 inline AvxUnit ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::GetAvxUnit(size_t offset, size_t byte_id) const{
-    return _mm256_lddqu_si256(reinterpret_cast<__m256i*>(data_[byte_id]+offset))
+    return _mm256_lddqu_si256(reinterpret_cast<__m256i*>(data_[byte_id]+offset));
 }
 
 }   //namespace

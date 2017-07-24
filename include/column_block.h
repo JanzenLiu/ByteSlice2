@@ -23,6 +23,9 @@ public:
     virtual void DeserFromFile(const SequentialReadBinaryFile &file) = 0;
     virtual bool Resize(size_t size) = 0;
 
+    virtual AvxUnit GetAvxUnit(size_t offset, size_t byte_id) const{
+    }
+
     //Scan procedure that takes in and output 8-bit masks
     //This method is only used by ByteSlice
     //Otherwise it does nothing!

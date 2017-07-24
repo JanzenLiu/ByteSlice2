@@ -26,6 +26,8 @@ public:
     WordUnit GetTuple(size_t pos) const override;
     void SetTuple(size_t pos, WordUnit value) override;
 
+    AvxUnit GetAvxUnit(size_t offset, size_t byte_id) const override;
+
     void Scan(Comparator comparator, WordUnit literal, BitVectorBlock* bvblock,
             Bitwise bit_opt = Bitwise::kSet) const override;
     void Scan(Comparator comparator, const ColumnBlock* other_block,
@@ -160,6 +162,11 @@ inline void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::SetTuple(size_t pos, Wo
             data_[0][pos] = FLIP(static_cast<ByteUnit>(value));
             break;
     }
+}
+
+template <size_t BIT_WIDTH, Direction PDIRECTION>
+inline AvxUnit ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::GetAvxUnit(size_t offset, size_t byte_id) const{
+    return _mm256_lddqu_si256(reinterpret_cast<__m256i*>(data_[byte_id]+offset))
 }
 
 }   //namespace

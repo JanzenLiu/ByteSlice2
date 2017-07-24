@@ -209,6 +209,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        				m_col_result = m_col_greater & m_col_equal;
 
 	        		}
+	        		std::cout << std::bitset<32>(m_col_result) << std::endl;
 	        		m_result &= m_col_result;
 	        		std::cout << std::bitset<32>(m_result) << std::endl;
 	        		bitvector_word |= (static_cast<WordUnit>(m_result) << i);

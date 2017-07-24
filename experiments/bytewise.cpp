@@ -9,6 +9,7 @@
 #include    "include/types.h"
 #include    "include/column.h"
 #include    "include/bitvector.h"
+#include    "include/bitvector_block.h"
 
 using namespace byteslice;
 
@@ -50,7 +51,7 @@ int main(){
     column->GetBlock(0)->ScanByte(comparator, literal, 0, bm_less, bm_greater, bm_equal);
 	column->Scan(comparator, literal, bitvector2, Bitwise::kSet);
 
-    bm_less->Condense(bitvector1);
+    bm_less->Condense(bitvector1->GetBVBlock(0));
 
 	//calculate accuracy
 	size_t corr = 0; //count correct tuples

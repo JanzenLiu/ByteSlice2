@@ -56,7 +56,6 @@ public:
 	size_t num_bytes_all() const;
 
 private:
-	template <Comparator CMP>
     inline void ScanKernel(Comparator comparator, 
     	const AvxUnit &byteslice1, const AvxUnit &byteslice2,
         AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal) const;

@@ -194,7 +194,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        				m_col_result = ~m_col_equal;
 	        			case Comparator::kLess:
 	        				m_col_less = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_less[col]));
-	        				std::cout << std::bitset<32>(m_col_less) << std::endl;
+	        				// std::cout << std::bitset<32>(m_col_less) << std::endl;
 	        				m_col_result = m_col_less;
 	        			case Comparator::kLessEqual:
 	        				m_col_less = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_less[col]));
@@ -210,7 +210,9 @@ void BytewiseScan::Scan(BitVector* bitvector){
 
 	        		}
 	        		m_result &= m_col_result;
+	        		cout << std::bitset<32>(m_result) << std::endl;
 	        		bitvector_word |= (static_cast<WordUnit>(m_result) << i);
+	        		cout << std::bitset<64>(bitvector_word) << std::endl;
 	        	}
 	        }
 	        bvblk->SetWordUnit(bitvector_word, bv_word_id);
@@ -248,9 +250,9 @@ inline void BytewiseScan::ScanKernel(Comparator comparator,
             break;
     }
 
-    std::cout << "MLess(After): " << std::bitset<32>(_mm256_movemask_epi8(mask_less)) << std::endl;
-	std::cout << "MGreater(After): " << std::bitset<32>(_mm256_movemask_epi8(mask_greater)) << std::endl;
-	std::cout << "MEqual(After): " << std::bitset<32>(_mm256_movemask_epi8(mask_equal)) << std::endl;
+ //    std::cout << "MLess(After): " << std::bitset<32>(_mm256_movemask_epi8(mask_less)) << std::endl;
+	// std::cout << "MGreater(After): " << std::bitset<32>(_mm256_movemask_epi8(mask_greater)) << std::endl;
+	// std::cout << "MEqual(After): " << std::bitset<32>(_mm256_movemask_epi8(mask_equal)) << std::endl;
 }
 
 BytewiseAtomPredicate BytewiseScan::GetPredicate(size_t pid) const{

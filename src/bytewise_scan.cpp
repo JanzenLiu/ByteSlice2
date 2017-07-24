@@ -101,7 +101,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 		// std::vector<AvxUnit> col_mask_byte;
 		mask_byte[col] = (AvxUnit*)malloc(num_bytes[col] * sizeof(AvxUnit));
 		WordUnit lit = conjunctions_[col].literal;
-		size_t num_bits_shift = conjunctions_[col].column->bit_width() - 8 * num_bytes[col];
+		size_t num_bits_shift = 8 * num_bytes[col] - conjunctions_[col].column->bit_width();
 		lit <<= num_bits_shift;
 		std::cout << "Bitwidth: " << conjunctions_[col].column->bit_width() << std::endl;
 		std::cout << "Number of Bytes: " << num_bytes[col] << std::endl;

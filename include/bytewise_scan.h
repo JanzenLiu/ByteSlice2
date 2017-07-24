@@ -30,7 +30,7 @@ struct ByteInColumn{
 	}
 	const size_t column_id;
 	const size_t byte_id;
-}
+};
 
 typedef std::vector<ByteInColumn> Sequence;
 

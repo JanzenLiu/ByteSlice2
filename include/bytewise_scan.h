@@ -28,8 +28,8 @@ struct ByteInColumn{
 		column_id(col_id),
 		byte_id(byte_id){
 	}
-	const size_t column_id;
-	const size_t byte_id;
+	size_t column_id;
+	size_t byte_id;
 };
 
 typedef std::vector<ByteInColumn> Sequence;

@@ -14,7 +14,7 @@
 using namespace byteslice;
 
 int main(){
-	size_t num_rows = 1024*1024;
+	size_t num_rows = 64;
 	Comparator comparator = Comparator::kLess;
 	double selectivity = 0.3;
 

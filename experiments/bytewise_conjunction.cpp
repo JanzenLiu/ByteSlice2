@@ -27,7 +27,7 @@ int main(){
 	const WordUnit mask = (1ULL << 15) - 1;
 	for(size_t i = 0; i < num_rows; i++){
         ByteUnit code = std::rand() & mask;
-        column->SetTuple(i, code);
+        column1->SetTuple(i, code);
     }
 
 	BytewiseScan scan;

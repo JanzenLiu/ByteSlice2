@@ -213,22 +213,22 @@ inline void BytewiseScan::ScanKernel(Comparator comparator,
 	 switch(comparator){
         case Comparator::kEqual:
         case Comparator::kInequal:
-            mask_equal = 
-                avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2));
+            _mm256_storeu_si256(&mask_equal,
+                avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2)));
             break;
         case Comparator::kLess:
         case Comparator::kLessEqual:
-            mask_less = 
-                avx_or(mask_less, avx_and(mask_equal, avx_cmplt<ByteUnit>(byteslice1, byteslice2)));
-            mask_equal = 
-                avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2));
+            _mm256_storeu_si256(&mask_less, 
+                avx_or(mask_less, avx_and(mask_equal, avx_cmplt<ByteUnit>(byteslice1, byteslice2))));
+            _mm256_storeu_si256(&mask_equal, 
+                avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2)));
             break;
         case Comparator::kGreater:
         case Comparator::kGreaterEqual:
-            mask_greater =
-                avx_or(mask_greater, avx_and(mask_equal, avx_cmpgt<ByteUnit>(byteslice1, byteslice2)));
-            mask_equal = 
-                avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2));
+            _mm256_storeu_si256(&mask_greater,
+                avx_or(mask_greater, avx_and(mask_equal, avx_cmpgt<ByteUnit>(byteslice1, byteslice2))));
+            _mm256_storeu_si256(&mask_equal, 
+                avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2)));
             break;
     }
 }

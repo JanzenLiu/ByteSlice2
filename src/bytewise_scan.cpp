@@ -210,9 +210,9 @@ void BytewiseScan::Scan(BitVector* bitvector){
 
 	        		}
 	        		m_result &= m_col_result;
-	        		cout << std::bitset<32>(m_result) << std::endl;
+	        		std::cout << std::bitset<32>(m_result) << std::endl;
 	        		bitvector_word |= (static_cast<WordUnit>(m_result) << i);
-	        		cout << std::bitset<64>(bitvector_word) << std::endl;
+	        		std::cout << std::bitset<64>(bitvector_word) << std::endl;
 	        	}
 	        }
 	        bvblk->SetWordUnit(bitvector_word, bv_word_id);

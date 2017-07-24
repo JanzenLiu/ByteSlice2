@@ -20,9 +20,40 @@ int main(){
 	size_t code_length1 = 15;
 	size_t code_length2 = 20;
 	size_t code_length3 = 25;
-	double selectivity1 = 0.1;
+	double selectivity1 = 0.8;
 	double selectivity2 = 0.2;
 	double selectivity3 = 0.3;
+
+	//get options:
+    //s - column size; p - predicate
+
+    int c;
+    while((c = getopt(argc, argv, "s:p:")) != -1){
+        switch(c){
+            case 'p':
+                if(0 == strcmp(optarg, "lt"))
+                    comparator = Comparator::kLess;
+                else if(0 == strcmp(optarg, "le"))
+                    comparator = Comparator::kLessEqual;
+                else if(0 == strcmp(optarg, "gt"))
+                    comparator = Comparator::kGreater;
+                else if(0 == strcmp(optarg, "ge"))
+                    comparator = Comparator::kGreaterEqual;
+                else if(0 == strcmp(optarg, "eq"))
+                    comparator = Comparator::kEqual;
+                else if(0 == strcmp(optarg, "ne"))
+                    comparator = Comparator::kInequal;
+                else{
+                    std::cerr << "Unknown predicate: " << optarg << std::endl;
+                    exit(1);
+                }
+                break;
+            case 's':
+                num_rows = atoi(optarg);
+                break;
+        }
+    }
+
 
 	Column* column1 = new Column(ColumnType::kByteSlicePadRight, code_length1, num_rows);
 	Column* column2 = new Column(ColumnType::kByteSlicePadRight, code_length2, num_rows);

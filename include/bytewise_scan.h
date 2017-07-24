@@ -28,6 +28,7 @@ struct ByteInColumn{
 		column_id(col_id),
 		byte_id(byte_id){
 	}
+	// should be constant theoretically, not set function here in order to use the shuffle function
 	size_t column_id;
 	size_t byte_id;
 };

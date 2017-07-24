@@ -153,10 +153,19 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        		AvxUnit avx_less = _mm256_lddqu_si256(&m_less[col]);
 	        		AvxUnit avx_greater = _mm256_lddqu_si256(&m_greater[col]);
 	        		AvxUnit avx_equal = _mm256_lddqu_si256(&m_equal[col]);
-	        		std::cout << std::bitset<64>(static_cast<WordUnit>(avx_data[0])) << std::endl;
-	        		std::cout << std::bitset<64>(static_cast<WordUnit>(avx_data[1])) << std::endl;
-	        		std::cout << std::bitset<64>(static_cast<WordUnit>(avx_data[2])) << std::endl;
-	        		std::cout << std::bitset<64>(static_cast<WordUnit>(avx_data[3])) << std::endl;
+	        		std::cout << "GetAvxUnit: " << std::bitset<64>(static_cast<WordUnit>(avx_data[0])) << std::endl;
+	        		std::cout << "data_: "
+	        				<< std::bitset<8>(static_cast<ByteUnit>avx_data[0]) << std::endl;
+	        				<< std::bitset<8>(static_cast<ByteUnit>avx_data[0] >> 8) << std::endl;
+	        				<< std::bitset<8>(static_cast<ByteUnit>avx_data[0] >> 16) << std::endl;
+	        				<< std::bitset<8>(static_cast<ByteUnit>avx_data[0] >> 24) << std::endl;
+	        				<< std::bitset<8>(static_cast<ByteUnit>avx_data[0] >> 32) << std::endl;
+	        				<< std::bitset<8>(static_cast<ByteUnit>avx_data[0] >> 40) << std::endl;
+	        				<< std::bitset<8>(static_cast<ByteUnit>avx_data[0] >> 48) << std::endl;
+	        				<< std::bitset<8>(static_cast<ByteUnit>avx_data[0] >> 56) << std::endl; 
+	        		// std::cout << std::bitset<64>(static_cast<WordUnit>(avx_data[1])) << std::endl;
+	        		// std::cout << std::bitset<64>(static_cast<WordUnit>(avx_data[2])) << std::endl;
+	        		// std::cout << std::bitset<64>(static_cast<WordUnit>(avx_data[3])) << std::endl;
 	        		// std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_less) << std::endl;
 		        	// std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_greater) << std::endl;
 		        	// std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_equal) << std::endl;

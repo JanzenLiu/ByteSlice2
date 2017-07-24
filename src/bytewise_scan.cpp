@@ -1,5 +1,6 @@
 #include    "include/bytewise_scan.h"
 #include    <omp.h>
+#include	<typeinfo>
 #include	<ctime>
 #include    <vector>
 #include	<random>
@@ -206,9 +207,9 @@ inline void BytewiseScan::ScanKernel(Comparator comparator,
 		const AvxUnit &byteslice1, const AvxUnit &byteslice2,
         AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal) const{
 	 switch(comparator){
-	 	std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&mask_less)) << std::endl;
-    	std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&mask_greater)) << std::endl;
-    	std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&mask_equal)) << std::endl;
+	 	std::cout << typeid(mask_less).name() << std::endl;
+    	std::cout << typeid(mask_greater).name() << std::endl;
+    	std::cout << typeid(mask_equal).name() << std::endl;
         case Comparator::kEqual:
         case Comparator::kInequal:
             mask_equal = 

@@ -221,9 +221,9 @@ void BytewiseScan::Scan(BitVector* bitvector){
 inline void BytewiseScan::ScanKernel(Comparator comparator,
 		const AvxUnit &byteslice1, const AvxUnit &byteslice2,
         AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal) const{
-		std::cout << "MLess: " << std::bitset<32>(_mm256_movemask_epi8(mask_less)) << std::endl;
-		std::cout << "MGreater: " << std::bitset<32>(_mm256_movemask_epi8(mask_greater)) << std::endl;
-		std::cout << "MEqual: " << std::bitset<32>(_mm256_movemask_epi8(mask_equal)) << std::endl;
+		std::cout << "MLess(Before): " << std::bitset<32>(_mm256_movemask_epi8(mask_less)) << std::endl;
+		std::cout << "MGreater(Before): " << std::bitset<32>(_mm256_movemask_epi8(mask_greater)) << std::endl;
+		std::cout << "MEqual(Before): " << std::bitset<32>(_mm256_movemask_epi8(mask_equal)) << std::endl;
 	 switch(comparator){
 
         case Comparator::kEqual:
@@ -246,6 +246,10 @@ inline void BytewiseScan::ScanKernel(Comparator comparator,
                 avx_and(mask_equal, avx_cmpeq<ByteUnit>(byteslice1, byteslice2)));
             break;
     }
+
+    std::cout << "MLess(After): " << std::bitset<32>(_mm256_movemask_epi8(mask_less)) << std::endl;
+	std::cout << "MGreater(After): " << std::bitset<32>(_mm256_movemask_epi8(mask_greater)) << std::endl;
+	std::cout << "MEqual(After): " << std::bitset<32>(_mm256_movemask_epi8(mask_equal)) << std::endl;
 }
 
 BytewiseAtomPredicate BytewiseScan::GetPredicate(size_t pid) const{

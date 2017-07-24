@@ -126,9 +126,14 @@ void BytewiseScan::Scan(BitVector* bitvector){
 				AvxUnit* m_greater = (AvxUnit*)malloc(num_cols * sizeof(AvxUnit));
 				AvxUnit* m_equal = (AvxUnit*)malloc(num_cols * sizeof(AvxUnit));
 				for(size_t i = 0; i < num_cols; i++){
-					m_less[i] = avx_zero();
-					m_greater[i] = avx_zero();
-					m_equal[i] = avx_ones();
+					AvxUnit m_zero = avx_zero();
+					AvxUnit m_ones = avx_ones();
+					// m_less[i] = avx_zero();
+					// m_greater[i] = avx_zero();
+					// m_equal[i] = avx_ones();
+					_mm256_storeu_si256(m_less[i], m_zero);
+					_mm256_storeu_si256(m_greater[i], m_zero);
+					_mm256_storeu_si256(m_equal[i], m_ones);
 				}
 
 	        	// scan each byte in the specified sequence

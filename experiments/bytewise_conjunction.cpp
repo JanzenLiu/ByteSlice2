@@ -49,6 +49,7 @@ int main(){
 	size_t corr = 0; //count correct tuples
 	double acc = 0;
 	std::cout << "Literal: " << std::bitset<64>(literal) << std::endl;
+	std::cout << "Converted to Byte: " << std::bitset<8>(static_cast<ByteUnit>(literal)) << std::endl;
     // std::cout << "Literal" << "\t" << "Tuple" << "\t" << "Scan" << "\t" << "ScanByte" << std::endl;
     for(size_t i = 0; i < num_rows; i++){ 
         if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 

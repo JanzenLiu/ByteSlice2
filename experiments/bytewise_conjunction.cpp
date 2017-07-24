@@ -64,7 +64,7 @@ int main(){
 	scan.Scan(bitvector1);
 	column1->Scan(comparator, literal1, bitvector2, Bitwise::kSet);
 	column2->Scan(comparator, literal2, bitvector2, Bitwise::kAnd);
-	column3->Scan(comparator, literal3, bitvector2, Bitwise::kAnd);
+	// column3->Scan(comparator, literal3, bitvector2, Bitwise::kAnd);
 
 	//calculate accuracy
 	size_t corr = 0; //count correct tuples

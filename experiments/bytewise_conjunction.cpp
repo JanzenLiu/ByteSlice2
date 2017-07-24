@@ -31,7 +31,7 @@ int main(){
         WordUnit code = std::rand() & mask;
         column1->SetTuple(i, code);
         // std::cout << static_cast<uint16_t>(code) << " " << std::endl;
-        // std::cout << "Tuple#" << i << ": " << std::bitset<16>(static_cast<uint16_t>(code)) << std::endl;   
+        std::cout << "Tuple#" << i << ": " << std::bitset<16>(static_cast<uint16_t>(code)) << std::endl;   
     }
 
     // std::cout << "Byte#0: " << std::bitset<64>(static_cast<WordUnit>(column1->GetBlock(0)->GetAvxUnit(0, 0))) << std::endl;
@@ -41,13 +41,13 @@ int main(){
     WordUnit word2 = *(reinterpret_cast<WordUnit*>(&avx) + 1);
     // WordUnit word3 = static_cast<WordUnit>(avx);
     std::cout << std::bitset<64>(word1) << std::endl;
-    std::cout << std::bitset<8>(static_cast<ByteUnit>(word1 >> 56))
-    		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 48))
-    		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 40))
-    		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 32))
-    		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 24))
-    		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 16))
-    		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 8))
+    std::cout << std::bitset<8>(static_cast<ByteUnit>(word1 >> 56)) << std::endl
+    		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 48)) << std::endl
+    		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 40)) << std::endl
+    		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 32)) << std::endl
+    		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 24)) << std::endl
+    		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 16)) << std::endl
+    		<< std::bitset<8>(static_cast<ByteUnit>(word1 >> 8)) << std::endl
     		<< std::bitset<8>(static_cast<ByteUnit>(word1)) << std::endl;
     // std::cout << std::bitset<64>(word2) << std::endl;
 

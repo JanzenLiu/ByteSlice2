@@ -40,5 +40,6 @@ int main(){
 	seq.push_back(ByteInColumn(2, 3));
 
 	bool valid = scan.ValidSequence(seq);
+	std::cout << "#Bytes: " << scan.num_bytes_all() << std::endl;
 	std::cout << valid << std::endl;
 }

@@ -50,12 +50,12 @@ int main(){
 	double acc = 0;
 	std::cout << "Literal: " << std::bitset<64>(literal) << std::endl;
 	std::cout << "Converted to Byte: " << std::bitset<8>(static_cast<ByteUnit>(literal)) << std::endl;
-    // std::cout << "Literal" << "\t" << "Tuple" << "\t" << "Scan" << "\t" << "ScanByte" << std::endl;
+    std::cout << "Literal" << "\t" << "Tuple" << "\t" << "Scan" << "\t" << "ScanByte" << std::endl;
     for(size_t i = 0; i < num_rows; i++){ 
         if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 
             corr++; 
-        // std::cout << literal <<  "\t" << column1->GetTuple(i) << "\t"
-        // 	<< bitvector2->GetBit(i) << "\t" << bitvector1->GetBit(i) << std::endl;
+        std::cout << literal <<  "\t" << column1->GetTuple(i) << "\t"
+        	<< bitvector2->GetBit(i) << "\t" << bitvector1->GetBit(i) << std::endl;
     }
     acc = (double)corr / num_rows;
     std::cout << "Number of correct tuples: " << corr << std::endl; 

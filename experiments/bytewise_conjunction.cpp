@@ -29,6 +29,7 @@ int main(){
 	for(size_t i = 0; i < num_rows; i++){
         ByteUnit code = std::rand() & mask;
         column1->SetTuple(i, code);
+        std::cout << code << " " << std::endl;
     }
 
 	BytewiseScan scan;

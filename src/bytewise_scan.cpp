@@ -125,7 +125,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 				AvxUnit* m_less = (AvxUnit*)malloc(num_cols * sizeof(AvxUnit));
 				AvxUnit* m_greater = (AvxUnit*)malloc(num_cols * sizeof(AvxUnit));
 				AvxUnit* m_equal = (AvxUnit*)malloc(num_cols * sizeof(AvxUnit));
-				for(size_t i = 0; i < num_cols; i++){
+				for(size_t j = 0; j < num_cols; j++){
 					AvxUnit m_zero = avx_zero();
 					AvxUnit m_ones = avx_ones();
 					// m_less[i] = avx_zero();

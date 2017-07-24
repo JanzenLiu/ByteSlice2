@@ -172,9 +172,9 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        					avx_less,
 	        					avx_greater,
 	        					avx_equal);
-	        		std::cout << "After ByteInColumn#"<< j << ": " << std::bitset<32>(_mm256_movemask_epi8(avx_less)) << std::endl;
-		        	std::cout << "After ByteInColumn#"<< j << ": " << std::bitset<32>(_mm256_movemask_epi8(avx_greater)) << std::endl;
-		        	std::cout << "After ByteInColumn#"<< j << ": " << std::bitset<32>(_mm256_movemask_epi8(avx_equal)) << std::endl;
+	        		// std::cout << "After ByteInColumn#"<< j << ": " << std::bitset<32>(_mm256_movemask_epi8(avx_less)) << std::endl;
+		        	// std::cout << "After ByteInColumn#"<< j << ": " << std::bitset<32>(_mm256_movemask_epi8(avx_greater)) << std::endl;
+		        	// std::cout << "After ByteInColumn#"<< j << ": " << std::bitset<32>(_mm256_movemask_epi8(avx_equal)) << std::endl;
 	        		_mm256_storeu_si256(&m_less[col], avx_less);
 	        		_mm256_storeu_si256(&m_greater[col], avx_greater);
 	        		_mm256_storeu_si256(&m_equal[col], avx_equal);
@@ -194,6 +194,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        				m_col_result = ~m_col_equal;
 	        			case Comparator::kLess:
 	        				m_col_less = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_less[col]));
+	        				std::cout << std::bitset<32>(m_col_less) << std::endl;
 	        				m_col_result = m_col_less;
 	        			case Comparator::kLessEqual:
 	        				m_col_less = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_less[col]));

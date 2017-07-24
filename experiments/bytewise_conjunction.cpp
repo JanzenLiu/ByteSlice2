@@ -14,7 +14,7 @@
 
 using namespace byteslice;
 
-int main(){
+int main(int argc, char* argv[]){
 	size_t num_rows = 1024*1024*1024;
 	Comparator comparator = Comparator::kLess;
 	size_t code_length1 = 15;

@@ -16,7 +16,7 @@ using namespace byteslice;
 int main(){
 	size_t num_rows = 1024;
 	Comparator comparator = Comparator::kLess;
-	WordUnit literal = 0x11111111111111;
+	WordUnit literal = 0ULL;
 
 	Column* column1 = new Column(ColumnType::kByteSlicePadRight, 15, num_rows);
 	Column* column2 = new Column(ColumnType::kByteSlicePadRight, 20, num_rows);

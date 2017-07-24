@@ -30,14 +30,14 @@ int main(){
 	// generate test case
 	Sequence seq;
 	seq.push_back(ByteInColumn(0, 0));
-	seq.push_back(ByteInColumn(1, 0));
-	seq.push_back(ByteInColumn(1, 1));
-	seq.push_back(ByteInColumn(2, 0));
 	seq.push_back(ByteInColumn(0, 1));
+	seq.push_back(ByteInColumn(2, 0));
 	seq.push_back(ByteInColumn(2, 1));
-	seq.push_back(ByteInColumn(0, 2));
 	seq.push_back(ByteInColumn(2, 2));
 	seq.push_back(ByteInColumn(2, 3));
+	seq.push_back(ByteInColumn(1, 0));
+	seq.push_back(ByteInColumn(1, 1));
+	seq.push_back(ByteInColumn(1, 2));
 
 	bool valid = scan.ValidSequence(seq);
 	std::cout << "#Bytes: " << scan.num_bytes_all() << std::endl;

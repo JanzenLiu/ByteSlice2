@@ -147,10 +147,6 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        		AvxUnit avx_less = _mm256_lddqu_si256(&m_less[col]);
 	        		AvxUnit avx_greater = _mm256_lddqu_si256(&m_greater[col]);
 	        		AvxUnit avx_equal = _mm256_lddqu_si256(&m_equal[col]);
-		        	// 	<< std::bitset<64>(static_cast<WordUnit>(avx_data[1])) << std::endl
-		        	// 	<< std::bitset<64>(static_cast<WordUnit>(avx_data[2])) << std::endl
-		        	// 	<< std::bitset<64>(static_cast<WordUnit>(avx_data[3])) << std::endl;
-
 	        		ScanKernel(conjunctions_[col].comparator,
 	        					// conjunctions_[col].column->GetBlock(block_id)->GetAvxUnit(offset + i, byte),
 	        					// mask_byte[col][byte],
@@ -202,8 +198,8 @@ void BytewiseScan::Scan(BitVector* bitvector){
 
 	        		}
 	        		m_result &= m_col_result;
-	        		bitvector_word |= (static_cast<WordUnit>(m_result) << i);
 	        	}
+	        	bitvector_word |= (static_cast<WordUnit>(m_result) << i);
 	        }
 	        bvblk->SetWordUnit(bitvector_word, bv_word_id);
     	}

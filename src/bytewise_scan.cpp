@@ -2,7 +2,6 @@
 #include    <omp.h>
 #include    <vector>
 #include	<algorithm>
-#include	<random>
 
 namespace byteslice{
 
@@ -63,8 +62,7 @@ Sequence BytewiseScan::RandomSequence() const{
 			seq.push_back(ByteInColumn(i, -1));
 		}
 	}
-	auto engine = std::default_random_engine{};
-	std::shuffle(std::begin(seq), std::end(seq), engine);
+	std::random_shuffle(cards_.begin(), cards_.end());
 	return seq;
 }
 

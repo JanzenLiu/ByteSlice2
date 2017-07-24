@@ -16,7 +16,7 @@ void BytewiseScan::AddPredicate(BytewiseAtomPredicate predicate){
 void BytewiseScan::SetSequence(const Sequence seq){
 	assert(ValidSequence(seq));
 	sequence_.clear();
-	for(size_t i = 0; it < seq.size(); i++){
+	for(size_t i = 0; i < seq.size(); i++){
 		sequence_.push_back(ByteInColumn(seq[i].column_id, seq[i].byte_id));
 	}
 }

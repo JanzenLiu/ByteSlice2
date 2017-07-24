@@ -134,9 +134,6 @@ void BytewiseScan::Scan(BitVector* bitvector){
 					_mm256_storeu_si256(&m_less[j], m_zero);
 					_mm256_storeu_si256(&m_greater[j], m_zero);
 					_mm256_storeu_si256(&m_equal[j], m_ones);
-					// std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&m_less[j])) << std::endl;
-		        	// std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&m_greater[j])) << std::endl;
-		        	// std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&m_equal[j])) << std::endl;
 				}
 
 	        	// scan each byte in the specified sequence
@@ -148,9 +145,9 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        		AvxUnit avx_less = _mm256_lddqu_si256(&m_less[col]);
 	        		AvxUnit avx_greater = _mm256_lddqu_si256(&m_greater[col]);
 	        		AvxUnit avx_equal = _mm256_lddqu_si256(&m_equal[col]);
-	        		std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&avx_less)) << std::endl;
-		        	std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&avx_greater)) << std::endl;
-		        	std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&avx_equal)) << std::endl;
+	        		std::cout << "ByteInColumn#"<< j << _mm256_movemask_epi8(_mm256_lddqu_si256(&avx_less)) << std::endl;
+		        	std::cout << "ByteInColumn#"<< j << _mm256_movemask_epi8(_mm256_lddqu_si256(&avx_greater)) << std::endl;
+		        	std::cout << "ByteInColumn#"<< j << _mm256_movemask_epi8(_mm256_lddqu_si256(&avx_equal)) << std::endl;
 	        		ScanKernel(conjunctions_[col].comparator,
 	        					// conjunctions_[col].column->GetBlock(block_id)->GetAvxUnit(offset + i, byte),
 	        					// mask_byte[col][byte],
@@ -166,10 +163,6 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        		_mm256_storeu_si256(&m_greater[col], avx_greater);
 	        		_mm256_storeu_si256(&m_equal[col], avx_equal);
 	        	}
-
-	        	// std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&m_less[0])) << std::endl;
-	        	// std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&m_greater[0])) << std::endl;
-	        	// std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&m_equal[0])) << std::endl;
 
 	        	// get columnar result, and combine to get the final result
 	        	uint32_t m_result = -1U;

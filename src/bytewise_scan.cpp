@@ -206,10 +206,8 @@ void BytewiseScan::Scan(BitVector* bitvector){
 inline void BytewiseScan::ScanKernel(Comparator comparator,
 		const AvxUnit &byteslice1, const AvxUnit &byteslice2,
         AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal) const{
+	assert(1 == 0);
 	 switch(comparator){
-	 	std::cout << mask_less << std::endl;
-    	std::cout << mask_greater << std::endl;
-    	std::cout << mask_equal << std::endl;
         case Comparator::kEqual:
         case Comparator::kInequal:
             mask_equal = 

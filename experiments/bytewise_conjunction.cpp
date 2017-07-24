@@ -14,9 +14,9 @@
 using namespace byteslice;
 
 int main(){
-	size_t num_rows = 64;
+	size_t num_rows = 1024*1024;
 	Comparator comparator = Comparator::kLess;
-	WordUnit literal = 0ULL;
+	double selectivity = 0.3;
 
 	Column* column1 = new Column(ColumnType::kByteSlicePadRight, 15, num_rows);
 	Column* column2 = new Column(ColumnType::kByteSlicePadRight, 20, num_rows);
@@ -25,6 +25,7 @@ int main(){
 	// testing Scan
 	std::srand(std::time(0)); //set random seed
 	const WordUnit mask = (1ULL << 15) - 1;
+	WordUnit literal = static_cast<WordUnit>(mask * selectivity);
 	for(size_t i = 0; i < num_rows; i++){
         ByteUnit code = std::rand() & mask;
         column1->SetTuple(i, code);
@@ -49,7 +50,7 @@ int main(){
     for(size_t i = 0; i < num_rows; i++){ 
         if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 
             corr++; 
-        std::cout << bitvector2->GetBit(i) << "\t\t" << bitvector1->GetBit(i) << std::endl;
+        // std::cout << bitvector2->GetBit(i) << "\t\t" << bitvector1->GetBit(i) << std::endl;
     }
     acc = (double)corr / num_rows;
     std::cout << "Number of correct tuples: " << corr << std::endl; 

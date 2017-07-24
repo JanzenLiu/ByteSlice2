@@ -23,7 +23,7 @@ int main(){
 	// 	<< std::bitset<64>(static_cast<WordUnit>(avx[2])) << std::endl
 	// 	<< std::bitset<64>(static_cast<WordUnit>(avx[3])) << std::endl;
 
-	size_t num_rows = 64;
+	size_t num_rows = 1024*1024;
 	Comparator comparator = Comparator::kLess;
 	double selectivity = 0.3;
 

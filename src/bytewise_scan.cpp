@@ -215,11 +215,11 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        				break;
 
 	        		}
-	        		std::cout << std::bitset<32>(m_col_result) << std::endl;
+	        		// std::cout << std::bitset<32>(m_col_result) << std::endl;
 	        		m_result &= m_col_result;
-	        		std::cout << std::bitset<32>(m_result) << std::endl;
+	        		// std::cout << std::bitset<32>(m_result) << std::endl;
 	        		bitvector_word |= (static_cast<WordUnit>(m_result) << i);
-	        		std::cout << std::bitset<64>(bitvector_word) << std::endl;
+	        		// std::cout << std::bitset<64>(bitvector_word) << std::endl;
 	        	}
 	        }
 	        bvblk->SetWordUnit(bitvector_word, bv_word_id);

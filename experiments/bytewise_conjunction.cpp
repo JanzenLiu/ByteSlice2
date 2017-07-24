@@ -34,6 +34,9 @@ int main(){
         std::cout << "Tuple#" << i << ": " << std::bitset<16>(static_cast<uint16_t>(code)) << std::endl;   
     }
 
+    std::cout << "Byte#0: " << std::bitset<64>(static_cast<WordUnit>(column1->GetBlock(0)->GetAvxUnit(0, 0)[0])) << std::endl;
+    std::cout << "Byte#1: " << std::bitset<64>(static_cast<WordUnit>(column1->GetBlock(0)->GetAvxUnit(0, 1)[0])) << std::endl;
+
 	BytewiseScan scan;
 	scan.AddPredicate(BytewiseAtomPredicate(column1, comparator, literal));
 	// scan.AddPredicate(BytewiseAtomPredicate(column2, comparator, literal));
@@ -49,8 +52,8 @@ int main(){
 	//calculate accuracy
 	size_t corr = 0; //count correct tuples
 	double acc = 0;
-	std::cout << "Literal: " << std::bitset<64>(literal) << std::endl;
-	std::cout << "Converted to Byte: " << std::bitset<8>(static_cast<ByteUnit>(literal)) << std::endl;
+	std::cout << "Literal: " << std::bitset<16>(static_cast<uint16_t>(literal)) << std::endl;
+	// std::cout << "Converted to Byte: " << std::bitset<8>(static_cast<ByteUnit>(literal)) << std::endl;
     for(size_t i = 0; i < num_rows; i++){ 
         if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 
             corr++; 

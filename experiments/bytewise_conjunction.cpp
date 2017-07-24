@@ -15,40 +15,60 @@
 using namespace byteslice;
 
 int main(){
-	size_t num_rows = 1024*1024*1024;
+	size_t num_rows = 64;
 	Comparator comparator = Comparator::kLess;
-	double selectivity = 0.3;
+	size_t code_length1 = 15;
+	size_t code_length2 = 20;
+	size_t code_length3 = 25;
+	double selectivity1 = 0.1;
+	double selectivity2 = 0.2;
+	double selectivity3 = 0.3;
 
-	Column* column1 = new Column(ColumnType::kByteSlicePadRight, 15, num_rows);
-	Column* column2 = new Column(ColumnType::kByteSlicePadRight, 20, num_rows);
-	Column* column3 = new Column(ColumnType::kByteSlicePadRight, 25, num_rows);
+	Column* column1 = new Column(ColumnType::kByteSlicePadRight, code_length1, num_rows);
+	Column* column2 = new Column(ColumnType::kByteSlicePadRight, code_length2, num_rows);
+	Column* column3 = new Column(ColumnType::kByteSlicePadRight, code_length3, num_rows);
 
 	// testing Scan
 	std::srand(std::time(0)); //set random seed
-	const WordUnit mask = (1ULL << 15) - 1;
-	WordUnit literal = static_cast<WordUnit>(mask * selectivity);
+	const WordUnit mask1 = (1ULL << code_length1) - 1;
+	const WordUnit mask2 = (1ULL << code_length2) - 1;
+	const WordUnit mask3 = (1ULL << code_length3) - 1;
+	WordUnit literal1 = static_cast<WordUnit>(mask1 * selectivity1);
+	WordUnit literal2 = static_cast<WordUnit>(mask2 * selectivity2);
+	WordUnit literal3 = static_cast<WordUnit>(mask3 * selectivity3);
+
 	for(size_t i = 0; i < num_rows; i++){
-        WordUnit code = std::rand() & mask;
+        WordUnit code = std::rand() & mask1;
         column1->SetTuple(i, code);   
+    }
+
+    for(size_t i = 0; i < num_rows; i++){
+        WordUnit code = std::rand() & mask2;
+        column2->SetTuple(i, code);   
+    }
+
+    for(size_t i = 0; i < num_rows; i++){
+        WordUnit code = std::rand() & mask3;
+        column3->SetTuple(i, code);   
     }
 
 	BytewiseScan scan;
 	scan.AddPredicate(BytewiseAtomPredicate(column1, comparator, literal));
-	// scan.AddPredicate(BytewiseAtomPredicate(column2, comparator, literal));
-	// scan.AddPredicate(BytewiseAtomPredicate(column3, comparator, literal));
+	scan.AddPredicate(BytewiseAtomPredicate(column2, comparator, literal));
+	scan.AddPredicate(BytewiseAtomPredicate(column3, comparator, literal));
 
 	BitVector* bitvector1 = new BitVector(num_rows);
 	BitVector* bitvector2 = new BitVector(num_rows);
 	bitvector1->SetOnes();
     bitvector2->SetOnes();
 	scan.Scan(bitvector1);
-	column1->Scan(comparator, literal, bitvector2, Bitwise::kSet);
+	column1->Scan(comparator, literal1, bitvector2, Bitwise::kSet);
+	column2->Scan(comparator, literal2, bitvector2, Bitwise::kAnd);
+	column3->Scan(comparator, literal3, bitvector2, Bitwise::kAnd);
 
 	//calculate accuracy
 	size_t corr = 0; //count correct tuples
 	double acc = 0;
-	std::cout << "Literal: " << std::bitset<16>(static_cast<uint16_t>(literal)) << std::endl;
-	// std::cout << "Converted to Byte: " << std::bitset<8>(static_cast<ByteUnit>(literal)) << std::endl;
     for(size_t i = 0; i < num_rows; i++){ 
         if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 
             corr++; 

@@ -207,9 +207,9 @@ inline void BytewiseScan::ScanKernel(Comparator comparator,
 		const AvxUnit &byteslice1, const AvxUnit &byteslice2,
         AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal) const{
 	 switch(comparator){
-	 	std::cout << typeid(mask_less).name() << std::endl;
-    	std::cout << typeid(mask_greater).name() << std::endl;
-    	std::cout << typeid(mask_equal).name() << std::endl;
+	 	std::cout << mask_less << std::endl;
+    	std::cout << mask_greater << std::endl;
+    	std::cout << mask_equal << std::endl;
         case Comparator::kEqual:
         case Comparator::kInequal:
             mask_equal = 

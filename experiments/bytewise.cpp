@@ -16,7 +16,7 @@ int main(){
 	//default parameters
 	ColumnType type = ColumnType::kByteSlicePadRight;
     size_t num_rows = 1024*1024;
-    size_t code_length = 8;
+    size_t code_length = 6;
     double selectivity = 0.3;
     Comparator comparator = Comparator::kLess;
     size_t repeat = 1;

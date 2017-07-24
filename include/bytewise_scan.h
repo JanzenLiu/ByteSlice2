@@ -25,8 +25,11 @@ struct BytewiseAtomPredicate{
 
 struct ByteInColumn{
 	ByteInColumn(size_t col_id, size_t byte_id):
-		column_id(col_id),
-		byte_id(byte_id){
+		// column_id(col_id),
+		// byte_id(byte_id)
+	{
+		column_id = col_id;
+		byte_id = byte_id;
 	}
 	const size_t column_id;
 	const size_t byte_id;

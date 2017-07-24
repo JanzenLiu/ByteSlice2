@@ -166,12 +166,12 @@ void BytewiseScan::Scan(BitVector* bitvector){
 
 	        		}
 	        		m_result &= m_col_result;
+	        		bitvector_word |= (static_cast<WordUnit>(m_result) << i);
 	        	}
 	        }
-	        bitvector_word |= (static_cast<WordUnit>(m_result) << i);
-	        bvblock->SetWordUnit(x, bv_word_id);
+	        bvblk->SetWordUnit(bitvector_word, bv_word_id);
     	}
-    	bvblock->ClearTail();
+    	bvblk->ClearTail();
 	}
 }
 

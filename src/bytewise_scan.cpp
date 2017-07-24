@@ -103,6 +103,8 @@ void BytewiseScan::Scan(BitVector* bitvector){
 		WordUnit lit = conjunctions_[col].literal;
 		size_t num_bits_shift = conjunctions_[col].column->bit_width() - 8 * num_bytes[col];
 		lit <<= num_bits_shift;
+		std::cout << "Bitwidth: " << conjunctions_[col].column->bit_width() << std::endl;
+		std::cout << "Number of Bytes: " << num_bytes[col] << std::endl;
 		std::cout << "Number of Padding Bits: " << num_bits_shift << std::endl; 
 
 		for(size_t byte = 0; byte < num_bytes[col]; byte++){

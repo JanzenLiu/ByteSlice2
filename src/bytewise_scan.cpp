@@ -51,6 +51,7 @@ Sequence BytewiseScan::NaturalSequence() const{
 			seq.push_back(ByteInColumn(i, j));
 		}
 	}
+	return seq;
 }
 
 BytewiseAtomPredicate BytewiseScan::GetPredicate(size_t pid) const{

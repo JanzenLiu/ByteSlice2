@@ -17,7 +17,7 @@ int main(){
 	//default parameters
 	ColumnType type = ColumnType::kByteSlicePadRight;
     size_t num_rows = 1024*1024;
-    size_t code_length = 16;
+    size_t code_length = 22;
     double selectivity = 0.3;
     Comparator comparator = Comparator::kLess;
     size_t repeat = 1;
@@ -39,9 +39,9 @@ int main(){
     bm_equal->SetAllTrue();
     const WordUnit mask = (1ULL << code_length) - 1;
     WordUnit literal = static_cast<WordUnit>(mask * selectivity);
-    ByteUnit byte0 = static_cast<ByteUnit>(literal >> 8);
-    ByteUnit byte1 = static_cast<ByteUnit>(literal);
-
+    ByteUnit byte0 = static_cast<ByteUnit>(literal >> 14);
+    ByteUnit byte1 = static_cast<ByteUnit>(literal >> 6);
+    ByteUnit byte2 = static_cast<ByteUnit>(literal << 2) >> 2;
     //set column randomly
     for(size_t i = 0; i < num_rows; i++){
         ByteUnit code = std::rand() & mask;
@@ -52,6 +52,7 @@ int main(){
 	// column->ScanByte(comparator, literal, 0, bitvector1, Bitwise::kSet);
     column->GetBlock(0)->ScanByte(comparator, byte0, 0, bm_less, bm_greater, bm_equal);
     column->GetBlock(0)->ScanByte(comparator, byte1, 1, bm_less, bm_greater, bm_equal);
+    column->GetBlock(0)->ScanByte(comparator, byte2, 2, bm_less, bm_greater, bm_equal);
 	column->Scan(comparator, literal, bitvector2, Bitwise::kSet);
 
     bm_less->Condense(bitvector1->GetBVBlock(0));

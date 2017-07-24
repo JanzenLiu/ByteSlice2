@@ -161,9 +161,9 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        		_mm256_storeu_si256(&m_equal[col], avx_less);
 	        	}
 
-	        	std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&m_less[0]));
-	        	std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&m_greater[0]));
-	        	std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&m_equal[0]));
+	        	std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&m_less[0])) << std::endl();
+	        	std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&m_greater[0])) << std::endl();
+	        	std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&m_equal[0])) << std::endl();
 
 	        	// get columnar result, and combine to get the final result
 	        	uint32_t m_result = -1U;

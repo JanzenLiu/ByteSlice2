@@ -44,7 +44,7 @@ bool BytewiseScan::ValidSequence(Sequence seq) const{
 	return true;
 }
 
-BytewiseAtomPredicate BytewiseScan::GetPredicate(size_t, pid) const{
+BytewiseAtomPredicate BytewiseScan::GetPredicate(size_t pid) const{
 	return conjunctions_[pid];
 }
 

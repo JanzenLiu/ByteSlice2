@@ -32,6 +32,8 @@ struct ByteInColumn{
 	const size_t byte_id;
 }
 
+typedef std::vector<ByteInColumn> Sequence;
+
 /**
   * @brief Evaluate complex predicates as
   * "Conjunction of Byte Disjunctions" in a bytewise pipeline manner.
@@ -40,12 +42,20 @@ struct ByteInColumn{
 class BytewiseScan{
 public:
 	void AddPredicate(BytewiseAtomPredicate predicate);
-	BytewiseAtomPredicate GetPredicate(size_t pid);
+	void SetSequence(const Sequence seq);
+	bool ValidSequence(Sequence seq) const;
+	Sequence NaturalSequence() const;
+	Sequence RandomSequence() const;
+	
+	// accessor
+	BytewiseAtomPredicate GetPredicate(size_t pid) const;
+	Sequence sequence() const;
+	size_t num_bytes_all() const;
 
 private:
 	std::vector<BytewiseAtomPredicate> conjunctions_;
-	std::vector<ByteInColumn> sequence_;
-
+	Sequence sequence_;
+	size_t num_bytes_all_ = 0; //correct?
 };
 
 }	//namespace

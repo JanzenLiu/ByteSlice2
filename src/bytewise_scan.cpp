@@ -131,9 +131,9 @@ void BytewiseScan::Scan(BitVector* bitvector){
 					// m_less[i] = avx_zero();
 					// m_greater[i] = avx_zero();
 					// m_equal[i] = avx_ones();
-					_mm256_storeu_si256(&m_less[i], m_zero);
-					_mm256_storeu_si256(&m_greater[i], m_zero);
-					_mm256_storeu_si256(&m_equal[i], m_ones);
+					_mm256_storeu_si256(&m_less[j], m_zero);
+					_mm256_storeu_si256(&m_greater[j], m_zero);
+					_mm256_storeu_si256(&m_equal[j], m_ones);
 				}
 
 	        	// scan each byte in the specified sequence

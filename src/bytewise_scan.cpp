@@ -1,7 +1,6 @@
 #include    "include/bytewise_scan.h"
 #include    <omp.h>
 #include    <vector>
-#include	<algorithm>
 #include	<random>
 
 namespace byteslice{
@@ -64,8 +63,7 @@ Sequence BytewiseScan::RandomSequence() const{
 		}
 	}
 	std::srand(std::time(0));
-	auto engine = std::default_random_engine{};
-	std::shuffle(std::begin(seq), std::end(seq), engine);
+	std::random_shuffle(seq.begin(), seq.end());
 	return seq;
 }
 

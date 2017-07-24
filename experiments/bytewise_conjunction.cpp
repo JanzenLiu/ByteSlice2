@@ -17,9 +17,9 @@ using namespace byteslice;
 int main(){
 	AvxUnit avx = _mm256_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 		16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
-	std::cout << "Manually Set Avx: " << std::bitset<64>(static_cast<WordUnit>(avx[0]))
-		<< std::bitset<64>(static_cast<WordUnit>(avx[1]))
-		<< std::bitset<64>(static_cast<WordUnit>(avx[2]))
+	std::cout << "Manually Set Avx: \n" << std::bitset<64>(static_cast<WordUnit>(avx[0])) << std::endl
+		<< std::bitset<64>(static_cast<WordUnit>(avx[1])) << std::endl
+		<< std::bitset<64>(static_cast<WordUnit>(avx[2])) << std::endl
 		<< std::bitset<64>(static_cast<WordUnit>(avx[3])) << std::endl;
 
 	size_t num_rows = 64;

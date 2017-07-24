@@ -107,7 +107,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        mask_byte[col][byte] = _mm256_set1_epi8(static_cast<int8_t>(lit_byte));
 	        // col_mask_byte.push_back(_mm256_set1_epi8(static_cast<int8_t>(lit_byte)));
 		}
-		mask_byte.push_back(col_mask_byte);
+		// mask_byte.push_back(col_mask_byte);
 	}
 
 

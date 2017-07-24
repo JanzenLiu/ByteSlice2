@@ -206,9 +206,9 @@ inline void BytewiseScan::ScanKernel(Comparator comparator,
 		const AvxUnit &byteslice1, const AvxUnit &byteslice2,
         AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal) const{
 	 switch(comparator){
-	 	std::cout << "ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(_mm256_lddqu_si256(&mask_less)) << std::endl;
-    	std::cout << "ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(_mm256_lddqu_si256(&mask_greater)) << std::endl;
-    	std::cout << "ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(_mm256_lddqu_si256(&mask_equal)) << std::endl;
+	 	std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&mask_less)) << std::endl;
+    	std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&mask_greater)) << std::endl;
+    	std::cout << _mm256_movemask_epi8(_mm256_lddqu_si256(&mask_equal)) << std::endl;
         case Comparator::kEqual:
         case Comparator::kInequal:
             mask_equal = 

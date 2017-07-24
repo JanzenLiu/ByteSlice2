@@ -24,7 +24,6 @@ public:
     virtual bool Resize(size_t size) = 0;
 
     virtual AvxUnit GetAvxUnit(size_t offset, size_t byte_id) const{
-        return;
     }
 
     //Scan procedure that takes in and output 8-bit masks

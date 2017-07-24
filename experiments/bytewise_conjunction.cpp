@@ -5,6 +5,7 @@
 #include    <cstring>
 #include    <cstdlib>
 #include    <ctime>
+#include	<bitset>
 
 #include    "include/types.h"
 #include    "include/column.h"
@@ -47,6 +48,7 @@ int main(){
 	//calculate accuracy
 	size_t corr = 0; //count correct tuples
 	double acc = 0;
+	std::cout << "Literal: " << std::bitset<64>(literal) << std::endl;
     // std::cout << "Literal" << "\t" << "Tuple" << "\t" << "Scan" << "\t" << "ScanByte" << std::endl;
     for(size_t i = 0; i < num_rows; i++){ 
         if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 

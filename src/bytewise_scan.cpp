@@ -32,7 +32,7 @@ bool BytewiseScan::ValidSequence(Sequence seq) const{
 	}
 
 	// validate the sequence
-	for(size_t i = 0; it < seq.size(); i++){
+	for(size_t i = 0; i < seq.size(); i++){
 		size_t col = seq[i].column_id;
 		size_t byte = seq[i].byte_id;
 		if(next_bytes[col] != -1 && next_bytes[col] == byte){

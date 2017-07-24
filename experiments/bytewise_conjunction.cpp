@@ -24,8 +24,8 @@ int main(){
 
 	BytewiseScan scan;
 	scan.AddPredicate(BytewiseAtomPredicate(column1, comparator, literal));
-	scan.AddPredicate(BytewiseAtomPredicate(column1, comparator, literal));
-	scan.AddPredicate(BytewiseAtomPredicate(column1, comparator, literal));
+	scan.AddPredicate(BytewiseAtomPredicate(column2, comparator, literal));
+	scan.AddPredicate(BytewiseAtomPredicate(column3, comparator, literal));
 
 	// generate test case
 	Sequence seq;

@@ -153,10 +153,10 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        		AvxUnit avx_less = _mm256_lddqu_si256(&m_less[col]);
 	        		AvxUnit avx_greater = _mm256_lddqu_si256(&m_greater[col]);
 	        		AvxUnit avx_equal = _mm256_lddqu_si256(&m_equal[col]);
-	        		std::cout << "GetAvxUnit:\n " << std::bitset<64>(static_cast<WordUnit>(avx_data[0])) << std::endl
-		        		<< std::bitset<64>(static_cast<WordUnit>(avx_data[1])) << std::endl
-		        		<< std::bitset<64>(static_cast<WordUnit>(avx_data[2])) << std::endl
-		        		<< std::bitset<64>(static_cast<WordUnit>(avx_data[3])) << std::endl;
+	        		// std::cout << "GetAvxUnit:\n " << std::bitset<64>(static_cast<WordUnit>(avx_data[0])) << std::endl
+		        	// 	<< std::bitset<64>(static_cast<WordUnit>(avx_data[1])) << std::endl
+		        	// 	<< std::bitset<64>(static_cast<WordUnit>(avx_data[2])) << std::endl
+		        	// 	<< std::bitset<64>(static_cast<WordUnit>(avx_data[3])) << std::endl;
 	        		// std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_less) << std::endl;
 		        	// std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_greater) << std::endl;
 		        	// std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(avx_equal) << std::endl;
@@ -221,7 +221,12 @@ void BytewiseScan::Scan(BitVector* bitvector){
 inline void BytewiseScan::ScanKernel(Comparator comparator,
 		const AvxUnit &byteslice1, const AvxUnit &byteslice2,
         AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal) const{
+		std::cout << "MLess:\n " << std::bitset<64>(static_cast<WordUnit>(mask_less[0])) << std::endl
+    		<< std::bitset<64>(static_cast<WordUnit>(mask_less[1])) << std::endl
+    		<< std::bitset<64>(static_cast<WordUnit>(mask_less[2])) << std::endl
+    		<< std::bitset<64>(static_cast<WordUnit>(mask_less[3])) << std::endl;
 	 switch(comparator){
+
         case Comparator::kEqual:
         case Comparator::kInequal:
             _mm256_storeu_si256(&mask_equal,

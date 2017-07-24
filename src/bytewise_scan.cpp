@@ -63,6 +63,7 @@ Sequence BytewiseScan::RandomSequence() const{
 			seq.push_back(ByteInColumn(i, -1));
 		}
 	}
+	std::srand(std::time(0));
 	auto engine = std::default_random_engine{};
 	std::shuffle(std::begin(seq), std::end(seq), engine);
 	return seq;

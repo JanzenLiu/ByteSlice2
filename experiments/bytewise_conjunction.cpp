@@ -34,8 +34,12 @@ int main(){
         std::cout << "Tuple#" << i << ": " << std::bitset<16>(static_cast<uint16_t>(code)) << std::endl;   
     }
 
-    std::cout << "Byte#0: " << std::bitset<64>(static_cast<WordUnit>(column1->GetBlock(0)->GetAvxUnit(0, 0))) << std::endl;
-    std::cout << "Byte#1: " << std::bitset<64>(static_cast<WordUnit>(column1->GetBlock(0)->GetAvxUnit(0, 1))) << std::endl;
+    // std::cout << "Byte#0: " << std::bitset<64>(static_cast<WordUnit>(column1->GetBlock(0)->GetAvxUnit(0, 0))) << std::endl;
+    // std::cout << "Byte#1: " << std::bitset<64>(static_cast<WordUnit>(column1->GetBlock(0)->GetAvxUnit(0, 1))) << std::endl;
+    AvxUnit avx = column1->GetBlock(0)->GetAvxUnit(0, 0);
+    WordUnit word1 = static_cast<WordUnit>(avx[0]);
+    WordUnit word2 = static_cast<WordUnit>(avx >> 192);
+    WordUnit word3 = static_cast<WordUnit>(avx);
 
 	BytewiseScan scan;
 	scan.AddPredicate(BytewiseAtomPredicate(column1, comparator, literal));

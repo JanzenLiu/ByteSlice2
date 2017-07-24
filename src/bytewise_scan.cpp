@@ -44,6 +44,15 @@ bool BytewiseScan::ValidSequence(Sequence seq) const{
 	return true;
 }
 
+Sequence BytewiseScan::NaturalSequence() const{
+	Sequence seq;
+	for(size_t i = 0; i < conjunctions_.size(); i++){
+		for(size_t j = 0; j < conjunctions_[i].num_bytes; j++){
+			seq.push_back(ByteInColumn(i, j));
+		}
+	}
+}
+
 BytewiseAtomPredicate BytewiseScan::GetPredicate(size_t pid) const{
 	return conjunctions_[pid];
 }

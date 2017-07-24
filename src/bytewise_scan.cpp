@@ -141,10 +141,12 @@ void BytewiseScan::Scan(BitVector* bitvector){
 					size_t col = sequence_[j].column_id;
 	        		size_t byte = sequence_[j].byte_id;
 	        		AvxUnit avx_data = conjunctions_[col].column->GetBlock(block_id)->GetAvxUnit(offset + i, byte);
+	        		AvxUnit avx_lit = _mm256_lddqu_si256(&mask_byte[col][byte]);
 	        		ScanKernel(conjunctions_[col].comparator,
 	        					// conjunctions_[col].column->GetBlock(block_id)->GetAvxUnit(offset + i, byte),
 	        					avx_data,
-	        					mask_byte[col][byte],
+	        					// _mm256_lddqu_si256(&mask_byte[col][byte]),
+	        					avx_lit,
 	        					m_less[col],
 	        					m_greater[col],
 	        					m_equal[col]);

@@ -146,6 +146,10 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        		AvxUnit avx_less = _mm256_lddqu_si256(&m_less[col]);
 	        		AvxUnit avx_greater = _mm256_lddqu_si256(&m_greater[col]);
 	        		AvxUnit avx_equal = _mm256_lddqu_si256(&m_equal[col]);
+	        		std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(_mm256_lddqu_si256(&avx_less)) << std::endl;
+		        	std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(_mm256_lddqu_si256(&avx_greater)) << std::endl;
+		        	std::cout << "Before ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(_mm256_lddqu_si256(&avx_equal)) << std::endl;
+
 	        		ScanKernel(conjunctions_[col].comparator,
 	        					// conjunctions_[col].column->GetBlock(block_id)->GetAvxUnit(offset + i, byte),
 	        					// mask_byte[col][byte],
@@ -157,9 +161,9 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        					avx_less,
 	        					avx_greater,
 	        					avx_equal);
-	        		// std::cout << "ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(_mm256_lddqu_si256(&avx_less)) << std::endl;
-		        	// std::cout << "ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(_mm256_lddqu_si256(&avx_greater)) << std::endl;
-		        	// std::cout << "ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(_mm256_lddqu_si256(&avx_equal)) << std::endl;
+	        		std::cout << "After ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(_mm256_lddqu_si256(&avx_less)) << std::endl;
+		        	std::cout << "After ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(_mm256_lddqu_si256(&avx_greater)) << std::endl;
+		        	std::cout << "After ByteInColumn#"<< j << ": " << _mm256_movemask_epi8(_mm256_lddqu_si256(&avx_equal)) << std::endl;
 	        		_mm256_storeu_si256(&m_less[col], avx_less);
 	        		_mm256_storeu_si256(&m_greater[col], avx_greater);
 	        		_mm256_storeu_si256(&m_equal[col], avx_equal);
@@ -206,7 +210,6 @@ void BytewiseScan::Scan(BitVector* bitvector){
 inline void BytewiseScan::ScanKernel(Comparator comparator,
 		const AvxUnit &byteslice1, const AvxUnit &byteslice2,
         AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal) const{
-	assert(1 == 0);
 	 switch(comparator){
         case Comparator::kEqual:
         case Comparator::kInequal:

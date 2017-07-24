@@ -30,7 +30,8 @@ int main(){
 	for(size_t i = 0; i < num_rows; i++){
         WordUnit code = std::rand() & mask;
         column1->SetTuple(i, code);
-        // std::cout << static_cast<uint16_t>(code) << " " << std::endl;       
+        // std::cout << static_cast<uint16_t>(code) << " " << std::endl;
+        std::cout << "Tuple#" << i << ": " << std::bitset<16>(static_cast<uint16_t>(code)) << std::endl;   
     }
 
 	BytewiseScan scan;

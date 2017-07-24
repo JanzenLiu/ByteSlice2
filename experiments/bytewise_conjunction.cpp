@@ -38,7 +38,7 @@ int main(){
     // std::cout << "Byte#1: " << std::bitset<64>(static_cast<WordUnit>(column1->GetBlock(0)->GetAvxUnit(0, 1))) << std::endl;
     AvxUnit avx = column1->GetBlock(0)->GetAvxUnit(0, 0);
     WordUnit word1 = static_cast<WordUnit>(avx[0]);
-    WordUnit word2 = *reinterpret_cast<WordUnit*>(avx);
+    WordUnit word2 = *reinterpret_cast<WordUnit*>(&avx);
     // WordUnit word3 = static_cast<WordUnit>(avx);
 
 	BytewiseScan scan;

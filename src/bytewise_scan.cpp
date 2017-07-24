@@ -114,7 +114,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 
 
 	// do the scanning job
-#pragma omp parallel for schedule(dynamic)
+// #pragma omp parallel for schedule(dynamic)
     for(size_t block_id = 0; block_id < num_blocks; block_id++){
     	BitVectorBlock* bvblk = bitvector->GetBVBlock(block_id);
 

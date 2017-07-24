@@ -44,9 +44,16 @@ int main(){
 	// std::cout << valid << std::endl;
 
 	// testing NaturalSequence
-	Sequence seq = scan.NaturalSequence();
+	// Sequence seq = scan.NaturalSequence();
+	// std::cout << "Column" << "\t" << "Byte" << std::endl;
+	// for(size_t i = 0; i < seq.size(); i++){
+	// 	std::cout << seq[i].column_id << "\t" << seq[i].byte_id << std::endl;
+	// }
+
+	// testing RandomSequence
+	Sequence seq = scan.RandomSequence();
 	std::cout << "Column" << "\t" << "Byte" << std::endl;
 	for(size_t i = 0; i < seq.size(); i++){
-		std::cout << seq[i].column_id << "\t\t" << seq[i].byte_id << std::endl;
+		std::cout << seq[i].column_id << "\t" << seq[i].byte_id << std::endl;
 	}
 }

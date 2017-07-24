@@ -1,6 +1,8 @@
 #include    "include/bytewise_scan.h"
 #include    <omp.h>
 #include    <vector>
+#include	<algorithm>
+#include	<random>
 
 namespace byteslice{
 
@@ -51,6 +53,18 @@ Sequence BytewiseScan::NaturalSequence() const{
 			seq.push_back(ByteInColumn(i, j));
 		}
 	}
+	return seq;
+}
+
+Sequence BytewiseScan::RandomSequence() const{
+	Sequence seq;
+	for(size_t i = 0; i < conjunctions_.size(); i++){
+		for(size_t j = 0; j < conjunctions_[i].num_bytes; j++){
+			seq.push_back(ByteInColumn(i, -1));
+		}
+	}
+	auto engine = std::default_random_engine{};
+	std::shuffle(std::begin(seq), std::end(seq), engine);
 	return seq;
 }
 

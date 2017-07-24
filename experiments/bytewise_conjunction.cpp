@@ -72,7 +72,7 @@ int main(){
     for(size_t i = 0; i < num_rows; i++){ 
         if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 
             corr++; 
-        std::cout << literal <<  "\t" << column1->GetTuple(i) << "\t"
+        std::cout column1->GetTuple(i) << "\t"
         	<< bitvector2->GetBit(i) << "\t" << bitvector1->GetBit(i) << std::endl;
     }
     acc = (double)corr / num_rows;

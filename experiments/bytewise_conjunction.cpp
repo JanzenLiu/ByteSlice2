@@ -40,6 +40,8 @@ int main(){
     WordUnit word1 = static_cast<WordUnit>(avx[0]);
     WordUnit word2 = *reinterpret_cast<WordUnit*>(&avx);
     // WordUnit word3 = static_cast<WordUnit>(avx);
+    std::cout << std::bitset<64>(word1) << std::endl;
+    std::cout << std::bitset<64>(word2) << std::endl;
 
 	BytewiseScan scan;
 	scan.AddPredicate(BytewiseAtomPredicate(column1, comparator, literal));

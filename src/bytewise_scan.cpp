@@ -189,24 +189,30 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        			case Comparator::kEqual:
 	        				m_col_equal = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_equal[col]));
 	        				m_col_result = m_col_equal;
+	        				break;
 	        			case Comparator::kInequal:
 	        				m_col_equal = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_equal[col]));
 	        				m_col_result = ~m_col_equal;
+	        				break;
 	        			case Comparator::kLess:
 	        				m_col_less = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_less[col]));
 	        				// std::cout << std::bitset<32>(m_col_less) << std::endl;
 	        				m_col_result = m_col_less;
+	        				break;
 	        			case Comparator::kLessEqual:
 	        				m_col_less = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_less[col]));
 	        				m_col_equal = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_equal[col]));
 	        				m_col_result = m_col_less & m_col_equal;
+	        				break;
 	        			case Comparator::kGreater:
 	        				m_col_greater = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_greater[col]));
 	        				m_col_result = m_col_greater;
+	        				break;
 	        			case Comparator::kGreaterEqual:
 	        				m_col_greater = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_greater[col]));
 	        				m_col_equal = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_equal[col]));
 	        				m_col_result = m_col_greater & m_col_equal;
+	        				break;
 
 	        		}
 	        		std::cout << std::bitset<32>(m_col_result) << std::endl;

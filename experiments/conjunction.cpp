@@ -198,7 +198,7 @@ int main(int argc, char* argv[]){
             
             bitvector->SetOnes();
 
-            pm.Start();
+            // pm.Start();
             t1.Start();
             bwv1->Scan(comparator, literal1, bitvector, Bitwise::kSet);
             // pm.Stop();

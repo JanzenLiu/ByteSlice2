@@ -171,5 +171,10 @@ inline AvxUnit ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::GetAvxUnit(size_t of
     return _mm256_lddqu_si256(reinterpret_cast<__m256i*>(data_[byte_id] + offset));
 }
 
+template <size_t BIT_WIDTH, Direction PDIRECTION>
+inline void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::Prefetch(size_t byte_id, size_t offset, size_t distance) const{
+    return __builtin_prefetch(data_[byte_id] + offset + distance);
+}
+
 }   //namespace
 #endif

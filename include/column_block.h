@@ -25,6 +25,8 @@ public:
 
     virtual AvxUnit GetAvxUnit(size_t offset, size_t byte_id) const{
     }
+    virtual void Prefetch(size_t byte_id, size_t offset, size_t distance) const{
+    }
 
     //Scan procedure that takes in and output 8-bit masks
     //This method is only used by ByteSlice

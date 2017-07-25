@@ -104,10 +104,10 @@ int main(int argc, char* argv[]){
     for(size_t i = 0; i < num_rows; i++){ 
         if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 
             corr++; 
-        std::cout 
+        // std::cout 
         	// << literal1 << "\t" <<  column1->GetTuple(i) << "\t"
         	// << literal2 << "\t" << column2->GetTuple(i) << "\t"
-        	<< bitvector2->GetBit(i) << "\t" << bitvector1->GetBit(i) << std::endl;
+        	// << bitvector2->GetBit(i) << "\t" << bitvector1->GetBit(i) << std::endl;
     }
     acc = (double)corr / num_rows;
     std::cout << "Number of correct tuples: " << corr << std::endl; 

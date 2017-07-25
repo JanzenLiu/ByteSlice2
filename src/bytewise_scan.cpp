@@ -139,10 +139,10 @@ void BytewiseScan::Scan(BitVector* bitvector){
 				}
 
 	        	// scan each byte in the specified sequence
-	        	AvxUnit input_mask = avx_ones();
+	        	// AvxUnit input_mask = avx_ones();
 	        	for(size_t j = 0; j < sequence_.size(); j++){
-	        		if(avx_iszero(input_mask))
-	        			break;
+	        		// if(avx_iszero(input_mask))
+	        		// 	break;
 					size_t col = sequence_[j].column_id;
 	        		size_t byte = sequence_[j].byte_id;
 	        		AvxUnit avx_data = conjunctions_[col].column->GetBlock(block_id)->GetAvxUnit(offset + i, byte);
@@ -159,7 +159,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        		_mm256_storeu_si256(&m_less[col], avx_less);
 	        		_mm256_storeu_si256(&m_greater[col], avx_greater);
 	        		_mm256_storeu_si256(&m_equal[col], avx_equal);
-	        		input_mask = avx_and(input_mask, avx_equal);
+	        		// input_mask = avx_and(input_mask, avx_equal);
 	        	}
 
 	        	// get columnar result, and combine to get the final result
@@ -183,7 +183,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        			case Comparator::kLessEqual:
 	        				m_col_less = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_less[col]));
 	        				m_col_equal = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_equal[col]));
-	        				m_col_result = m_col_less & m_col_equal;
+	        				m_col_result = m_col_less | m_col_equal;
 	        				break;
 	        			case Comparator::kGreater:
 	        				m_col_greater = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_greater[col]));
@@ -192,7 +192,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        			case Comparator::kGreaterEqual:
 	        				m_col_greater = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_greater[col]));
 	        				m_col_equal = _mm256_movemask_epi8(_mm256_lddqu_si256(&m_equal[col]));
-	        				m_col_result = m_col_greater & m_col_equal;
+	        				m_col_result = m_col_greater | m_col_equal;
 	        				break;
 
 	        		}

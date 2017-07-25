@@ -87,6 +87,7 @@ int main(int argc, char* argv[]){
 	scan.AddPredicate(BytewiseAtomPredicate(column1, comparator, literal1));
 	scan.AddPredicate(BytewiseAtomPredicate(column2, comparator, literal2));
 	scan.AddPredicate(BytewiseAtomPredicate(column3, comparator, literal3));
+	scan.ShuffleSequence();
 
 	BitVector* bitvector1 = new BitVector(num_rows);
 	BitVector* bitvector2 = new BitVector(num_rows);

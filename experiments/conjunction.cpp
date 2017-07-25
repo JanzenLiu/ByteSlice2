@@ -132,20 +132,20 @@ int main(int argc, char* argv[]){
         //Prepare the material
         Column* column1 = new Column(ColumnType::kByteSlicePadRight, code_length1, num_rows);
         Column* column2 = new Column(ColumnType::kByteSlicePadRight, code_length2, num_rows);
-        //Column* bwv1 = new Column(ColumnType::kBitSlice, code_length, num_rows);
-        //Column* bwv2 = new Column(ColumnType::kBitSlice, code_length, num_rows);
+        Column* bwv1 = new Column(ColumnType::kBitSlice, code_length, num_rows);
+        Column* bwv2 = new Column(ColumnType::kBitSlice, code_length, num_rows);
         BitVector* bitvector = new BitVector(num_rows);
 
         //populate the column with random data
         for(size_t i = 0; i < num_rows; i++){
             WordUnit code1 = std::rand() & mask1;
             column1->SetTuple(i, code1);
-            bwv1->SetTuple(i, code);
+            //bwv1->SetTuple(i, code);
         }
         for(size_t i = 0; i < num_rows; i++){
             WordUnit code2 = std::rand() & mask2;
             column2->SetTuple(i, code2);
-            bwv2->SetTuple(i, code);
+            //bwv2->SetTuple(i, code);
         }
 
 
@@ -198,7 +198,7 @@ int main(int argc, char* argv[]){
             
             bitvector->SetOnes();
 
-            // pm.Start();
+            pm.Start();
             t1.Start();
             bwv1->Scan(comparator, literal1, bitvector, Bitwise::kSet);
             // pm.Stop();

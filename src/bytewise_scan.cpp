@@ -58,7 +58,7 @@ void BytewiseScan::PrintSequence(){
 	std::cout << "Sequence of Bytes to Scan with:" << std::endl;
 	for(size_t i = 0; i < sequence_.size(); i++){
 		std::cout << "Column#" << sequence_[i].column_id << ", "
-			<< "Byte#" << sequence_[i].byte_id << std::endl;
+			<< "Byte#" << sequence_[i].byte_id << std::endl << std::endl;
 	}
 }
 

@@ -23,7 +23,7 @@ int main(int argc, char* argv[]){
 	size_t code_length1 = 15;
 	size_t code_length2 = 20;
 	size_t code_length3 = 25;
-	double selectivity1 = 0.8;
+	double selectivity1 = 0.1;
 	double selectivity2 = 0.2;
 	double selectivity3 = 0.3;
 	size_t repeat = 1;

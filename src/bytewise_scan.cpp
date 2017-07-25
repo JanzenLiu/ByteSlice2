@@ -141,7 +141,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        	// scan each byte in the specified sequence
 	        	AvxUnit input_mask = avx_ones();
 	        	for(size_t j = 0; j < sequence_.size(); j++){
-	        		std::out << "Column# " <<  sequence_[j].column_id << ", "
+	        		std::cout << "Column# " <<  sequence_[j].column_id << ", "
 	        			<< "Byte#" << sequence_[j].byte_id << ": "
 	        			<< std::bitset<32>(_mm256_movemask_epi8(input_mask)) << std::endl;
 	        		if(avx_iszero(input_mask))

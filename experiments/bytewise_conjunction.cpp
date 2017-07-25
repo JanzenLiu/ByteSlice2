@@ -145,10 +145,10 @@ int main(int argc, char* argv[]){
     std::cout << std::endl;
 
     //calcuate average cycles
-    std::cout << "bytewise columnwise      " 
+    std::cout << "bytewise        columnwise      " 
     	<< "col(1)  col(2)  col(3)  " << std::endl;
 	std::cout
-	    << double(cycles_bytewise / repeat) / num_rows << "\t"
+	    << double(cycles_bytewise / repeat) / num_rows << "\t\t"
 	    << double((cycles_columnwise) / repeat) / num_rows << "\t\t"
 	    << double(cycles_columnar1 / repeat) / num_rows << "\t"
 	    << double(cycles_columnar2 / repeat) / num_rows << "\t"

@@ -46,6 +46,7 @@ public:
 	void SetSequence(const Sequence seq);
 	bool ValidSequence(Sequence seq) const;
 	void ShuffleSequence();
+	void PrintSequence();
 	Sequence NaturalSequence() const;
 	Sequence RandomSequence() const;
 

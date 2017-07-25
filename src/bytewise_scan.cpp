@@ -139,10 +139,13 @@ void BytewiseScan::Scan(BitVector* bitvector){
 				}
 
 	        	// scan each byte in the specified sequence
-	        	// AvxUnit input_mask = avx_ones();
+	        	AvxUnit input_mask = avx_ones();
 	        	for(size_t j = 0; j < sequence_.size(); j++){
-	        		// if(avx_iszero(input_mask))
-	        		// 	break;
+	        		std::out << "Column# " <<  sequence_[j].column_id << ", "
+	        			<< "Byte#" << sequence_[j].byte_id << ": "
+	        			<< std::bitset<32>(_mm256_movemask_epi8(input_mask)) << std::endl;
+	        		if(avx_iszero(input_mask))
+	        			break;
 					size_t col = sequence_[j].column_id;
 	        		size_t byte = sequence_[j].byte_id;
 	        		AvxUnit avx_data = conjunctions_[col].column->GetBlock(block_id)->GetAvxUnit(offset + i, byte);
@@ -159,7 +162,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        		_mm256_storeu_si256(&m_less[col], avx_less);
 	        		_mm256_storeu_si256(&m_greater[col], avx_greater);
 	        		_mm256_storeu_si256(&m_equal[col], avx_equal);
-	        		// input_mask = avx_and(input_mask, avx_equal);
+	        		input_mask = avx_and(input_mask, avx_equal);
 	        	}
 
 	        	// get columnar result, and combine to get the final result

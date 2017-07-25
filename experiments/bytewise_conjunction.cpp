@@ -145,8 +145,8 @@ int main(int argc, char* argv[]){
     std::cout << std::endl;
 
     //calcuate average cycles
-    std::cout << "BS-pipeline  BS-columnar  " 
-    	<< "BS(1)  BS(2)  BS(3)  " << std::endl;
+    std::cout << "bytewise  columnwise  " 
+    	<< "column(1)  column(2)  column(3)  " << std::endl;
 	std::cout
 	    << double(cycles_bytewise / repeat) / num_rows << "\t\t"
 	    << double((cycles_columnwise) / repeat) / num_rows << "\t"

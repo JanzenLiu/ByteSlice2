@@ -45,6 +45,7 @@ public:
 	void AddPredicate(BytewiseAtomPredicate predicate);
 	void SetSequence(const Sequence seq);
 	bool ValidSequence(Sequence seq) const;
+	void ShuffleSequence();
 	Sequence NaturalSequence() const;
 	Sequence RandomSequence() const;
 

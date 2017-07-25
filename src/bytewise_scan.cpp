@@ -49,6 +49,11 @@ bool BytewiseScan::ValidSequence(Sequence seq) const{
 	return true;
 }
 
+void BytewiseScan::ShuffleSequence(){
+	Sequence seq = RandomSequence();
+	SetSequence(seq);
+}
+
 Sequence BytewiseScan::NaturalSequence() const{
 	Sequence seq;
 	for(size_t i = 0; i < conjunctions_.size(); i++){

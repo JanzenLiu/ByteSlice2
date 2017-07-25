@@ -9,6 +9,12 @@
 
 namespace byteslice{
 
+#ifdef      NEARLYSTOP
+#warning    "Early-stop is disabled in ByteSliceColumnBlock!"
+#endif
+
+static constexpr size_t kPrefetchDistance = 512*2;
+
 void BytewiseScan::AddPredicate(BytewiseAtomPredicate predicate){
 	assert(predicate.column->type() == ColumnType::kByteSlicePadRight);
     conjunctions_.push_back(predicate);
@@ -167,7 +173,10 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        			break;
 					size_t col = sequence_[j].column_id;
 	        		size_t byte = sequence_[j].byte_id;
-	        		AvxUnit avx_data = conjunctions_[col].column->GetBlock(block_id)->GetAvxUnit(offset + i, byte);
+	        		ColumnBlock* col_block = conjunctions_[col].column->GetBlock(block_id);
+	        		col_block->Prefetch(byte_id, offset + i, kPrefetchDistance);
+
+	        		AvxUnit avx_data = col_block->GetAvxUnit(offset + i, byte);
 	        		AvxUnit avx_lit = _mm256_lddqu_si256(&mask_byte[col][byte]);
 	        		AvxUnit avx_less = _mm256_lddqu_si256(&m_less[col]);
 	        		AvxUnit avx_greater = _mm256_lddqu_si256(&m_greater[col]);

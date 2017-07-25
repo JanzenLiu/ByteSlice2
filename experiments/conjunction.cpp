@@ -132,8 +132,8 @@ int main(int argc, char* argv[]){
         //Prepare the material
         Column* column1 = new Column(ColumnType::kByteSlicePadRight, code_length1, num_rows);
         Column* column2 = new Column(ColumnType::kByteSlicePadRight, code_length2, num_rows);
-        Column* bwv1 = new Column(ColumnType::kBitSlice, code_length, num_rows);
-        Column* bwv2 = new Column(ColumnType::kBitSlice, code_length, num_rows);
+        // Column* bwv1 = new Column(ColumnType::kBitSlice, code_length, num_rows);
+        // Column* bwv2 = new Column(ColumnType::kBitSlice, code_length, num_rows);
         BitVector* bitvector = new BitVector(num_rows);
 
         //populate the column with random data
@@ -196,25 +196,25 @@ int main(int argc, char* argv[]){
 
             /*--BwV: Columnar--------------------*/
             
-            bitvector->SetOnes();
+            // bitvector->SetOnes();
 
             // pm.Start();
-            t1.Start();
-            bwv1->Scan(comparator, literal1, bitvector, Bitwise::kSet);
+            // t1.Start();
+            // bwv1->Scan(comparator, literal1, bitvector, Bitwise::kSet);
             // pm.Stop();
-            t1.Stop();
+            // t1.Stop();
 
-            cycles_bwv1 += t1.GetNumCycles();
-            std::cout << bitvector->CountOnes() << "\t";
+            // cycles_bwv1 += t1.GetNumCycles();
+            // std::cout << bitvector->CountOnes() << "\t";
 
             // pm.Start();
-            t1.Start();
-            bwv2->Scan(comparator, literal2, bitvector, Bitwise::kAnd);
+            // t1.Start();
+            // bwv2->Scan(comparator, literal2, bitvector, Bitwise::kAnd);
             // pm.Stop();
-            t1.Stop();
+            // t1.Stop();
 
-            cycles_bwv2 += t1.GetNumCycles();
-            std::cout << bitvector->CountOnes() << std::endl;
+            // cycles_bwv2 += t1.GetNumCycles();
+            // std::cout << bitvector->CountOnes() << std::endl;
             
  
         }

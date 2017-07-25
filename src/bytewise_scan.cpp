@@ -9,6 +9,12 @@
 
 namespace byteslice{
 
+#ifdef      NEARLYSTOP
+#warning    "Early-stop is disabled in ByteSliceColumnBlock!"
+#endif
+
+static constexpr size_t kPrefetchDistance = 512*2;
+
 void BytewiseScan::AddPredicate(BytewiseAtomPredicate predicate){
 	assert(predicate.column->type() == ColumnType::kByteSlicePadRight);
     conjunctions_.push_back(predicate);
@@ -52,6 +58,15 @@ bool BytewiseScan::ValidSequence(Sequence seq) const{
 void BytewiseScan::ShuffleSequence(){
 	Sequence seq = RandomSequence();
 	SetSequence(seq);
+}
+
+void BytewiseScan::PrintSequence(){
+	std::cout << "Sequence of Bytes to Scan with:" << std::endl;
+	for(size_t i = 0; i < sequence_.size(); i++){
+		std::cout << "Column#" << sequence_[i].column_id << ", "
+			<< "Byte#" << sequence_[i].byte_id << std::endl;
+	}
+	std::cout << std::endl;
 }
 
 Sequence BytewiseScan::NaturalSequence() const{
@@ -121,7 +136,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 
 
 	// do the scanning job
-// #pragma omp parallel for schedule(dynamic)
+#pragma omp parallel for schedule(dynamic)
     for(size_t block_id = 0; block_id < num_blocks; block_id++){
     	BitVectorBlock* bvblk = bitvector->GetBVBlock(block_id);
 
@@ -158,7 +173,10 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        			break;
 					size_t col = sequence_[j].column_id;
 	        		size_t byte = sequence_[j].byte_id;
-	        		AvxUnit avx_data = conjunctions_[col].column->GetBlock(block_id)->GetAvxUnit(offset + i, byte);
+	        		ColumnBlock* col_block = conjunctions_[col].column->GetBlock(block_id);
+	        		col_block->Prefetch(byte, offset + i, kPrefetchDistance);
+
+	        		AvxUnit avx_data = col_block->GetAvxUnit(offset + i, byte);
 	        		AvxUnit avx_lit = _mm256_lddqu_si256(&mask_byte[col][byte]);
 	        		AvxUnit avx_less = _mm256_lddqu_si256(&m_less[col]);
 	        		AvxUnit avx_greater = _mm256_lddqu_si256(&m_greater[col]);

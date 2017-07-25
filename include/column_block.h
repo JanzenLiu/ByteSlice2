@@ -23,11 +23,21 @@ public:
     virtual void DeserFromFile(const SequentialReadBinaryFile &file) = 0;
     virtual bool Resize(size_t size) = 0;
 
+    virtual AvxUnit GetAvxUnit(size_t offset, size_t byte_id) const{
+    }
+
     //Scan procedure that takes in and output 8-bit masks
     //This method is only used by ByteSlice
     //Otherwise it does nothing!
     virtual void Scan(Comparator comparator, WordUnit literal, ByteMaskBlock* bmblk, 
             Bitwise opt = Bitwise::kSet) const{
+    }
+
+    //Scan procedure that scan a particular byte
+    //These methods is only used by ByteSlice
+    //Ohterwise it does nothing!
+    virtual void ScanByte(Comparator comparator, ByteUnit literal, size_t byte_id,
+        ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const{
     }
 
     //accessor

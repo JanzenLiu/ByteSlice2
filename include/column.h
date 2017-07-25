@@ -7,6 +7,7 @@
 #include    "common.h"
 #include    "types.h"
 #include    "bitvector.h"
+#include    "byte_mask_block.h"
 #include    "column_block.h"
 #include    "naive_column_block.h"
 #include    "naive_avx_column_block.h"

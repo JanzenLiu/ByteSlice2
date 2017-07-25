@@ -45,6 +45,13 @@ void BitVector::Or(const BitVector* bitvector){
     }
 }
 
+void BitVector::Not(){
+
+#   pragma omp parallel for schedule(dynamic)
+    for(size_t i=0; i < blocks_.size(); i++){
+        blocks_[i]->Not();
+    }
+}
 
 void BitVector::SetOnes(){
 #   pragma omp parallel for schedule(dynamic)

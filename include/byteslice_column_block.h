@@ -1,6 +1,8 @@
 #ifndef BYTESLICE_COLUMN_BLOCK_H
 #define BYTESLICE_COLUMN_BLOCK_H
 
+#include    <bitset>
+
 #include    "column_block.h"
 #include    "avx-utility.h"
 
@@ -26,6 +28,8 @@ public:
     WordUnit GetTuple(size_t pos) const override;
     void SetTuple(size_t pos, WordUnit value) override;
 
+    AvxUnit GetAvxUnit(size_t offset, size_t byte_id) const override;
+
     void Scan(Comparator comparator, WordUnit literal, BitVectorBlock* bvblock,
             Bitwise bit_opt = Bitwise::kSet) const override;
     void Scan(Comparator comparator, const ColumnBlock* other_block,
@@ -34,6 +38,10 @@ public:
     //Scan procedure that takes in and output 8-bit masks
     void Scan(Comparator comparator, WordUnit literal, ByteMaskBlock* bmblk, 
             Bitwise opt = Bitwise::kSet) const override;
+
+    //Scan procedure that scan a particular byte
+    void ScanByte(Comparator comparator, ByteUnit literal, size_t byte_id,
+        ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const override;
 
     void BulkLoadArray(const WordUnit* codes, size_t num, size_t start_pos = 0) override;
 
@@ -64,6 +72,13 @@ private:
     template <Comparator CMP, Bitwise OPT>
     void ScanHelper2(WordUnit literal, ByteMaskBlock* bmblk) const;
 
+    //Scan Byte Helper: literal
+    template <Comparator CMP>
+    void ScanByteHelper1(ByteUnit literal, size_t byte_id,
+        ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const;
+    template <Comparator CMP, size_t BYTE_ID>
+    void ScanByteHelper2(ByteUnit literal, ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const;
+
     //Scan Kernel
     template <Comparator CMP>
     inline void ScanKernel(const AvxUnit &byteslice1, const AvxUnit &byteslice2,
@@ -83,7 +98,7 @@ private:
     ByteUnit* data_[4];
 
     friend class ByteSliceJoinableBlock<BIT_WIDTH>;
-
+    friend class BytewiseScan;
 };
 
 template <size_t BIT_WIDTH, Direction PDIRECTION>
@@ -149,6 +164,11 @@ inline void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::SetTuple(size_t pos, Wo
             data_[0][pos] = FLIP(static_cast<ByteUnit>(value));
             break;
     }
+}
+
+template <size_t BIT_WIDTH, Direction PDIRECTION>
+inline AvxUnit ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::GetAvxUnit(size_t offset, size_t byte_id) const{
+    return _mm256_lddqu_si256(reinterpret_cast<__m256i*>(data_[byte_id] + offset));
 }
 
 }   //namespace

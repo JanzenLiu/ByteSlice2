@@ -148,8 +148,8 @@ int main(int argc, char* argv[]){
     std::cout << "BS-pipeline  BS-columnar  " 
     	<< "BS(1)  BS(2)  BS(3)  " << std::endl;
 	std::cout
-	    << double(cycles_bytewise / repeat) / num_rows << "\t"
-	    << double((cycles_columnwise) / repeat) / num_rows << "\t"
+	    << double(cycles_bytewise / repeat) / num_rows << "\t\t"
+	    << double((cycles_columnwise) / repeat) / num_rows << "\t\t"
 	    << double(cycles_columnar1 / repeat) / num_rows << "\t"
 	    << double(cycles_columnar2 / repeat) / num_rows << "\t"
 	    << double(cycles_columnar3 / repeat) / num_rows << std::endl;

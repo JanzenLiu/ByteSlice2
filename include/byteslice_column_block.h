@@ -29,6 +29,7 @@ public:
     void SetTuple(size_t pos, WordUnit value) override;
 
     AvxUnit GetAvxUnit(size_t offset, size_t byte_id) const override;
+    void Prefetch(size_t byte_id, size_t offset, size_t distance) const override;
 
     void Scan(Comparator comparator, WordUnit literal, BitVectorBlock* bvblock,
             Bitwise bit_opt = Bitwise::kSet) const override;

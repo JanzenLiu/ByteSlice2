@@ -174,7 +174,7 @@ void BytewiseScan::Scan(BitVector* bitvector){
 					size_t col = sequence_[j].column_id;
 	        		size_t byte = sequence_[j].byte_id;
 	        		ColumnBlock* col_block = conjunctions_[col].column->GetBlock(block_id);
-	        		col_block->Prefetch(byte_id, offset + i, kPrefetchDistance);
+	        		col_block->Prefetch(byte, offset + i, kPrefetchDistance);
 
 	        		AvxUnit avx_data = col_block->GetAvxUnit(offset + i, byte);
 	        		AvxUnit avx_lit = _mm256_lddqu_si256(&mask_byte[col][byte]);

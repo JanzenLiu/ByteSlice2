@@ -148,10 +148,12 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	        		AvxUnit input_mask = avx_zero();
 	        		for(size_t k = 0; k < num_cols; k++){
 	        			input_mask = avx_or(input_mask, _mm256_lddqu_si256(&m_equal[k]));
-	        		}
-	        		std::cout << "Column# " <<  sequence_[j].column_id << ", "
-	        			<< "Byte#" << sequence_[j].byte_id << ": "
-	        			<< std::bitset<32>(_mm256_movemask_epi8(input_mask)) << std::endl;
+	        		} 
+
+	        		// std::cout << "Column# " <<  sequence_[j].column_id << ", "
+	        		// 	<< "Byte#" << sequence_[j].byte_id << ": "
+	        		// 	<< std::bitset<32>(_mm256_movemask_epi8(input_mask)) << std::endl;
+	        		
 	        		if(avx_iszero(input_mask))
 	        			break;
 					size_t col = sequence_[j].column_id;

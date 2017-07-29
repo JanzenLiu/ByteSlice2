@@ -182,6 +182,7 @@ void HybridSliceColumnBlock<BIT_WIDTH>::ScanHelper2(WordUnit literal,
                     mask_equal = avx_ones();
 
                     int input_mask;
+                    (void) input_mask;
                     input_mask = static_cast<int>(m_eq_ptr64[sub_word_id] >> offset3);
 
                     if((OPT==Bitwise::kSet) ||  0 != input_mask){
@@ -443,6 +444,7 @@ void HybridSliceColumnBlock<BIT_WIDTH>::ScanHelper2(
                     mask_equal = avx_ones();
 
                     int input_mask;
+                    (void) input_mask;
                     input_mask = static_cast<int>(m_eq_ptr64[sub_word_id] >> offset3);
 
                     if((OPT==Bitwise::kSet) ||  0 != input_mask){

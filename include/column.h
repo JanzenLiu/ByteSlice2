@@ -53,6 +53,12 @@ public:
     void Scan(Comparator comparator, const Column* other_column, 
             BitVector* bitvector, Bitwise bit_opt = Bitwise::kSet) const;
 
+    void ScanByte(size_t byte_id, Comparator comparator, ByteUnit literal,
+        ByteMaskVector* bm_less, ByteMaskVector* bm_greater, ByteMaskVector* bm_equal, 
+        ByteMaskVector* input_mask) const;
+    void ScanByte(size_t byte_id, Comparator comparator, ByteUnit literal,
+        ByteMaskVector* bm_less, ByteMaskVector* bm_greater, ByteMaskVector* bm_equal) const;
+
     ColumnBlock* CreateNewBlock() const;
 
     //accessors

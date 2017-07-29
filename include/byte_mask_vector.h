@@ -3,7 +3,7 @@
 
 #include    <vector>
 #include    "types.h"
-#include    "column.h"
+// #include    "column.h"
 #include    "bitvector.h"
 #include    "byte_mask_block.h"
 

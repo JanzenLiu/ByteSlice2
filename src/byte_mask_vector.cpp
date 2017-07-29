@@ -79,7 +79,7 @@ void ByteMaskVector::SetByteMask(size_t pos, bool src){
     blocks_[block_id]->SetByteMask(pos_in_block, src);
 }
 
-void ByteMaskVector::Condense(BitVector* bitvector, Bitwise opt = Bitwise::kSet) const{
+void ByteMaskVector::Condense(BitVector* bitvector, Bitwise opt) const{
 	assert(num_ == bitvector->num());
 
 #	pragma omp parallel for schedule(dynamic)

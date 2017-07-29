@@ -50,9 +50,9 @@ int main(){
 
 	//single-byte column test
 	// column->ScanByte(comparator, literal, 0, bitvector1, Bitwise::kSet);
-    column->GetBlock(0)->ScanByte(comparator, byte0, 0, bm_less, bm_greater, bm_equal);
-    column->GetBlock(0)->ScanByte(comparator, byte1, 1, bm_less, bm_greater, bm_equal);
-    column->GetBlock(0)->ScanByte(comparator, byte2, 2, bm_less, bm_greater, bm_equal);
+    column->GetBlock(0)->ScanByte(0, comparator, byte0, bm_less, bm_greater, bm_equal);
+    column->GetBlock(0)->ScanByte(1, comparator, byte1, bm_less, bm_greater, bm_equal);
+    column->GetBlock(0)->ScanByte(2, comparator, byte2, bm_less, bm_greater, bm_equal);
 	column->Scan(comparator, literal, bitvector2, Bitwise::kSet);
 
     bm_less->Condense(bitvector1->GetBVBlock(0));

@@ -39,7 +39,11 @@ public:
     //These methods is only used by ByteSlice
     //Ohterwise it does nothing!
     virtual void ScanByte(size_t byte_id, Comparator comparator, ByteUnit literal,
-        ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const{
+        ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal, 
+        ByteMaskBlock* input_mask) const{
+    }
+    virtual void ScanByte(size_t byte_id, Comparator comparator, ByteUnit literal,
+    	ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const{
     }
 
     //accessor

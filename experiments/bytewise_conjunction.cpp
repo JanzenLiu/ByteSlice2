@@ -106,7 +106,8 @@ int main(int argc, char* argv[]){
 	//SCAN
 	//bytewise scan
 	t1.Start();
-	scan.Scan(bitvector1);
+	// scan.Scan(bitvector1);
+	scan.ScanColumnwise(bitvector1);
 	t1.Stop();
 	cycles_bytewise += t1.GetNumCycles();
 

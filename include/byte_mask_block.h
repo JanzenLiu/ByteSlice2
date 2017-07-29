@@ -23,6 +23,7 @@ public:
     void ClearTail();
     void And(const ByteMaskBlock* block);
     void Or(const ByteMaskBlock* block);
+    void Set(const ByteMaskBlock* block);
     
     void Condense(BitVectorBlock* bvblk, Bitwise opt = Bitwise::kSet) const;
 

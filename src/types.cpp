@@ -32,7 +32,7 @@ std::ostream& operator<< (std::ostream &out, ColumnType type){
             break;
         case ColumnType::kSuperscalar2ByteSlicePadLeft:
             out << "kSuperscalar2ByteSlicePadLeft";
-            break
+            break;
         case ColumnType::kSuperscalar4ByteSlicePadRight:
             out << "kSuperscalar4ByteSlicePadRight";
             break;

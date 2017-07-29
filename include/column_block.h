@@ -41,11 +41,9 @@ public:
     virtual void ScanByte(size_t byte_id, Comparator comparator, ByteUnit literal,
         ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal, 
         ByteMaskBlock* input_mask) const{
-    	return nullptr;
     }
     virtual void ScanByte(size_t byte_id, Comparator comparator, ByteUnit literal,
     	ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const{
-    	return nullptr;
     }
 
     //accessor

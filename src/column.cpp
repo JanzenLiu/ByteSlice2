@@ -164,7 +164,7 @@ void Column::ScanByte(size_t byte_id, Comparator comparator, ByteUnit literal,
 
 #pragma omp parallel for schedule(dynamic)
     for(size_t block_id = 0; block_id < blocks_.size(); block_id++){
-        blocks_[block_id]->Scan(
+        blocks_[block_id]->ScanByte(
                 byte_id,
                 comparator,
                 literal,
@@ -184,7 +184,7 @@ void Column::ScanByte(size_t byte_id, Comparator comparator, ByteUnit literal,
 
 #pragma omp parallel for schedule(dynamic)
     for(size_t block_id = 0; block_id < blocks_.size(); block_id++){
-        blocks_[block_id]->Scan(
+        blocks_[block_id]->ScanByte(
                 byte_id,
                 comparator,
                 literal,

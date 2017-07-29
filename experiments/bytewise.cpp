@@ -71,21 +71,9 @@ int main(){
 
 	//single-byte column test
 	// column->ScanByte(comparator, literal, 0, bitvector1, Bitwise::kSet);
-    column->GetBlock(0)->ScanByte(0, comparator, byte0, 
-        bm_less->GetBMBlock(0), bm_greater->GetBMBlock(0), bm_equal->GetBMBlock(0));
-    column->GetBlock(0)->ScanByte(1, comparator, byte1,
-        bm_less->GetBMBlock(0), bm_greater->GetBMBlock(0), bm_equal->GetBMBlock(0));
-    column->GetBlock(0)->ScanByte(2, comparator, byte2,
-        bm_less->GetBMBlock(0), bm_greater->GetBMBlock(0), bm_equal->GetBMBlock(0));
-    column->GetBlock(1)->ScanByte(0, comparator, byte0, 
-        bm_less->GetBMBlock(1), bm_greater->GetBMBlock(1), bm_equal->GetBMBlock(1));
-    column->GetBlock(1)->ScanByte(1, comparator, byte1,
-        bm_less->GetBMBlock(1), bm_greater->GetBMBlock(1), bm_equal->GetBMBlock(1));
-    column->GetBlock(1)->ScanByte(2, comparator, byte2,
-        bm_less->GetBMBlock(1), bm_greater->GetBMBlock(1), bm_equal->GetBMBlock(1));
-    // column->GetBlock(0)->ScanByte(0, comparator, byte0, bm_less0, bm_greater0, bm_equal0);
-    // column->GetBlock(0)->ScanByte(1, comparator, byte1, bm_less1, bm_greater1, bm_equal1);
-    // column->GetBlock(0)->ScanByte(2, comparator, byte2, bm_less2, bm_greater2, bm_equal2);
+    column->ScanByte(0, comparator, byte0, bm_less, bm_greater, bm_equal);
+    column->ScanByte(1, comparator, byte1, bm_less, bm_greater, bm_equal);
+    column->ScanByte(2, comparator, byte2, bm_less, bm_greater, bm_equal);
 	column->Scan(comparator, literal, bitvector2, Bitwise::kSet);
 
     bm_less->Condense(bitvector1);

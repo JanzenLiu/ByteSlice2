@@ -62,7 +62,7 @@ inline void ByteMaskBlock::SetByteMask(size_t offset, bool src){
     data_[offset] = src?(static_cast<ByteUnit>(-1)):0;
 }
 
-inline ByteUnit ByteMaskBlock::GetByte(size_t offset){
+inline ByteUnit ByteMaskBlock::GetByte(size_t offset) const{
     return data_[offset];
 }
 

@@ -26,6 +26,7 @@
 namespace byteslice{
 
 class BitVector;
+class ByteMaskVector;
 
 class Column{
 public:

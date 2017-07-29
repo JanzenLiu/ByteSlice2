@@ -16,7 +16,7 @@ using namespace byteslice;
 int main(){
 	//default parameters
 	ColumnType type = ColumnType::kByteSlicePadRight;
-    size_t num_rows = 1024*1024;
+    size_t num_rows = 2*1024*1024;
     size_t code_length = 22;
     double selectivity = 0.3;
     Comparator comparator = Comparator::kLess;
@@ -29,27 +29,35 @@ int main(){
     BitVector* bitvector1 = new BitVector(num_rows);
     BitVector* bitvector2 = new BitVector(num_rows);
     (void) bitvector1;
-    ByteMaskBlock* bm_result = new ByteMaskBlock(num_rows);
-    ByteMaskBlock* bm_less0 = new ByteMaskBlock(num_rows);
-    ByteMaskBlock* bm_greater0 = new ByteMaskBlock(num_rows);
-    ByteMaskBlock* bm_equal0 = new ByteMaskBlock(num_rows);
-    ByteMaskBlock* bm_less1 = new ByteMaskBlock(num_rows);
-    ByteMaskBlock* bm_greater1 = new ByteMaskBlock(num_rows);
-    ByteMaskBlock* bm_equal1 = new ByteMaskBlock(num_rows);
-    ByteMaskBlock* bm_less2 = new ByteMaskBlock(num_rows);
-    ByteMaskBlock* bm_greater2 = new ByteMaskBlock(num_rows);
-    ByteMaskBlock* bm_equal2 = new ByteMaskBlock(num_rows);
+    ByteMaskVector* bm_less = new ByteMaskVector(num_rows);
+    ByteMaskVector* bm_greater = new ByteMaskVector(num_rows);
+    ByteMaskVector* bm_equal = new ByteMaskVector(num_rows);
+    // ByteMaskBlock* bm_result = new ByteMaskBlock(num_rows);
+    // ByteMaskBlock* bm_less0 = new ByteMaskBlock(num_rows);
+    // ByteMaskBlock* bm_greater0 = new ByteMaskBlock(num_rows);
+    // ByteMaskBlock* bm_equal0 = new ByteMaskBlock(num_rows);
+    // ByteMaskBlock* bm_less1 = new ByteMaskBlock(num_rows);
+    // ByteMaskBlock* bm_greater1 = new ByteMaskBlock(num_rows);
+    // ByteMaskBlock* bm_equal1 = new ByteMaskBlock(num_rows);
+    // ByteMaskBlock* bm_less2 = new ByteMaskBlock(num_rows);
+    // ByteMaskBlock* bm_greater2 = new ByteMaskBlock(num_rows);
+    // ByteMaskBlock* bm_equal2 = new ByteMaskBlock(num_rows);
     bitvector1->SetOnes();
     bitvector2->SetOnes();
-    bm_less0->SetAllFalse();
-    bm_greater0->SetAllFalse();
-    bm_equal0->SetAllTrue();
-    bm_less1->SetAllFalse();
-    bm_greater1->SetAllFalse();
-    bm_equal1->SetAllTrue();
-    bm_less2->SetAllFalse();
-    bm_greater2->SetAllFalse();
-    bm_equal2->SetAllTrue();
+    bm_less->SetAllFalse();
+    bm_greater->SetAllFalse();
+    bm_equal->SetAllTrue();
+    // bm_less0->SetAllFalse();
+    // bm_greater0->SetAllFalse();
+    // bm_equal0->SetAllTrue();
+    // bm_less1->SetAllFalse();
+    // bm_greater1->SetAllFalse();
+    // bm_equal1->SetAllTrue();
+    // bm_less2->SetAllFalse();
+    // bm_greater2->SetAllFalse();
+    // bm_equal2->SetAllTrue();
+
+
     const WordUnit mask = (1ULL << code_length) - 1;
     WordUnit literal = static_cast<WordUnit>(mask * selectivity);
     ByteUnit byte0 = static_cast<ByteUnit>(literal >> 14);
@@ -63,19 +71,31 @@ int main(){
 
 	//single-byte column test
 	// column->ScanByte(comparator, literal, 0, bitvector1, Bitwise::kSet);
-    column->GetBlock(0)->ScanByte(0, comparator, byte0, bm_less0, bm_greater0, bm_equal0);
-    column->GetBlock(0)->ScanByte(1, comparator, byte1, bm_less1, bm_greater1, bm_equal1);
-    column->GetBlock(0)->ScanByte(2, comparator, byte2, bm_less2, bm_greater2, bm_equal2);
+    column->GetBlock(0)->ScanByte(0, comparator, byte0, 
+        bm_less->GetBMBlock(0), bm_greater->GetBMBlock(0), bm_equal->GetBMBlock(0));
+    column->GetBlock(0)->ScanByte(1, comparator, byte1,
+        bm_less->GetBMBlock(0), bm_greater->GetBMBlock(0), bm_equal->GetBMBlock(0));
+    column->GetBlock(0)->ScanByte(2, comparator, byte2,
+        bm_less->GetBMBlock(0), bm_greater->GetBMBlock(0), bm_equal->GetBMBlock(0));
+    column->GetBlock(1)->ScanByte(0, comparator, byte0, 
+        bm_less->GetBMBlock(1), bm_greater->GetBMBlock(1), bm_equal->GetBMBlock(1));
+    column->GetBlock(1)->ScanByte(1, comparator, byte1,
+        bm_less->GetBMBlock(1), bm_greater->GetBMBlock(1), bm_equal->GetBMBlock(1));
+    column->GetBlock(1)->ScanByte(2, comparator, byte2,
+        bm_less->GetBMBlock(1), bm_greater->GetBMBlock(1), bm_equal->GetBMBlock(1));
+    // column->GetBlock(0)->ScanByte(0, comparator, byte0, bm_less0, bm_greater0, bm_equal0);
+    // column->GetBlock(0)->ScanByte(1, comparator, byte1, bm_less1, bm_greater1, bm_equal1);
+    // column->GetBlock(0)->ScanByte(2, comparator, byte2, bm_less2, bm_greater2, bm_equal2);
 	column->Scan(comparator, literal, bitvector2, Bitwise::kSet);
 
-    // bm_less->Condense(bitvector1->GetBVBlock(0));
-    bm_less1->And(bm_equal0);
-    bm_equal1->And(bm_equal0);
-    bm_less2->And(bm_equal1);
-    bm_less0->Or(bm_less1);
-    bm_less0->Or(bm_less2);
-    bm_result->Set(bm_less0);
-    bm_result->Condense(bitvector1->GetBVBlock(0));
+    bm_less->Condense(bitvector1);
+    // bm_less1->And(bm_equal0);
+    // bm_equal1->And(bm_equal0);
+    // bm_less2->And(bm_equal1);
+    // bm_less0->Or(bm_less1);
+    // bm_less0->Or(bm_less2);
+    // bm_result->Set(bm_less0);
+    // bm_result->Condense(bitvector1->GetBVBlock(0));
 
 	//calculate accuracy
 	size_t corr = 0; //count correct tuples

@@ -239,7 +239,8 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByte(
 template <size_t BIT_WIDTH, Direction PDIRECTION>
 template <Comparator CMP>
 void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByteHelper1(size_t byte_id, ByteUnit literal,
-        ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const{
+        ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal,
+        ByteMaskBlock* input_mask) const{
     switch(byte_id){
         case 0:
             return ScanByteHelper2<CMP, 0>(literal, bm_less, bm_greater, bm_equal, input_mask);

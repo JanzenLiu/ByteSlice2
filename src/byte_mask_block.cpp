@@ -46,7 +46,7 @@ void ByteMaskBlock::Or(const ByteMaskBlock* block){
 }
 
 void ByteMaskBlock::Set(const ByteMaskBlock* block){
-    for(size_t i = 0; i < num; i++){
+    for(size_t i = 0; i < num_; i++){
         data_[i] = block->GetByte(i);
     }
 }

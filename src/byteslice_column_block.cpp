@@ -219,7 +219,7 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByte(
     assert(bm_less->num() == num_tuples_);
     assert(bm_greater->num() == num_tuples_);
     assert(bm_equal->num() == num_tuples_);
-    assert(input_mask->num() == num_tuples);
+    assert(input_mask->num() == num_tuples_);
     switch(comparator){
         case Comparator::kLess:
             return ScanByteHelper1<Comparator::kLess>(byte_id, literal, bm_less, bm_greater, bm_equal, input_mask);

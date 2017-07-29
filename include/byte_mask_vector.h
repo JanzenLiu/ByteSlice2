@@ -3,7 +3,7 @@
 
 #include    <vector>
 #include    "types.h"
-// #include    "column.h"
+#include    "column.h"
 #include    "bitvector.h"
 #include    "byte_mask_block.h"
 
@@ -14,6 +14,7 @@ namespace byteslice{
 */
 
 class Column;
+class BitVector;
 
 /**
   * @brief Host byte-masks that are generated as a result of

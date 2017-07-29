@@ -38,7 +38,7 @@ public:
     //Scan procedure that scan a particular byte
     //These methods is only used by ByteSlice
     //Ohterwise it does nothing!
-    virtual void ScanByte(Comparator comparator, ByteUnit literal, size_t byte_id,
+    virtual void ScanByte(size_t byte_id, Comparator comparator, ByteUnit literal,
         ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const{
     }
 

@@ -34,6 +34,7 @@ void ByteMaskBlock::ClearTail(){
 }
 
 void ByteMaskBlock::And(const ByteMaskBlock* block){
+    //may be improved by operating on more tuples at a time?
     for(size_t i = 0; i < num_; i++){
         data_[i] &= block->GetByte(i);
     }

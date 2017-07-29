@@ -263,7 +263,7 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanByteHelper2(ByteUnit liter
 		AvxUnit m_greater = bm_greater->GetAvxUnit(offset);
 		AvxUnit m_equal = bm_equal->GetAvxUnit(offset);
 		__builtin_prefetch(data_[BYTE_ID] + offset + kPrefetchDistance);
-        ScanKernel<CMP>(
+        ScanKernel<CMP, BYTE_ID>(
                 _mm256_lddqu_si256(reinterpret_cast<__m256i*>(data_[BYTE_ID]+offset)),
                 mask_literal,
                 m_less,

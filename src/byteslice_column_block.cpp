@@ -337,6 +337,7 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanHelper2(WordUnit literal,
             AvxUnit m_greater = avx_zero();
             AvxUnit m_equal; 
             int input_mask;
+            (void) input_mask;
 
             switch(OPT){
                 case Bitwise::kSet:
@@ -513,6 +514,7 @@ void ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanHelper2(
             AvxUnit m_greater = avx_zero();
             AvxUnit m_equal; 
             int input_mask = static_cast<int>(-1ULL);
+            (void) input_mask;
 
             switch(OPT){
                 case Bitwise::kSet:

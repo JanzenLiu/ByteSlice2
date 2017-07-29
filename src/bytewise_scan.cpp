@@ -262,10 +262,10 @@ void BytewiseScan::ScanColumnwise(BitVector* bitvector){
     	size_t column_id = sequence_[i].column_id;
     	size_t byte_id = sequence_[i].byte_id;
     	size_t num_bytes = conjunctions_[column_id].num_bytes;
-    	Column* column = conjunctions_[column_id].column;
+    	const Column* column = conjunctions_[column_id].column;
     	Comparator comparator = conjunctions_[column_id].comparator;
     	size_t num_bits_shift = 8 * num_bytes - column->bit_width();
-    	WordUnit literal = conjunctions_[col].literal;
+    	WordUnit literal = conjunctions_[column_id].literal;
 		literal <<= num_bits_shift;
 		ByteUnit byte_literal = static_cast<ByteUnit>(literal >> 8*(num_bytes - 1 - byte_id));
 

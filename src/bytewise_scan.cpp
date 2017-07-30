@@ -270,9 +270,9 @@ void BytewiseScan::ScanColumnwise(BitVector* bitvector){
 		ByteUnit byte_literal = static_cast<ByteUnit>(literal >> 8*(num_bytes - 1 - byte_id));
 		if(byte_id == num_bytes - 1)
 			byte_literal >>= num_bits_shift;
-		std::cout << "Column ID: " << column_id << ", " 
-				<< "Byte ID: " << byte_id << ": "
-				<< std::bitset<8>(byte_literal) << std::endl;
+		// std::cout << "Column ID: " << column_id << ", " 
+		// 		<< "Byte ID: " << byte_id << ": "
+		// 		<< std::bitset<8>(byte_literal) << std::endl;
 
     	column->ScanByte(
     			byte_id,

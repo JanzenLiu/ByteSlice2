@@ -81,14 +81,19 @@ int main(int argc, char* argv[]){
     uint64_t cycles_columnar1 = 0, cycles_columnar2 = 0, cycles_columnar3 = 0;
 
 	//set columns randomly
+#pragma omp parallel for schedule(dynamic)
 	for(size_t i = 0; i < num_rows; i++){
         WordUnit code = std::rand() & mask1;
         column1->SetTuple(i, code);   
     }
+
+#pragma omp parallel for schedule(dynamic)
     for(size_t i = 0; i < num_rows; i++){
         WordUnit code = std::rand() & mask2;
         column2->SetTuple(i, code);   
     }
+
+#pragma omp parallel for schedule(dynamic)
     for(size_t i = 0; i < num_rows; i++){
         WordUnit code = std::rand() & mask3;
         column3->SetTuple(i, code);   

@@ -135,6 +135,11 @@ int main(int argc, char* argv[]){
     for(size_t i = 0; i < num_rows; i++){ 
         if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 
             corr++; 
+        else{
+        	std::cout << literal1 << "\t" << column1->GetTuple(i) << "\t"
+        			<< literal2 << "\t" << column2->GetTuple(i) << "\t"
+        			<< literal3 << "\t" << column3->GetTuple(i) << std::endl;
+        }
         // std::cout 
         	// << literal1 << "\t" <<  column1->GetTuple(i) << "\t"
         	// << literal2 << "\t" << column2->GetTuple(i) << "\t"

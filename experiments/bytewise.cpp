@@ -42,9 +42,9 @@ int main(){
     // ByteMaskBlock* bm_less1 = new ByteMaskBlock(num_rows);
     // ByteMaskBlock* bm_greater1 = new ByteMaskBlock(num_rows);
     // ByteMaskBlock* bm_equal1 = new ByteMaskBlock(num_rows);
-    ByteMaskBlock* bm_less2 = new ByteMaskBlock(num_rows);
-    ByteMaskBlock* bm_greater2 = new ByteMaskBlock(num_rows);
-    ByteMaskBlock* bm_equal2 = new ByteMaskBlock(num_rows);
+    ByteMaskBlock* bm_less2 = new ByteMaskVector(num_rows);
+    ByteMaskBlock* bm_greater2 = new ByteMaskVector(num_rows);
+    ByteMaskBlock* bm_equal2 = new ByteMaskVector(num_rows);
     bitvector1->SetOnes();
     bitvector2->SetOnes();
     bm_less->SetAllFalse();
@@ -68,8 +68,8 @@ int main(){
     ByteUnit byte0 = static_cast<ByteUnit>(literal >> 14);
     ByteUnit byte1 = static_cast<ByteUnit>(literal >> 6);
     ByteUnit byte2 = static_cast<ByteUnit>(literal << 2) >> 2;
-    ByteUnit byte20 = static_cast<ByteUnit>(literal >> 6);
-    ByteUnit byte21 = static_cast<ByteUnit>(literal << 6) >> 2;
+    ByteUnit byte20 = static_cast<ByteUnit>(literal2 >> 6);
+    ByteUnit byte21 = static_cast<ByteUnit>(literal2 << 6) >> 2;
     //set column randomly
     for(size_t i = 0; i < num_rows; i++){
         ByteUnit code = std::rand() & mask;
@@ -89,7 +89,7 @@ int main(){
 
     column2->ScanByte(0, comparator, byte20, bm_less2, bm_greater2, bm_equal2);
     column2->ScanByte(1, comparator, byte21, bm_less2, bm_greater2, bm_equal2, bm_equal2);
-    column->Scan(comparator, literal, bitvector2, Bitwise::kAnd);
+    column2->Scan(comparator, literal2, bitvector2, Bitwise::kAnd);
 
     bm_less->Condense(bitvector1);
     bm_less2->Condense(bitvector1, Bitwise::kAnd);

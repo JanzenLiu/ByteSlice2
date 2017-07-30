@@ -28,7 +28,7 @@ int main(){
 
     //initalize experimental variables
     Column* column = new Column(ColumnType::kByteSlicePadRight, code_length, num_rows);
-    Column* column = new Column(ColumnType::kByteSlicePadRight, code_length2, num_rows);
+    Column* column2 = new Column(ColumnType::kByteSlicePadRight, code_length2, num_rows);
     BitVector* bitvector1 = new BitVector(num_rows);
     BitVector* bitvector2 = new BitVector(num_rows);
     (void) bitvector1;

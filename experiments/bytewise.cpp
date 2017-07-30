@@ -18,7 +18,9 @@ int main(){
 	ColumnType type = ColumnType::kByteSlicePadRight;
     size_t num_rows = 2*1024*1024;
     size_t code_length = 22;
+    size_t code_length2 = 14;
     double selectivity = 0.3;
+    double selectivity2 = 0.6;
     Comparator comparator = Comparator::kLess;
     size_t repeat = 1;
 
@@ -26,6 +28,7 @@ int main(){
 
     //initalize experimental variables
     Column* column = new Column(ColumnType::kByteSlicePadRight, code_length, num_rows);
+    Column* column = new Column(ColumnType::kByteSlicePadRight, code_length2, num_rows);
     BitVector* bitvector1 = new BitVector(num_rows);
     BitVector* bitvector2 = new BitVector(num_rows);
     (void) bitvector1;
@@ -39,9 +42,9 @@ int main(){
     // ByteMaskBlock* bm_less1 = new ByteMaskBlock(num_rows);
     // ByteMaskBlock* bm_greater1 = new ByteMaskBlock(num_rows);
     // ByteMaskBlock* bm_equal1 = new ByteMaskBlock(num_rows);
-    // ByteMaskBlock* bm_less2 = new ByteMaskBlock(num_rows);
-    // ByteMaskBlock* bm_greater2 = new ByteMaskBlock(num_rows);
-    // ByteMaskBlock* bm_equal2 = new ByteMaskBlock(num_rows);
+    ByteMaskBlock* bm_less2 = new ByteMaskBlock(num_rows);
+    ByteMaskBlock* bm_greater2 = new ByteMaskBlock(num_rows);
+    ByteMaskBlock* bm_equal2 = new ByteMaskBlock(num_rows);
     bitvector1->SetOnes();
     bitvector2->SetOnes();
     bm_less->SetAllFalse();
@@ -53,20 +56,28 @@ int main(){
     // bm_less1->SetAllFalse();
     // bm_greater1->SetAllFalse();
     // bm_equal1->SetAllTrue();
-    // bm_less2->SetAllFalse();
-    // bm_greater2->SetAllFalse();
-    // bm_equal2->SetAllTrue();
+    bm_less2->SetAllFalse();
+    bm_greater2->SetAllFalse();
+    bm_equal2->SetAllTrue();
 
 
     const WordUnit mask = (1ULL << code_length) - 1;
+    const WordUnit mask2 = (1ULL << code_length2) - 1;
     WordUnit literal = static_cast<WordUnit>(mask * selectivity);
+    WordUnit literal2 = static_cast<WordUnit>(mask2 * selectivity2);
     ByteUnit byte0 = static_cast<ByteUnit>(literal >> 14);
     ByteUnit byte1 = static_cast<ByteUnit>(literal >> 6);
     ByteUnit byte2 = static_cast<ByteUnit>(literal << 2) >> 2;
+    ByteUnit byte20 = static_cast<ByteUnit>(literal >> 6);
+    ByteUnit byte21 = static_cast<ByteUnit>(literal << 6) >> 2;
     //set column randomly
     for(size_t i = 0; i < num_rows; i++){
         ByteUnit code = std::rand() & mask;
         column->SetTuple(i, code);
+    }
+    for(size_t i = 0; i < num_rows; i++){
+        ByteUnit code = std::rand() & mask2;
+        column2->SetTuple(i, code);
     }
 
 	//single-byte column test
@@ -76,7 +87,12 @@ int main(){
     column->ScanByte(2, comparator, byte2, bm_less, bm_greater, bm_equal, bm_equal);
 	column->Scan(comparator, literal, bitvector2, Bitwise::kSet);
 
+    column2->ScanByte(0, comparator, byte20, bm_less2, bm_greater2, bm_equal2);
+    column2->ScanByte(1, comparator, byte21, bm_less2, bm_greater2, bm_equal2, bm_equal2);
+    column->Scan(comparator, literal, bitvector2, Bitwise::kAnd);
+
     bm_less->Condense(bitvector1);
+    bm_less2->Condense(bitvector1, Bitwise::kAnd);
     // bm_less1->And(bm_equal0);
     // bm_equal1->And(bm_equal0);
     // bm_less2->And(bm_equal1);

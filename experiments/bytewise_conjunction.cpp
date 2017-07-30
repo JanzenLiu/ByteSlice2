@@ -98,7 +98,7 @@ int main(int argc, char* argv[]){
 	BytewiseScan scan;
 	scan.AddPredicate(BytewiseAtomPredicate(column1, comparator, literal1));
 	scan.AddPredicate(BytewiseAtomPredicate(column2, comparator, literal2));
-	// scan.AddPredicate(BytewiseAtomPredicate(column3, comparator, literal3));
+	scan.AddPredicate(BytewiseAtomPredicate(column3, comparator, literal3));
 	scan.ShuffleSequence();
 	scan.PrintSequence();
 
@@ -131,6 +131,7 @@ int main(int argc, char* argv[]){
 
 	//calculate accuracy
 	size_t corr = 0; //count correct tuples
+	size_t positive = 0; //count positive results
 	double acc = 0;
     for(size_t i = 0; i < num_rows; i++){ 
         if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 
@@ -140,12 +141,16 @@ int main(int argc, char* argv[]){
         			<< literal2 << "\t" << column2->GetTuple(i) << "\t"
         			<< literal3 << "\t" << column3->GetTuple(i) << std::endl;
         }
+        if(bitvector2->GetBit(i) == true){
+        	positive++;
+        }
         // std::cout 
         	// << literal1 << "\t" <<  column1->GetTuple(i) << "\t"
         	// << literal2 << "\t" << column2->GetTuple(i) << "\t"
         	// << bitvector2->GetBit(i) << "\t" << bitvector1->GetBit(i) << std::endl;
     }
     acc = (double)corr / num_rows;
+    std::cout << "Number of positive results: " << positive << std::endl;
     std::cout << "Number of correct tuples: " << corr << std::endl; 
     std::cout << "Accuracy: " << acc << std::endl;
     std::cout << std::endl;

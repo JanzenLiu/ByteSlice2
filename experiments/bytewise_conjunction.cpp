@@ -142,7 +142,6 @@ int main(int argc, char* argv[]){
         // }
     }
     acc = (double)corr / num_rows;
-    std::cout << "Expected incorrect results: " << experr << std::endl;
     std::cout << "Number of correct tuples: " << corr << std::endl; 
     std::cout << "Accuracy: " << acc << std::endl;
     std::cout << std::endl;

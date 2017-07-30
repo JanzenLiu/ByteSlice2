@@ -131,7 +131,7 @@ int main(int argc, char* argv[]){
 
 	//calculate accuracy
 	size_t corr = 0; //count correct tuples
-	size_t positive = 0; //count positive results
+	size_t experr = 0; //count positive results
 	double acc = 0;
     for(size_t i = 0; i < num_rows; i++){ 
         if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 
@@ -141,8 +141,8 @@ int main(int argc, char* argv[]){
         			<< std::bitset<20>(literal2) << "\t" << std::bitset<20>(column2->GetTuple(i)) << "\t"
         			<< std::bitset<25>(literal3) << "\t" << std::bitset<25>(column3->GetTuple(i)) << std::endl;
         }
-        if(bitvector2->GetBit(i) == true){
-        	positive++;
+        if(bitvector2->GetBit(i) == 1 && column1->GetTuple(i) >= 3200){
+        	experr++;
         }
         // std::cout 
         	// << literal1 << "\t" <<  column1->GetTuple(i) << "\t"
@@ -150,7 +150,7 @@ int main(int argc, char* argv[]){
         	// << bitvector2->GetBit(i) << "\t" << bitvector1->GetBit(i) << std::endl;
     }
     acc = (double)corr / num_rows;
-    std::cout << "Number of positive results: " << positive << std::endl;
+    std::cout << "Expected incorrect results: " << experr << std::endl;
     std::cout << "Number of correct tuples: " << corr << std::endl; 
     std::cout << "Accuracy: " << acc << std::endl;
     std::cout << std::endl;

@@ -239,8 +239,8 @@ void BytewiseScan::Scan(BitVector* bitvector){
 void BytewiseScan::ScanColumnwise(BitVector* bitvector){
 	//set all byte mask vectors
 	size_t num_tuples = conjunctions_[0].column->num_tuples();	
-	ByteMaskVector* input_mask = new ByteMaskVector(num_tuples);
-	input_mask->SetAllTrue();
+	// ByteMaskVector* input_mask = new ByteMaskVector(num_tuples);
+	// input_mask->SetAllTrue();
 	std::vector<ByteMaskVector*> bm_less;
 	std::vector<ByteMaskVector*> bm_greater;
 	std::vector<ByteMaskVector*> bm_equal;
@@ -251,7 +251,7 @@ void BytewiseScan::ScanColumnwise(BitVector* bitvector){
         ByteMaskVector* new_bm_equal = new ByteMaskVector(num_tuples);
         new_bm_less->SetAllFalse();
         new_bm_greater->SetAllFalse();
-        new_bm_equal->SetAllTrue();
+        // new_bm_equal->SetAllTrue();
         bm_less.push_back(new_bm_less);
         bm_greater.push_back(new_bm_greater);
         bm_equal.push_back(new_bm_equal);
@@ -275,14 +275,14 @@ void BytewiseScan::ScanColumnwise(BitVector* bitvector){
     			byte_literal,
     			bm_less[column_id],
     			bm_greater[column_id],
-    			bm_equal[column_id],
-    			input_mask);
+    			bm_equal[column_id]);
+    			// input_mask);
 
     	//re-calculate input mask
-    	input_mask->SetAllFalse();
-    	for(size_t j = 0; j < conjunctions_.size(); j++){
-    		input_mask->Or(bm_equal[j]);
-    	}
+    	// input_mask->SetAllFalse();
+    	// for(size_t j = 0; j < conjunctions_.size(); j++){
+    	// 	input_mask->Or(bm_equal[j]);
+    	// }
     }
 
     //Calculate condensed result
@@ -319,7 +319,7 @@ void BytewiseScan::ScanColumnwise(BitVector* bitvector){
     }
 
     //free byte mask vectors
-    delete input_mask;
+    // delete input_mask;
     for(size_t i = 0; i < conjunctions_.size(); i++){
     	delete bm_less[i];
     	delete bm_greater[i];

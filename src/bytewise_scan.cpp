@@ -240,7 +240,7 @@ void BytewiseScan::ScanColumnwise(BitVector* bitvector){
 	//set all byte mask vectors
 	size_t num_tuples = conjunctions_[0].column->num_tuples();	
 	ByteMaskVector* input_mask = new ByteMaskVector(num_tuples);
-	// input_mask->SetAllTrue();
+	input_mask->SetAllTrue();
 	std::vector<ByteMaskVector*> bm_less;
 	std::vector<ByteMaskVector*> bm_greater;
 	std::vector<ByteMaskVector*> bm_equal;
@@ -251,7 +251,7 @@ void BytewiseScan::ScanColumnwise(BitVector* bitvector){
         ByteMaskVector* new_bm_equal = new ByteMaskVector(num_tuples);
         new_bm_less->SetAllFalse();
         new_bm_greater->SetAllFalse();
-        // new_bm_equal->SetAllTrue();
+        new_bm_equal->SetAllTrue();
         bm_less.push_back(new_bm_less);
         bm_greater.push_back(new_bm_greater);
         bm_equal.push_back(new_bm_equal);

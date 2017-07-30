@@ -42,9 +42,9 @@ int main(){
     // ByteMaskBlock* bm_less1 = new ByteMaskBlock(num_rows);
     // ByteMaskBlock* bm_greater1 = new ByteMaskBlock(num_rows);
     // ByteMaskBlock* bm_equal1 = new ByteMaskBlock(num_rows);
-    ByteMaskBlock* bm_less2 = new ByteMaskVector(num_rows);
-    ByteMaskBlock* bm_greater2 = new ByteMaskVector(num_rows);
-    ByteMaskBlock* bm_equal2 = new ByteMaskVector(num_rows);
+    ByteMaskVector* bm_less2 = new ByteMaskVector(num_rows);
+    ByteMaskVector* bm_greater2 = new ByteMaskVector(num_rows);
+    ByteMaskVector* bm_equal2 = new ByteMaskVector(num_rows);
     bitvector1->SetOnes();
     bitvector2->SetOnes();
     bm_less->SetAllFalse();

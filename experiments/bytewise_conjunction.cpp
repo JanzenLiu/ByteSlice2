@@ -137,9 +137,9 @@ int main(int argc, char* argv[]){
         if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 
             corr++; 
         else{
-        	std::cout << literal1 << "\t" << column1->GetTuple(i) << "\t"
-        			<< literal2 << "\t" << column2->GetTuple(i) << "\t"
-        			<< literal3 << "\t" << column3->GetTuple(i) << std::endl;
+        	std::cout << std::bitset<15>(literal1) << "\t" << std::bitset<15>(column1->GetTuple(i)) << "\t"
+        			<< std::bitset<20>(literal2) << "\t" << std::bitset<20>(column2->GetTuple(i)) << "\t"
+        			<< std::bitset<25>(literal3) << "\t" << std::bitset<25>(column3->GetTuple(i)) << std::endl;
         }
         if(bitvector2->GetBit(i) == true){
         	positive++;

@@ -77,7 +77,7 @@ int main(int argc, char* argv[]){
 
     HybridTimer t1;
 
-    uint64_t cycles_bytewise = 0, cycles_columnwise = 0;
+    uint64_t cycles_bytewise = 0, cycles_bytewise_columnfirst = 0, cycles_columnwise = 0;
     uint64_t cycles_columnar1 = 0, cycles_columnar2 = 0, cycles_columnar3 = 0;
 
 	//set columns randomly
@@ -106,10 +106,15 @@ int main(int argc, char* argv[]){
 	//SCAN
 	//bytewise scan
 	t1.Start();
-	// scan.Scan(bitvector1);
-	scan.ScanColumnwise(bitvector1);
+	scan.Scan(bitvector1);
+	// scan.ScanColumnwise(bitvector1);
 	t1.Stop();
 	cycles_bytewise += t1.GetNumCycles();
+
+	t1.Start();
+	scan.ScanColumnwise(bitvector1);
+	t1.Stop();
+	cycles_bytewise_columnfirst += t1.GetNumCycles();
 
 	//columnwise scan
 	t1.Start();
@@ -147,10 +152,11 @@ int main(int argc, char* argv[]){
     std::cout << std::endl;
 
     //calcuate average cycles
-    std::cout << "bytewise        columnwise      " 
+    std::cout << "bytewise  bytewise-columnfirst  columnwise      " 
     	<< "col(1)  col(2)  col(3)  " << std::endl;
 	std::cout
 	    << double(cycles_bytewise / repeat) / num_rows << "\t\t"
+	    << double(cycles_bytewise_columnfirst / repeat) / num_rows << "\t\t\t"
 	    << double((cycles_columnwise) / repeat) / num_rows << "\t\t"
 	    << double(cycles_columnar1 / repeat) / num_rows << "\t"
 	    << double(cycles_columnar2 / repeat) / num_rows << "\t"

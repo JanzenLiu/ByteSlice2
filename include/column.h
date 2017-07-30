@@ -8,6 +8,7 @@
 #include    "types.h"
 #include    "bitvector.h"
 #include    "byte_mask_block.h"
+#include    "byte_mask_vector.h"
 #include    "column_block.h"
 #include    "naive_column_block.h"
 #include    "naive_avx_column_block.h"
@@ -25,6 +26,7 @@
 namespace byteslice{
 
 class BitVector;
+class ByteMaskVector;
 
 class Column{
 public:
@@ -51,6 +53,12 @@ public:
             BitVector* bitvector, Bitwise bit_opt = Bitwise::kSet) const;
     void Scan(Comparator comparator, const Column* other_column, 
             BitVector* bitvector, Bitwise bit_opt = Bitwise::kSet) const;
+
+    void ScanByte(size_t byte_id, Comparator comparator, ByteUnit literal,
+        ByteMaskVector* bm_less, ByteMaskVector* bm_greater, ByteMaskVector* bm_equal, 
+        ByteMaskVector* input_mask) const;
+    void ScanByte(size_t byte_id, Comparator comparator, ByteUnit literal,
+        ByteMaskVector* bm_less, ByteMaskVector* bm_greater, ByteMaskVector* bm_equal) const;
 
     ColumnBlock* CreateNewBlock() const;
 

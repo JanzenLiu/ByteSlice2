@@ -33,6 +33,25 @@ void ByteMaskBlock::ClearTail(){
     memset(data_+num_, 0ULL, (kNumTuplesPerBlock-num_)*sizeof(ByteUnit));
 }
 
+void ByteMaskBlock::And(const ByteMaskBlock* block){
+    //may be improved by operating on more tuples at a time?
+    for(size_t i = 0; i < num_; i++){
+        data_[i] &= block->GetByte(i);
+    }
+}
+
+void ByteMaskBlock::Or(const ByteMaskBlock* block){
+    for(size_t i = 0; i < num_; i++){
+        data_[i] |= block->GetByte(i);
+    }
+}
+
+void ByteMaskBlock::Set(const ByteMaskBlock* block){
+    for(size_t i = 0; i < num_; i++){
+        data_[i] = block->GetByte(i);
+    }
+}
+
 void ByteMaskBlock::Condense(BitVectorBlock* bvblk, Bitwise opt) const{
     switch(opt){
         case Bitwise::kSet:

@@ -21,6 +21,9 @@ public:
     void SetAllTrue();
     void SetAllFalse();
     void ClearTail();
+    void And(const ByteMaskBlock* block);
+    void Or(const ByteMaskBlock* block);
+    void Set(const ByteMaskBlock* block);
     
     void Condense(BitVectorBlock* bvblk, Bitwise opt = Bitwise::kSet) const;
 
@@ -30,6 +33,7 @@ public:
     size_t num() const;
     bool GetByteMask(size_t offset) const;
     void SetByteMask(size_t offset, bool src);
+    ByteUnit GetByte(size_t offset) const;
 
 private:
     ByteUnit* data_;
@@ -57,6 +61,10 @@ inline bool ByteMaskBlock::GetByteMask(size_t offset) const{
 
 inline void ByteMaskBlock::SetByteMask(size_t offset, bool src){
     data_[offset] = src?(static_cast<ByteUnit>(-1)):0;
+}
+
+inline ByteUnit ByteMaskBlock::GetByte(size_t offset) const{
+    return data_[offset];
 }
 
 

@@ -28,10 +28,16 @@ std::ostream& operator<< (std::ostream &out, ColumnType type){
             out << "ByteSlicePadLeft";
             break;
         case ColumnType::kSuperscalar2ByteSlicePadRight:
-            out << "kSuperscalar2ByteSlice";
+            out << "kSuperscalar2ByteSlicePadRight";
+            break;
+        case ColumnType::kSuperscalar2ByteSlicePadLeft:
+            out << "kSuperscalar2ByteSlicePadLeft";
             break;
         case ColumnType::kSuperscalar4ByteSlicePadRight:
-            out << "kSuperscalar4ByteSlice";
+            out << "kSuperscalar4ByteSlicePadRight";
+            break;
+        case ColumnType::kSuperscalar4ByteSlicePadLeft:
+            out << "kSuperscalar4ByteSlicePadLeft";
             break;
         case ColumnType::kHybridSlice:
             out << "HybridSlice";

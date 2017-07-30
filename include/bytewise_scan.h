@@ -51,6 +51,7 @@ public:
 	Sequence RandomSequence() const;
 
 	void Scan(BitVector* bitvector);
+	void ScanColumnwise(BitVector* bitvector);
 	
 	// accessor
 	BytewiseAtomPredicate GetPredicate(size_t pid) const;
@@ -61,6 +62,7 @@ private:
     inline void ScanKernel(Comparator comparator, 
     	const AvxUnit &byteslice1, const AvxUnit &byteslice2,
         AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal) const;
+
 
 	std::vector<BytewiseAtomPredicate> conjunctions_;
 	Sequence sequence_;

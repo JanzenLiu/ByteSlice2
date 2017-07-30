@@ -236,6 +236,102 @@ void BytewiseScan::Scan(BitVector* bitvector){
 	}
 }
 
+void BytewiseScan::ScanColumnwise(BitVector* bitvector){
+	//set all byte mask vectors
+	size_t num_tuples = conjunctions_[0].column->num_tuples();	
+	ByteMaskVector* input_mask = new ByteMaskVector(num_tuples);
+	// input_mask->SetAllTrue();
+	std::vector<ByteMaskVector*> bm_less;
+	std::vector<ByteMaskVector*> bm_greater;
+	std::vector<ByteMaskVector*> bm_equal;
+
+    for(size_t i = 0; i < conjunctions_.size(); i++){
+        ByteMaskVector* new_bm_less = new ByteMaskVector(num_tuples);
+        ByteMaskVector* new_bm_greater = new ByteMaskVector(num_tuples);
+        ByteMaskVector* new_bm_equal = new ByteMaskVector(num_tuples);
+        new_bm_less->SetAllFalse();
+        new_bm_greater->SetAllFalse();
+        // new_bm_equal->SetAllTrue();
+        bm_less.push_back(new_bm_less);
+        bm_greater.push_back(new_bm_greater);
+        bm_equal.push_back(new_bm_equal);
+    }
+
+    //Scan in columnwise approach, but using ByteMask as intermediate.
+    for(size_t i = 0; i < sequence_.size(); i++){
+    	size_t column_id = sequence_[i].column_id;
+    	size_t byte_id = sequence_[i].byte_id;
+    	size_t num_bytes = conjunctions_[column_id].num_bytes;
+    	const Column* column = conjunctions_[column_id].column;
+    	Comparator comparator = conjunctions_[column_id].comparator;
+    	size_t num_bits_shift = 8 * num_bytes - column->bit_width();
+    	WordUnit literal = conjunctions_[column_id].literal;
+		literal <<= num_bits_shift;
+		ByteUnit byte_literal = static_cast<ByteUnit>(literal >> 8*(num_bytes - 1 - byte_id));
+		if(byte_id == num_bytes - 1)
+			byte_literal >>= num_bits_shift;
+		// std::cout << "Column ID: " << column_id << ", " 
+		// 		<< "Byte ID: " << byte_id << ": "
+		// 		<< std::bitset<8>(byte_literal) << std::endl;
+
+    	column->ScanByte(
+    			byte_id,
+    			comparator,
+    			byte_literal,
+    			bm_less[column_id],
+    			bm_greater[column_id],
+    			bm_equal[column_id],
+    			input_mask);
+
+    	//re-calculate input mask
+    	input_mask->SetAllFalse();
+    	for(size_t j = 0; j < conjunctions_.size(); j++){
+    		input_mask->Or(bm_equal[j]);
+    	}
+    }
+
+    //Calculate condensed result
+    bitvector->SetOnes();
+    for(size_t i = 0; i < conjunctions_.size(); i++){
+    	Comparator comparator = conjunctions_[i].comparator;
+    	BitVector* col_result = new BitVector(num_tuples);
+
+    	switch(comparator){
+    		case Comparator::kEqual:
+    			bm_equal[i]->Condense(col_result);
+    			break;
+    		case Comparator::kInequal:
+    			bm_equal[i]->Condense(col_result);
+    			col_result->Not();
+    			break;
+    		case Comparator::kLess:
+    			bm_less[i]->Condense(col_result);
+    			break;
+    		case Comparator::kLessEqual:
+    			bm_less[i]->Condense(col_result);
+    			bm_equal[i]->Condense(col_result, Bitwise::kOr);
+    			break;
+    		case Comparator::kGreater:
+    			bm_greater[i]->Condense(col_result);
+    			break;
+    		case Comparator::kGreaterEqual:
+    			bm_greater[i]->Condense(col_result);
+    			bm_equal[i]->Condense(col_result, Bitwise::kOr);
+    			break;
+    	}
+
+    	bitvector->And(col_result);
+    }
+
+    //free byte mask vectors
+    delete input_mask;
+    for(size_t i = 0; i < conjunctions_.size(); i++){
+    	delete bm_less[i];
+    	delete bm_greater[i];
+    	delete bm_equal[i];
+    }
+}
+
 inline void BytewiseScan::ScanKernel(Comparator comparator,
 		const AvxUnit &byteslice1, const AvxUnit &byteslice2,
         AvxUnit &mask_less, AvxUnit &mask_greater, AvxUnit &mask_equal) const{

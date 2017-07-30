@@ -153,6 +153,47 @@ void Column::Scan(Comparator comparator, const Column* other_column,
 
 }
 
+void Column::ScanByte(size_t byte_id, Comparator comparator, ByteUnit literal,
+        ByteMaskVector* bm_less, ByteMaskVector* bm_greater, ByteMaskVector* bm_equal, 
+        ByteMaskVector* input_mask) const{
+    assert(num_tuples_ == bm_less->num());
+    assert(num_tuples_ == bm_greater->num());
+    assert(num_tuples_ == bm_equal->num());
+    assert(num_tuples_ == input_mask->num());
+    assert(type_ == ColumnType::kByteSlicePadRight);
+
+#pragma omp parallel for schedule(dynamic)
+    for(size_t block_id = 0; block_id < blocks_.size(); block_id++){
+        blocks_[block_id]->ScanByte(
+                byte_id,
+                comparator,
+                literal,
+                bm_less->GetBMBlock(block_id),
+                bm_greater->GetBMBlock(block_id),
+                bm_equal->GetBMBlock(block_id),
+                input_mask->GetBMBlock(block_id));
+    }
+}
+
+void Column::ScanByte(size_t byte_id, Comparator comparator, ByteUnit literal,
+        ByteMaskVector* bm_less, ByteMaskVector* bm_greater, ByteMaskVector* bm_equal) const{
+    assert(num_tuples_ == bm_less->num());
+    assert(num_tuples_ == bm_greater->num());
+    assert(num_tuples_ == bm_equal->num());
+    assert(type_ == ColumnType::kByteSlicePadRight);
+
+#pragma omp parallel for schedule(dynamic)
+    for(size_t block_id = 0; block_id < blocks_.size(); block_id++){
+        blocks_[block_id]->ScanByte(
+                byte_id,
+                comparator,
+                literal,
+                bm_less->GetBMBlock(block_id),
+                bm_greater->GetBMBlock(block_id),
+                bm_equal->GetBMBlock(block_id));
+    }
+}
+
 ColumnBlock* Column::CreateNewBlock() const{
     assert(0 < bit_width_ && 32 >= bit_width_);
     if(!(0<bit_width_ && 32>= bit_width_)){

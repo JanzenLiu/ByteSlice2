@@ -77,7 +77,7 @@ int main(int argc, char* argv[]){
 
     HybridTimer t1;
 
-    uint64_t cycles_bytewise = 0, cycles_columnwise = 0;
+    uint64_t cycles_bytewise = 0, cycles_bytewise_columnfirst = 0, cycles_columnwise = 0;
     uint64_t cycles_columnar1 = 0, cycles_columnar2 = 0, cycles_columnar3 = 0;
 
 	//set columns randomly
@@ -107,8 +107,14 @@ int main(int argc, char* argv[]){
 	//bytewise scan
 	t1.Start();
 	scan.Scan(bitvector1);
+	// scan.ScanColumnwise(bitvector1);
 	t1.Stop();
 	cycles_bytewise += t1.GetNumCycles();
+
+	t1.Start();
+	scan.ScanColumnwise(bitvector1);
+	t1.Stop();
+	cycles_bytewise_columnfirst += t1.GetNumCycles();
 
 	//columnwise scan
 	t1.Start();
@@ -134,10 +140,11 @@ int main(int argc, char* argv[]){
     for(size_t i = 0; i < num_rows; i++){ 
         if(bitvector1->GetBit(i) == bitvector2->GetBit(i)) 
             corr++; 
-        // std::cout 
-        	// << literal1 << "\t" <<  column1->GetTuple(i) << "\t"
-        	// << literal2 << "\t" << column2->GetTuple(i) << "\t"
-        	// << bitvector2->GetBit(i) << "\t" << bitvector1->GetBit(i) << std::endl;
+        // else{
+        // 	std::cout << std::bitset<15>(literal1) << "\t" << std::bitset<15>(column1->GetTuple(i)) << "\t"
+        // 			<< std::bitset<20>(literal2) << "\t" << std::bitset<20>(column2->GetTuple(i)) << "\t"
+        // 			<< std::bitset<25>(literal3) << "\t" << std::bitset<25>(column3->GetTuple(i)) << std::endl;
+        // }
     }
     acc = (double)corr / num_rows;
     std::cout << "Number of correct tuples: " << corr << std::endl; 
@@ -145,10 +152,11 @@ int main(int argc, char* argv[]){
     std::cout << std::endl;
 
     //calcuate average cycles
-    std::cout << "bytewise        columnwise      " 
+    std::cout << "bytewise  bytewise-columnfirst  columnwise      " 
     	<< "col(1)  col(2)  col(3)  " << std::endl;
 	std::cout
 	    << double(cycles_bytewise / repeat) / num_rows << "\t\t"
+	    << double(cycles_bytewise_columnfirst / repeat) / num_rows << "\t\t\t"
 	    << double((cycles_columnwise) / repeat) / num_rows << "\t\t"
 	    << double(cycles_columnar1 / repeat) / num_rows << "\t"
 	    << double(cycles_columnar2 / repeat) / num_rows << "\t"

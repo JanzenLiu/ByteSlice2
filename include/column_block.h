@@ -3,6 +3,7 @@
 
 #include    "common.h"
 #include    "types.h"
+#include    "avx-utility.h"
 #include    "bitvector_block.h"
 #include    "byte_mask_block.h"
 #include    "sequential_binary_file.h"
@@ -24,6 +25,7 @@ public:
     virtual bool Resize(size_t size) = 0;
 
     virtual AvxUnit GetAvxUnit(size_t offset, size_t byte_id) const{
+        return avx_zero();
     }
     virtual void Prefetch(size_t byte_id, size_t offset, size_t distance) const{
     }
@@ -38,8 +40,12 @@ public:
     //Scan procedure that scan a particular byte
     //These methods is only used by ByteSlice
     //Ohterwise it does nothing!
-    virtual void ScanByte(Comparator comparator, ByteUnit literal, size_t byte_id,
-        ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const{
+    virtual void ScanByte(size_t byte_id, Comparator comparator, ByteUnit literal,
+        ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal, 
+        ByteMaskBlock* input_mask) const{
+    }
+    virtual void ScanByte(size_t byte_id, Comparator comparator, ByteUnit literal,
+    	ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const{
     }
 
     //accessor

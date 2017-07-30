@@ -41,7 +41,10 @@ public:
             Bitwise opt = Bitwise::kSet) const override;
 
     //Scan procedure that scan a particular byte
-    void ScanByte(Comparator comparator, ByteUnit literal, size_t byte_id,
+    void ScanByte(size_t byte_id, Comparator comparator, ByteUnit literal,
+        ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal,
+        ByteMaskBlock* input_mask) const override;
+    void ScanByte(size_t byte_id, Comparator comparator, ByteUnit literal,
         ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const override;
 
     void BulkLoadArray(const WordUnit* codes, size_t num, size_t start_pos = 0) override;
@@ -73,12 +76,23 @@ private:
     template <Comparator CMP, Bitwise OPT>
     void ScanHelper2(WordUnit literal, ByteMaskBlock* bmblk) const;
 
-    //Scan Byte Helper: literal
+    //Scan Byte Helpers: literal with external input mask
     template <Comparator CMP>
-    void ScanByteHelper1(ByteUnit literal, size_t byte_id,
+    void ScanByteHelper1(size_t byte_id, ByteUnit literal,
+        ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal,
+        ByteMaskBlock* input_mask) const;
+    template <Comparator CMP, size_t BYTE_ID>
+    void ScanByteHelper2(ByteUnit literal, 
+        ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal,
+        ByteMaskBlock* input_mask) const;
+
+    //Scan Byte Helpers: literal without external input mask
+    template <Comparator CMP>
+    void ScanByteHelper1(size_t byte_id, ByteUnit literal,
         ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const;
     template <Comparator CMP, size_t BYTE_ID>
-    void ScanByteHelper2(ByteUnit literal, ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const;
+    void ScanByteHelper2(ByteUnit literal, 
+        ByteMaskBlock* bm_less, ByteMaskBlock* bm_greater, ByteMaskBlock* bm_equal) const;
 
     //Scan Kernel
     template <Comparator CMP>

@@ -276,6 +276,8 @@ void Superscalar2ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanHelper2(WordUn
 
         int input_mask1 = static_cast<int>(-1ULL);
 		int input_mask2 = static_cast<int>(-1ULL);
+        (void) input_mask1;
+        (void) input_mask2;
 
         switch(OPT){
             case Bitwise::kSet:
@@ -546,6 +548,8 @@ void Superscalar2ByteSliceColumnBlock<BIT_WIDTH, PDIRECTION>::ScanHelper2(
         
 		int input_mask1 = static_cast<int>(-1ULL);
 		int input_mask2 = static_cast<int>(-1ULL);
+        (void) input_mask1;
+        (void) input_mask2;
 
 		switch(OPT){
             case Bitwise::kSet:

@@ -110,13 +110,14 @@ int main(int argc, char* argv[]){
     ByteInColumn arr201[] = {bc20, bc00, bc10, bc01, bc11, bc21, bc12, bc22, bc23};
     ByteInColumn arr210[] = {bc20, bc10, bc00, bc01, bc11, bc21, bc12, bc22, bc23};
 
-    Sequence seq012, seq021, seq102, seq120, seq201, seq210;
+    Sequence seq012, seq021, seq102, seq120, seq201, seq210, seqrand;
     seq012.assign(arr012, arr012 + 9);
     seq021.assign(arr021, arr021 + 9);
     seq102.assign(arr102, arr102 + 9);
     seq120.assign(arr120, arr120 + 9);
     seq201.assign(arr201, arr201 + 9);
     seq210.assign(arr210, arr210 + 9);
+    seqrand = scan.RandomSequence();
 
 	for(size_t turn = 0; turn < repeat; turn++){
 		bitvector1->SetOnes();
@@ -142,8 +143,10 @@ int main(int argc, char* argv[]){
 		//SCAN
 		//with random sequence
 		//bytewise scan
-		scan.ShuffleSequence();
-		scan.PrintSequence();
+		// scan.ShuffleSequence();
+		scan.SetSequence(seqrand);
+		if(turn == 0)
+			scan.PrintSequence();
 		// t1.Start();
 		// scan.Scan(bitvector1);
 		// t1.Stop();

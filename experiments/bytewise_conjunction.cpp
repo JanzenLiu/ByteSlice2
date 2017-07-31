@@ -144,10 +144,10 @@ int main(int argc, char* argv[]){
 		//bytewise scan
 		scan.ShuffleSequence();
 		scan.PrintSequence();
-		t1.Start();
-		scan.Scan(bitvector1);
-		t1.Stop();
-		cycles_bytewise += t1.GetNumCycles();
+		// t1.Start();
+		// scan.Scan(bitvector1);
+		// t1.Stop();
+		// cycles_bytewise += t1.GetNumCycles();
 		t1.Start();
 		scan.ScanColumnwise(bitvector1);
 		t1.Stop();
@@ -155,60 +155,60 @@ int main(int argc, char* argv[]){
 
 		//with pre-defined sequence
 		scan.SetSequence(seq012);
-		t1.Start();
-		scan.Scan(bitvector1);
-		t1.Stop();
-		cycles_bytewise_012 += t1.GetNumCycles();
+		// t1.Start();
+		// scan.Scan(bitvector1);
+		// t1.Stop();
+		// cycles_bytewise_012 += t1.GetNumCycles();
 		t1.Start();
 		scan.ScanColumnwise(bitvector1);
 		t1.Stop();
 		cycles_columnfirst_012 += t1.GetNumCycles();
 
 		scan.SetSequence(seq021);
-		t1.Start();
-		scan.Scan(bitvector1);
-		t1.Stop();
-		cycles_bytewise_021 += t1.GetNumCycles();
+		// t1.Start();
+		// scan.Scan(bitvector1);
+		// t1.Stop();
+		// cycles_bytewise_021 += t1.GetNumCycles();
 		t1.Start();
 		scan.ScanColumnwise(bitvector1);
 		t1.Stop();
 		cycles_columnfirst_021 += t1.GetNumCycles();
 
 		scan.SetSequence(seq102);
-		t1.Start();
-		scan.Scan(bitvector1);
-		t1.Stop();
-		cycles_bytewise_102 += t1.GetNumCycles();
+		// t1.Start();
+		// scan.Scan(bitvector1);
+		// t1.Stop();
+		// cycles_bytewise_102 += t1.GetNumCycles();
 		t1.Start();
 		scan.ScanColumnwise(bitvector1);
 		t1.Stop();
 		cycles_columnfirst_102 += t1.GetNumCycles();
 
 		scan.SetSequence(seq120);
-		t1.Start();
-		scan.Scan(bitvector1);
-		t1.Stop();
-		cycles_bytewise_120 += t1.GetNumCycles();
+		// t1.Start();
+		// scan.Scan(bitvector1);
+		// t1.Stop();
+		// cycles_bytewise_120 += t1.GetNumCycles();
 		t1.Start();
 		scan.ScanColumnwise(bitvector1);
 		t1.Stop();
 		cycles_columnfirst_120 += t1.GetNumCycles();
 
 		scan.SetSequence(seq201);
-		t1.Start();
-		scan.Scan(bitvector1);
-		t1.Stop();
-		cycles_bytewise_201 += t1.GetNumCycles();
+		// t1.Start();
+		// scan.Scan(bitvector1);
+		// t1.Stop();
+		// cycles_bytewise_201 += t1.GetNumCycles();
 		t1.Start();
 		scan.ScanColumnwise(bitvector1);
 		t1.Stop();
 		cycles_columnfirst_201 += t1.GetNumCycles();
 
 		scan.SetSequence(seq210);
-		t1.Start();
-		scan.Scan(bitvector1);
-		t1.Stop();
-		cycles_bytewise_210 += t1.GetNumCycles();
+		// t1.Start();
+		// scan.Scan(bitvector1);
+		// t1.Stop();
+		// cycles_bytewise_210 += t1.GetNumCycles();
 		t1.Start();
 		scan.ScanColumnwise(bitvector1);
 		t1.Stop();
@@ -251,33 +251,50 @@ int main(int argc, char* argv[]){
 
     //calcuate average cycles
     cycles_columnwise = cycles_columnar1 + cycles_columnar2 + cycles_columnar3;
-    std::cout << "bytewise  bw-columnfirst  "
-    	<< "bytewise012  bw-columnfirst012  "
-    	<< "bytewise021  bw-columnfirst021  "
-    	<< "bytewise102  bw-columnfirst102  "
-    	<< "bytewise120  bw-columnfirst120  "
-    	<< "bytewise201  bw-columnfirst201  "
-    	<< "bytewise210  bw-columnfirst210  "
-    	<< "columnwise col(1)  col(2)  col(3)  " << std::endl;
-	std::cout
-	    << double(cycles_bytewise / repeat) / num_rows << "\t\t"
-	    << double(cycles_bytewise_columnfirst / repeat) / num_rows << "\t\t\t"
-	    << double(cycles_bytewise_012 / repeat) / num_rows << "\t\t"
-	    << double(cycles_columnfirst_012 / repeat) / num_rows << "\t\t\t"
-	    << double(cycles_bytewise_021 / repeat) / num_rows << "\t\t"
-	    << double(cycles_columnfirst_021 / repeat) / num_rows << "\t\t\t"
-	    << double(cycles_bytewise_102 / repeat) / num_rows << "\t\t"
-	    << double(cycles_columnfirst_102 / repeat) / num_rows << "\t\t\t"
-	    << double(cycles_bytewise_120 / repeat) / num_rows << "\t\t"
-	    << double(cycles_columnfirst_120 / repeat) / num_rows << "\t\t\t"
-	    << double(cycles_bytewise_201 / repeat) / num_rows << "\t\t"
-	    << double(cycles_columnfirst_201 / repeat) / num_rows << "\t\t\t"
-	    << double(cycles_bytewise_210 / repeat) / num_rows << "\t\t"
-	    << double(cycles_columnfirst_210 / repeat) / num_rows << "\t\t\t"
-	    << double((cycles_columnwise) / repeat) / num_rows << "\t\t"
-	    << double(cycles_columnar1 / repeat) / num_rows << "\t"
-	    << double(cycles_columnar2 / repeat) / num_rows << "\t"
-	    << double(cycles_columnar3 / repeat) / num_rows << std::endl;
+    // std::cout << "bytewise  bw-columnfirst  "
+    // 	<< "bytewise012  bw-columnfirst012  "
+    // 	<< "bytewise021  bw-columnfirst021  "
+    // 	<< "bytewise102  bw-columnfirst102  "
+    // 	<< "bytewise120  bw-columnfirst120  "
+    // 	<< "bytewise201  bw-columnfirst201  "
+    // 	<< "bytewise210  bw-columnfirst210  "
+    // 	<< "columnwise col(1)  col(2)  col(3)  " << std::endl;
+    std::cout << "bw-columnfirst  "
+    	<< "bw-columnfirst012  "
+    	<< "bw-columnfirst021  "
+    	<< "bw-columnfirst102  "
+    	<< "bw-columnfirst120  "
+    	<< "bw-columnfirst201  "
+    	<< "bw-columnfirst210  "
+    	<< "columnwise" << std::endl;
+	// std::cout
+	//     << double(cycles_bytewise / repeat) / num_rows << "\t\t"
+	//     << double(cycles_bytewise_columnfirst / repeat) / num_rows << "\t\t\t"
+	//     << double(cycles_bytewise_012 / repeat) / num_rows << "\t\t"
+	//     << double(cycles_columnfirst_012 / repeat) / num_rows << "\t\t\t"
+	//     << double(cycles_bytewise_021 / repeat) / num_rows << "\t\t"
+	//     << double(cycles_columnfirst_021 / repeat) / num_rows << "\t\t\t"
+	//     << double(cycles_bytewise_102 / repeat) / num_rows << "\t\t"
+	//     << double(cycles_columnfirst_102 / repeat) / num_rows << "\t\t\t"
+	//     << double(cycles_bytewise_120 / repeat) / num_rows << "\t\t"
+	//     << double(cycles_columnfirst_120 / repeat) / num_rows << "\t\t\t"
+	//     << double(cycles_bytewise_201 / repeat) / num_rows << "\t\t"
+	//     << double(cycles_columnfirst_201 / repeat) / num_rows << "\t\t\t"
+	//     << double(cycles_bytewise_210 / repeat) / num_rows << "\t\t"
+	//     << double(cycles_columnfirst_210 / repeat) / num_rows << "\t\t\t"
+	//     << double((cycles_columnwise) / repeat) / num_rows << "\t\t"
+	//     << double(cycles_columnar1 / repeat) / num_rows << "\t"
+	//     << double(cycles_columnar2 / repeat) / num_rows << "\t"
+	//     << double(cycles_columnar3 / repeat) / num_rows << std::endl;
+    	std::cout
+	    << double(cycles_bytewise_columnfirst / repeat) / num_rows << "\t\t"
+	    << double(cycles_columnfirst_012 / repeat) / num_rows << "\t\t"
+	    << double(cycles_columnfirst_021 / repeat) / num_rows << "\t\t"
+	    << double(cycles_columnfirst_102 / repeat) / num_rows << "\t\t"
+	    << double(cycles_columnfirst_120 / repeat) / num_rows << "\t\t"
+	    << double(cycles_columnfirst_201 / repeat) / num_rows << "\t\t"
+	    << double(cycles_columnfirst_210 / repeat) / num_rows << "\t\t"
+	    << double((cycles_columnwise) / repeat) / num_rows << std::endl;
 
 	// testing ValidSequence
 	// Sequence seq;

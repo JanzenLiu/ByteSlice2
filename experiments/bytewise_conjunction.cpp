@@ -29,9 +29,9 @@ int main(int argc, char* argv[]){
 	size_t repeat = 10;
 
 	//get options:
-    //s - column size; p - predicate
+    //s - column size; p - predicate; r - repeat
     int c;
-    while((c = getopt(argc, argv, "s:p:")) != -1){
+    while((c = getopt(argc, argv, "s:p:r:")) != -1){
         switch(c){
             case 'p':
                 if(0 == strcmp(optarg, "lt"))
@@ -53,6 +53,9 @@ int main(int argc, char* argv[]){
                 break;
             case 's':
                 num_rows = atoi(optarg);
+                break;
+            case 'r':
+                repeat = atoi(optarg);
                 break;
         }
     }

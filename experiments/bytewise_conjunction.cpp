@@ -260,12 +260,12 @@ int main(int argc, char* argv[]){
     // 	<< "bytewise210  bw-columnfirst210  "
     // 	<< "columnwise col(1)  col(2)  col(3)  " << std::endl;
     std::cout << "bw-columnfirst  "
-    	<< "bw-columnfirst012  "
-    	<< "bw-columnfirst021  "
-    	<< "bw-columnfirst102  "
-    	<< "bw-columnfirst120  "
-    	<< "bw-columnfirst201  "
-    	<< "bw-columnfirst210  "
+    	<< "012     "
+    	<< "021     "
+    	<< "102     "
+    	<< "120     "
+    	<< "201     "
+    	<< "210     "
     	<< "columnwise" << std::endl;
 	// std::cout
 	//     << double(cycles_bytewise / repeat) / num_rows << "\t\t"
@@ -288,12 +288,12 @@ int main(int argc, char* argv[]){
 	//     << double(cycles_columnar3 / repeat) / num_rows << std::endl;
     	std::cout
 	    << double(cycles_bytewise_columnfirst / repeat) / num_rows << "\t\t"
-	    << double(cycles_columnfirst_012 / repeat) / num_rows << "\t\t"
-	    << double(cycles_columnfirst_021 / repeat) / num_rows << "\t\t"
-	    << double(cycles_columnfirst_102 / repeat) / num_rows << "\t\t"
-	    << double(cycles_columnfirst_120 / repeat) / num_rows << "\t\t"
-	    << double(cycles_columnfirst_201 / repeat) / num_rows << "\t\t"
-	    << double(cycles_columnfirst_210 / repeat) / num_rows << "\t\t"
+	    << double(cycles_columnfirst_012 / repeat) / num_rows << "\t"
+	    << double(cycles_columnfirst_021 / repeat) / num_rows << "\t"
+	    << double(cycles_columnfirst_102 / repeat) / num_rows << "\t"
+	    << double(cycles_columnfirst_120 / repeat) / num_rows << "\t"
+	    << double(cycles_columnfirst_201 / repeat) / num_rows << "\t"
+	    << double(cycles_columnfirst_210 / repeat) / num_rows << "\t"
 	    << double((cycles_columnwise) / repeat) / num_rows << std::endl;
 
 	// testing ValidSequence
